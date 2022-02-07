@@ -269,9 +269,61 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 192363611}
+  - {fileID: 732232104}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &732232103
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 732232104}
+  - component: {fileID: 732232105}
+  m_Layer: 0
+  m_Name: DropFactory
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &732232104
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 732232103}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 575274466}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &732232105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 732232103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e727938a61243d5bc7416dbb8616472, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BlueDropPrefab: {fileID: 2482925690794432248, guid: b208de9cd6fc767479d6f8fea94a92a3,
+    type: 3}
+  GreenDropPrefab: {fileID: 3250034605404413254, guid: 96950df9d0868fe40b102859aa059c86,
+    type: 3}
+  RedDropPrefab: {fileID: 820252576301784285, guid: d62d4299eb1be0d45b406de0f4859f2e,
+    type: 3}
+  YellowDropPrefab: {fileID: 1542049675144043540, guid: 337fce13d49163a4bbb15a6159c18ff4,
+    type: 3}
 --- !u!1 &881871737
 GameObject:
   m_ObjectHideFlags: 0
