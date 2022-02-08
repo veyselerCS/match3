@@ -1,15 +1,21 @@
 using System;
 using UnityEditor;
 using UnityEngine;
+using Zenject;
 
 public class InputManager : MonoBehaviour
 {
+    [Inject] private SignalBus _signalBus;
+    
     private BoardManager _boardManager;
     
     public static InputManager Instance;
     
     private Vector2 _squareSize;
-    private Vector2 _firstTouchedBoardPos;
+    private Vector2Int _firstTouchedBoardPos;
+
+    private bool _lock;
+    private bool _swipeSent;
     
     private void Awake()
     {
@@ -19,6 +25,7 @@ public class InputManager : MonoBehaviour
     private void Start()
     {
         _boardManager = BoardManager.Instance;
+        _signalBus.Subscribe<SwipeEndSignal>(OnSwipeEndSignal);
     }
 
     public void SetBoardSquareSize(Vector2 size)
@@ -28,19 +35,29 @@ public class InputManager : MonoBehaviour
 
     private void Update()
     {
+        if(_lock) return;
+        
         if (Input.GetMouseButtonDown(0))
         {
             _firstTouchedBoardPos = GetTouchBoardPosition();
             Debug.LogWarning("Touch x : " + _firstTouchedBoardPos.x + " y : " + _firstTouchedBoardPos.y);
         }
 
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0) && !_swipeSent)
         {
             var currentTouchPos = GetTouchBoardPosition();
             if (currentTouchPos != _firstTouchedBoardPos)
             {
-                Debug.LogWarning("Touch x : " + currentTouchPos.x + " y : " + currentTouchPos.y);
+                _lock = true;
+                _swipeSent = true;
+                
+                _signalBus.Fire(new SwipeStartSignal(_firstTouchedBoardPos, currentTouchPos));
             }
+        }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            _swipeSent = false;
         }
     }
 
@@ -49,10 +66,11 @@ public class InputManager : MonoBehaviour
         var touchPos = Input.mousePosition;
         var offSet = touchPos - _boardManager.transform.position;
         var lossyScale = _boardManager.transform.lossyScale;
-        return new Vector2Int( (int)((offSet.x / _squareSize.x) * (1f / lossyScale.x)), (int)((offSet.y / _squareSize.y) * (1f / lossyScale.y)));
+        return new Vector2Int((int)((offSet.y / _squareSize.y) * (1f / lossyScale.y)), (int)((offSet.x / _squareSize.x) * (1f / lossyScale.x)));
     }
-    
-    private void OnDrawGizmosSelected()
+
+    private void OnSwipeEndSignal(SwipeEndSignal data)
     {
+        _lock = false;
     }
 }

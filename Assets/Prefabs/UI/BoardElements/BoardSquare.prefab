@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1783470618133514996}
   - component: {fileID: 6966829279015721312}
   - component: {fileID: 6563126271286046574}
+  - component: {fileID: 3606653514933048469}
   m_Layer: 5
   m_Name: BoardSquare
   m_TagString: Untagged
@@ -32,11 +33,11 @@ RectTransform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6966829279015721312
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -74,3 +75,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &3606653514933048469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1207151042426442575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 371a8af74fb712c41a0b544034b0121e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BoardElement: {fileID: 0}
+  CenterPosition: {x: 0, y: 0, z: 0}
+  Coordinates: {x: 0, y: 0}
+  Locked: 0
+  RectTransform: {fileID: 1783470618133514996}

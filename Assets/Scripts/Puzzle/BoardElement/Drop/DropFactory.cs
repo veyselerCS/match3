@@ -19,17 +19,13 @@ public class DropFactory : MonoBehaviour
         switch (dropType)
         {
             case DropType.Blue:
-                var blueDrop = Instantiate(BlueDropPrefab);
-                return blueDrop;        
+                return BlueDropPrefab;        
             case DropType.Green:
-                var greenDrop = Instantiate(GreenDropPrefab);
-                return greenDrop;        
+                return GreenDropPrefab;        
             case DropType.Red:
-                var redDrop = Instantiate(RedDropPrefab);
-                return redDrop;
+                return RedDropPrefab;
             case DropType.Yellow:
-                var yellowDrop = Instantiate(YellowDropPrefab);
-                return yellowDrop;
+                return YellowDropPrefab;
         }
 
         return null;
