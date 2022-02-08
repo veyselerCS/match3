@@ -11,8 +11,6 @@ public class BoardManager : MonoBehaviour
     
     [SerializeField] private RectTransform _boardRectTransform;
     [SerializeField] private RectTransform _boardElementParentRectTransform;
-
-    [SerializeField] private GridLayoutGroup _boardElementParentGridLayout;
     
     private InputManager _inputManager;
     private DropFactory _dropFactory;
@@ -56,17 +54,24 @@ public class BoardManager : MonoBehaviour
             {
                 Square square = Instantiate(_boardSquarePrefab, _boardParent.transform);
                 
-                var squareScreenPosition = (square.transform.position);
-                square.transform.position = squareScreenPosition - boardOffset +  new Vector3(_squareSize.x * (k + 1/2f) * square.RectTransform.lossyScale.x , _squareSize.y * (i+ 1/2f) * square.RectTransform.lossyScale.y, 0);
-                
                 var dropPrefab = _dropFactory.GetDropByDropType((DropType)UnityEngine.Random.Range(0, 4));
-                var drop = Instantiate(dropPrefab, _boardElementParent.transform);
+                Drop drop = Instantiate(dropPrefab, _boardElementParent.transform);
+
+                var squareTransform = square.transform;
+                var squareScreenPosition = (squareTransform.position);
+                var lossyScale = square.RectTransform.lossyScale;
+                
+                var boardPosition =  squareScreenPosition - boardOffset + 
+                                     new Vector3(_squareSize.x * (k + 1/2f) * lossyScale.x , _squareSize.y * (i+ 1/2f) * lossyScale.y, 0);
+
+                squareTransform.position = boardPosition;
                 square.Coordinates = new Vector2Int(i, k);
                 square.BoardElement = drop;
+                
+                drop.transform.position = boardPosition;
+
                 Board[i].Add(square);
             }
         }
-
-        _boardElementParentGridLayout.enabled = false;
     }
 }
