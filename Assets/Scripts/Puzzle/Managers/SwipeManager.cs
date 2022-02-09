@@ -3,7 +3,7 @@ using DG.Tweening;
 using UnityEngine;
 using Zenject;
 
-public class SwipeManager : MonoBehaviour
+public class SwipeManager : SingletonManager<SwipeManager>
 {
     [Inject] private SignalBus _signalBus;
 

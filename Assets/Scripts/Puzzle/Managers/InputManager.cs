@@ -3,13 +3,11 @@ using UnityEditor;
 using UnityEngine;
 using Zenject;
 
-public class InputManager : MonoBehaviour
+public class InputManager : SingletonManager<InputManager>
 {
     [Inject] private SignalBus _signalBus;
     
     private BoardManager _boardManager;
-    
-    public static InputManager Instance;
     
     private Vector2 _squareSize;
     private Vector2Int _firstTouchedBoardPos;
@@ -17,11 +15,6 @@ public class InputManager : MonoBehaviour
     private bool _lock;
     private bool _swipeSent;
     
-    private void Awake()
-    {
-        Instance = this;
-    }
-
     private void Start()
     {
         _boardManager = BoardManager.Instance;

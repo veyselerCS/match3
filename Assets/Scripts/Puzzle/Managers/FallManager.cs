@@ -5,18 +5,12 @@ using NaughtyAttributes;
 using UnityEngine;
 using Zenject;
 
-public class FallManager : MonoBehaviour
+public class FallManager : SingletonManager<FallManager>
 {
     [Inject] private SignalBus _signalBus;
     
-    public static FallManager Instance;
-
     private BoardManager _boardManager;
-    private void Awake()
-    {
-        Instance = this;
-    }
-
+    
     private void Start()
     {
         _boardManager = BoardManager.Instance;
@@ -25,7 +19,7 @@ public class FallManager : MonoBehaviour
 
     [SerializeField] private float BaseSpeed = 200f;
     [SerializeField] private float SpeedGap = 10f;
-    [Button("Check fall")] [SerializeField]
+    [Button("Check fall")]
     public void CheckSquaresForFall()
     {
         var sequence = DOTween.Sequence();
@@ -54,21 +48,6 @@ public class FallManager : MonoBehaviour
         });
     }
 
-    private int GetNumberOfDropsToFall(int col)
-    {
-        var board = _boardManager.Board;
-        int count = 0;
-        for (int i = _boardManager.BoardHeight; i < board.Count; i++)
-        {
-            if (_boardManager.Board[i][col].BoardElement != null)
-            {
-                count++;
-            }
-        }
-
-        return count;
-    }
-    
     private Square GetFirstAvailableSquareInColumn(int col)
     {
         for (int i = 0; i < _boardManager.BoardHeight; i++)

@@ -3,7 +3,7 @@ using DG.Tweening;
 using UnityEngine;
 using Zenject;
 
-public class SpawnManager : MonoBehaviour
+public class SpawnManager : SingletonManager<SpawnManager>
 {
     [Inject] private SignalBus _signalBus;
     private BoardManager _boardManager;
@@ -19,13 +19,9 @@ public class SpawnManager : MonoBehaviour
         _signalBus.Subscribe<MatchEndSignal>(OnMatchEnd);
     }
 
-    private int frame = 0;
-    private bool check;
     private void OnMatchEnd()
     {
         var board = _boardManager.Board;
-        frame = Time.frameCount;
-        check = true;
         for (int i = 0; i < 9; i++)
         {
             var neededCount = GetNeededDropCountForColumn(i);
@@ -41,8 +37,6 @@ public class SpawnManager : MonoBehaviour
         _signalBus.Fire<SpawnEndSignal>();
 
     }
-
-
 
     private int GetNeededDropCountForColumn(int col)
     {

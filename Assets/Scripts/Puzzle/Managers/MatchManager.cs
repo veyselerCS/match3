@@ -5,17 +5,11 @@ using NaughtyAttributes;
 using UnityEngine;
 using Zenject;
 
-public class MatchManager : MonoBehaviour
+public class MatchManager : SingletonManager<MatchManager>
 {
     [Inject] private SignalBus _signalBus;
     
     private BoardManager _boardManager;
-
-    public static MatchManager Instance; 
-    private void Awake()
-    {
-        Instance = this;
-    }
 
     private void Start()
     {
@@ -23,9 +17,6 @@ public class MatchManager : MonoBehaviour
         _signalBus.Subscribe<SwipeEndSignal>(OnSwipeEndSignal);
         _signalBus.Subscribe<FallEndSignal>(OnFallEndSignal);
     }
-
-    private int spawnCount = 0;
-    private bool spawning = false;
 
     private void OnSwipeEndSignal(SwipeEndSignal data)
     {
@@ -133,7 +124,6 @@ public class MatchManager : MonoBehaviour
     {
         var board = _boardManager.Board;
 
-        bool popped;
         if (CheckSquareMatch(xOccurences, yOccurences))
         {
             foreach (var coordinate in neighbourhood)

@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BoardManager : MonoBehaviour
+public class BoardManager : SingletonManager<BoardManager>
 {
     [SerializeField] private Square _boardSquarePrefab;
     
@@ -15,16 +15,10 @@ public class BoardManager : MonoBehaviour
     public int BoardWidth = 9; 
     public int BoardHeight = 9;
     
-    public static BoardManager Instance;
-
     public List<List<Square>> Board = new List<List<Square>>();
 
     private Vector2 _squareSize;
     
-    private void Awake()
-    {
-        Instance = this;
-    }
 
     private void Start()
     {

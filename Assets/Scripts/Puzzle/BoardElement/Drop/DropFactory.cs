@@ -1,18 +1,11 @@
 using UnityEngine;
 
-public class DropFactory : MonoBehaviour
+public class DropFactory : SingletonManager<DropFactory>
 {
     [SerializeField] private Drop BlueDropPrefab;
     [SerializeField] private Drop GreenDropPrefab;
     [SerializeField] private Drop RedDropPrefab;
     [SerializeField] private Drop YellowDropPrefab;
-
-    public static DropFactory Instance;
-
-    private void Awake()
-    {
-        Instance = this;
-    }
 
     public Drop GetDropByDropType(DropType dropType)
     {
