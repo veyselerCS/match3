@@ -12,6 +12,7 @@ public class Spawner : BoardElement
     private DropFactory _dropFactory;
     private BoardManager _boardManager;
     private SceneComponentService _sceneComponentService;
+    
     private void Start()
     {
         _boardManager = BoardManager.Instance;
@@ -29,9 +30,34 @@ public class Spawner : BoardElement
         {
             var dropPrefab = _dropFactory.GetDropByDropType((DropType)UnityEngine.Random.Range(0, 4));
             Drop drop = Instantiate(dropPrefab, _sceneComponentService.BoardElementParent.transform);
-            drop.transform.position = squareToFall.transform.position;
+            drop.transform.position = squareToFall.transform.position + new Vector3(0, 50f, 0);
             squareToFall.BoardElement = drop;
-            _signalBus.Fire<BoardElementFallSignal>();
+            drop.transform.DOMove(squareToFall.CenterPosition, 0.15f).SetEase(Ease.InOutQuad).OnComplete(
+                () =>
+                {
+                    _signalBus.Fire<BoardElementSpawnedSignal>();
+                });
         }
+    }
+    
+    private Square GetFirstAvailableSquareInColumn(int col)
+    {
+        for (int i = 0; i < 9; i++)
+        {
+            if (AvailableForFall(i, col))
+            {
+                return _boardManager.Board[i][col];
+            }
+        }
+
+        return null;
+    }
+    
+    private bool AvailableForFall(int x, int y)
+    {
+        var board = _boardManager.Board;
+        if (x < 0) return false;
+
+        return board[x][y].BoardElement == null;
     }
 }

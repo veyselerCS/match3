@@ -43,22 +43,34 @@ public class FallManager : MonoBehaviour
             bool fall = false;
             for (int i = 0; i < 9; i++)
             {
-                for (int k = 0; k < 9; k++)
+                var firstAvailableSquareForFall = GetFirstAvailableSquareInColumn(i);
+                //no empty square in this column so no fall
+                if(firstAvailableSquareForFall == null) continue;
+                
+                var firstSquareToFall = GetFirstNonEmptySquareInColumn(firstAvailableSquareForFall.Coordinates.x, i);
+                //all squares are empty above
+                if(firstSquareToFall == null) continue;
+
+                int fallCount = 0;
+                for (int k = firstSquareToFall.Coordinates.x; k < 9; k++)
                 {
-                    var square = board[i][k];
+                    var square = board[k][i];
                     var boardElement = square.BoardElement;
-                    if (boardElement != null && AvailableForFall(i - 1, k))
+                    if (boardElement != null)
                     {
-                        var squareToFall = board[i - 1][k];
-                        boardElement.transform.DOMove(squareToFall.CenterPosition, 0.5f).SetEase(Ease.InOutQuad).OnComplete(
+                        var squareToFall = board[firstAvailableSquareForFall.Coordinates.x + fallCount][i];
+                        squareToFall.BoardElement = boardElement;
+                        square.BoardElement = null;
+                        boardElement.transform.DOKill();
+                        
+                        boardElement.transform.DOMove(squareToFall.CenterPosition, 0.15f + 0.1f * fallCount).SetEase(Ease.InOutQuad).OnComplete(
                             () =>
                             {
                                 _signalBus.Fire<BoardElementFallSignal>();
-                                squareToFall.BoardElement = boardElement;
-                                square.BoardElement = null;
-                            });
+                            }).SetLink(boardElement.gameObject);
 
                         fall = true;
+                        fallCount++;
                     }
                 }
             }
@@ -67,15 +79,39 @@ public class FallManager : MonoBehaviour
             {
                 continue;
             }
-
             break;
         }
     }
 
+    private Square GetFirstAvailableSquareInColumn(int col)
+    {
+        for (int i = 0; i < 9; i++)
+        {
+            if (AvailableForFall(i, col))
+            {
+                return _boardManager.Board[i][col];
+            }
+        }
+
+        return null;
+    }
+
+    private Square GetFirstNonEmptySquareInColumn(int start, int col)
+    {
+        for (int i = start; i < 9; i++)
+        {
+            if (_boardManager.Board[i][col].BoardElement != null)
+            {
+                return _boardManager.Board[i][col];
+            }
+        }
+
+        return null;
+    }
+    
     private bool AvailableForFall(int x, int y)
     {
         var board = _boardManager.Board;
-
         if (x < 0) return false;
 
         return board[x][y].BoardElement == null;
