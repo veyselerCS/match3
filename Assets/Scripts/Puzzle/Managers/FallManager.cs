@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using DG.Tweening;
 using NaughtyAttributes;
 using UnityEngine;
@@ -19,73 +20,58 @@ public class FallManager : MonoBehaviour
     private void Start()
     {
         _boardManager = BoardManager.Instance;
-        _signalBus.Subscribe<BoardElementPopSignal>(OnBoardElementPop);
-        _signalBus.Subscribe<BoardElementSpawnedSignal>(OnBoardElementSpawned);
+        _signalBus.Subscribe<SpawnEndSignal>(CheckSquaresForFall);
     }
 
-    private void OnBoardElementPop(BoardElementPopSignal data)
+    [SerializeField] private float BaseSpeed = 200f;
+    [SerializeField] private float SpeedGap = 10f;
+    [Button("Check fall")] [SerializeField]
+    public void CheckSquaresForFall()
     {
-        CheckSquaresForFall();
+        var sequence = DOTween.Sequence();
+        for (int i = 0; i < _boardManager.BoardWidth; i++)
+        {
+            var available = GetFirstAvailableSquareInColumn(i);
+            if(available == null) continue;
+            
+            var nonEmptySquares = GetNonEmptySquaresInColumn(available.Coordinates.x, i);
+            for (int k = 0; k < nonEmptySquares.Count; k++)
+            {
+                var boardElement = nonEmptySquares[k].BoardElement;
+                var speed = BaseSpeed - SpeedGap * k;
+                var distance = nonEmptySquares[k].CenterPosition - available.CenterPosition;
+                var duration = distance.y / speed;
+                sequence.Join(boardElement.transform.DOMove(available.CenterPosition, duration)); 
+                available.BoardElement = boardElement;
+                available = available.Up;
+                nonEmptySquares[k].BoardElement = null;
+            }
+        }
+
+        sequence.OnComplete(() =>
+        {
+            _signalBus.Fire<FallEndSignal>();
+        });
     }
-       
-    private void OnBoardElementSpawned(BoardElementSpawnedSignal data)
+
+    private int GetNumberOfDropsToFall(int col)
     {
-        CheckSquaresForFall();
+        var board = _boardManager.Board;
+        int count = 0;
+        for (int i = _boardManager.BoardHeight; i < board.Count; i++)
+        {
+            if (_boardManager.Board[i][col].BoardElement != null)
+            {
+                count++;
+            }
+        }
+
+        return count;
     }
     
-    [Button("Check fall")]
-    private void CheckSquaresForFall()
-    {
-        while (true)
-        {
-            var board = _boardManager.Board;
-
-            bool fall = false;
-            for (int i = 0; i < 9; i++)
-            {
-                var firstAvailableSquareForFall = GetFirstAvailableSquareInColumn(i);
-                //no empty square in this column so no fall
-                if(firstAvailableSquareForFall == null) continue;
-                
-                var firstSquareToFall = GetFirstNonEmptySquareInColumn(firstAvailableSquareForFall.Coordinates.x, i);
-                //all squares are empty above
-                if(firstSquareToFall == null) continue;
-
-                int fallCount = 0;
-                for (int k = firstSquareToFall.Coordinates.x; k < 9; k++)
-                {
-                    var square = board[k][i];
-                    var boardElement = square.BoardElement;
-                    if (boardElement != null)
-                    {
-                        var squareToFall = board[firstAvailableSquareForFall.Coordinates.x + fallCount][i];
-                        squareToFall.BoardElement = boardElement;
-                        square.BoardElement = null;
-                        boardElement.transform.DOKill();
-                        
-                        boardElement.transform.DOMove(squareToFall.CenterPosition, 0.15f + 0.1f * fallCount).SetEase(Ease.InOutQuad).OnComplete(
-                            () =>
-                            {
-                                _signalBus.Fire<BoardElementFallSignal>();
-                            }).SetLink(boardElement.gameObject);
-
-                        fall = true;
-                        fallCount++;
-                    }
-                }
-            }
-
-            if (fall)
-            {
-                continue;
-            }
-            break;
-        }
-    }
-
     private Square GetFirstAvailableSquareInColumn(int col)
     {
-        for (int i = 0; i < 9; i++)
+        for (int i = 0; i < _boardManager.BoardHeight; i++)
         {
             if (AvailableForFall(i, col))
             {
@@ -95,18 +81,20 @@ public class FallManager : MonoBehaviour
 
         return null;
     }
-
-    private Square GetFirstNonEmptySquareInColumn(int start, int col)
+    
+    
+    private List<Square> GetNonEmptySquaresInColumn(int start, int col)
     {
-        for (int i = start; i < 9; i++)
+        List<Square> result = new List<Square>();
+        for (int i = start; i < _boardManager.Board.Count; i++)
         {
             if (_boardManager.Board[i][col].BoardElement != null)
             {
-                return _boardManager.Board[i][col];
+                result.Add( _boardManager.Board[i][col]);
             }
         }
 
-        return null;
+        return result;
     }
     
     private bool AvailableForFall(int x, int y)

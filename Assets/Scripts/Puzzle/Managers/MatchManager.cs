@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using NaughtyAttributes;
 using UnityEngine;
 using Zenject;
 
@@ -19,33 +21,61 @@ public class MatchManager : MonoBehaviour
     {
         _boardManager = BoardManager.Instance;
         _signalBus.Subscribe<SwipeEndSignal>(OnSwipeEndSignal);
+        _signalBus.Subscribe<FallEndSignal>(OnFallEndSignal);
     }
-    
+
+    private int spawnCount = 0;
+    private bool spawning = false;
+
     private void OnSwipeEndSignal(SwipeEndSignal data)
     {
-        var board = _boardManager.Board;
-
-        Dictionary<int, int> xOccurences = new Dictionary<int, int>();
-        Dictionary<int, int> yOccurences = new Dictionary<int, int>();
-        List<Vector2Int> neighbourhood = new List<Vector2Int>();
-
-        if (board[data.To.x][data.To.y].BoardElement is Drop dropTo)
-        {
-            CheckNeighboursRec(data.To, xOccurences, yOccurences, neighbourhood, dropTo.DropType);
-            CheckPowerUp(xOccurences, yOccurences, neighbourhood);
-        }
-        
-        if (board[data.From.x][data.From.y].BoardElement is Drop dropFrom)
-        {
-            xOccurences.Clear();
-            yOccurences.Clear();
-            neighbourhood.Clear();
-            
-            CheckNeighboursRec(data.From, xOccurences, yOccurences, neighbourhood, dropFrom.DropType);
-            CheckPowerUp(xOccurences, yOccurences, neighbourhood);
-        }
+        CheckMatch();
     }
 
+    private void OnFallEndSignal()
+    {
+        CheckMatch();
+    }
+
+    private HashSet<Vector2Int> _visited = new HashSet<Vector2Int>();
+    
+    Dictionary<int, int> xOccurences = new Dictionary<int, int>();
+    Dictionary<int, int> yOccurences = new Dictionary<int, int>();
+    List<Vector2Int> neighbourhood = new List<Vector2Int>();
+    
+    [Button("Check match")]
+    private void CheckMatch()
+    {
+        var board = _boardManager.Board;
+        _visited.Clear();
+        for (int i = 0; i < board.Count; i++)
+        {
+            for (int k = 0; k < board[i].Count; k++)
+            {
+                var square = board[i][k];
+                
+                if(_visited.Contains(square.Coordinates)) continue;
+                
+                var boardElement = square.BoardElement;
+                if (boardElement != null && boardElement is Drop drop)
+                {
+                    xOccurences.Clear();
+                    yOccurences.Clear();
+                    neighbourhood.Clear();
+
+                    CheckNeighboursRec(square.Coordinates, xOccurences, yOccurences, neighbourhood, drop.DropType);
+                    CheckPowerUp(xOccurences, yOccurences, neighbourhood);
+                    foreach (var squareInNeighbourhood in neighbourhood)
+                    {
+                        _visited.Add(squareInNeighbourhood);
+                    }
+                }
+            }
+        }
+        
+        _signalBus.Fire<MatchEndSignal>();
+    }
+    
     private bool CheckSquareMatch(Dictionary<int, int> xOccurences, Dictionary<int, int> yOccurences)
     {
         if (xOccurences.Count == 2 && yOccurences.Count == 2)
@@ -83,7 +113,7 @@ public class MatchManager : MonoBehaviour
         int xCoord = coordinates.x;
         int yCoord = coordinates.y;
         
-        if(xCoord > board.Count - 1 || yCoord > board.Count - 1 || yCoord < 0 || xCoord < 0) return;
+        if(xCoord > _boardManager.BoardHeight - 1 || yCoord > _boardManager.BoardWidth - 1 || yCoord < 0 || xCoord < 0) return;
         if(neighbourhood.Contains(coordinates)) return;
 
         if (board[xCoord][yCoord].BoardElement != null && board[xCoord][yCoord].BoardElement is Drop drop && drop.DropType == dropType)
@@ -149,7 +179,5 @@ public class MatchManager : MonoBehaviour
                 square.BoardElement = null;
             }
         }
-        
-        _signalBus.Fire(new BoardElementPopSignal(new Vector2Int(0,0)));
     }
 }

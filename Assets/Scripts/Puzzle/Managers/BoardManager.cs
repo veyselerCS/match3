@@ -10,8 +10,10 @@ public class BoardManager : MonoBehaviour
     
     private InputManager _inputManager;
     private DropFactory _dropFactory;
-    private SpawnerFactory _spawnerFactory;
     private SceneComponentService _sceneComponentService;
+
+    public int BoardWidth = 9; 
+    public int BoardHeight = 9;
     
     public static BoardManager Instance;
 
@@ -29,7 +31,6 @@ public class BoardManager : MonoBehaviour
         //init references
         _inputManager = InputManager.Instance;
         _dropFactory = DropFactory.Instance;
-        _spawnerFactory = SpawnerFactory.Instance;
         _sceneComponentService = SceneComponentService.Instance;
         
         //set the size for grid layout
@@ -53,10 +54,10 @@ public class BoardManager : MonoBehaviour
         
         Vector3 boardOffset = boardRectTransform.sizeDelta / 2 * boardRectTransform.lossyScale;
         Board.Clear();
-        for (int i = 0; i < 9; i++)
+        for (int i = 0; i < BoardWidth; i++)
         {
             Board.Add(new List<Square>());
-            for (int k = 0; k < 9; k++)
+            for (int k = 0; k < BoardHeight; k++)
             {
                 Square square = Instantiate(_boardSquarePrefab, _sceneComponentService.BoardParent.transform);
                 var squareTransform = square.transform;
@@ -80,20 +81,28 @@ public class BoardManager : MonoBehaviour
             }
         }
 
-        for (int i = 0; i < 9; i++)
+        for (int i = 0; i < BoardWidth; i++)
         {
-            var spawnerPrefab = _spawnerFactory.GetSpawnerPrefab();
-            Spawner spawner = Instantiate(spawnerPrefab, _sceneComponentService.BoardElementParent.transform);
-            
-            var spawnerTransform = spawner.transform;
-            var pos = (spawnerTransform.position);
-            var lossyScale = spawner.GetComponent<RectTransform>().lossyScale;
+            Board.Add(new List<Square>());
+            for (int k = 0; k < BoardHeight; k++)
+            {
+                Square square = Instantiate(_boardSquarePrefab, _sceneComponentService.BoardParent.transform);
+                var squareTransform = square.transform;
+                var squareScreenPosition = (squareTransform.position);
+                var lossyScale = square.RectTransform.lossyScale;
                 
-            var boardPosition =  pos - boardOffset + 
-                                 new Vector3(_squareSize.x * (i + 1/2f) * lossyScale.x , _squareSize.y * (9+ 1/2f) * lossyScale.y, 0);
-            
-            spawner.transform.position = boardPosition;
-            spawner.BoardPos = new Vector2Int(9, i);
+                var boardPosition =  squareScreenPosition - boardOffset + 
+                                     new Vector3(_squareSize.x * (k + 1/2f) * lossyScale.x , _squareSize.y * (BoardHeight + i+ 1/2f) * lossyScale.y, 0);
+                
+                var squarePosition = new Vector2Int(i, k);
+                squareTransform.position = boardPosition;
+                square.Coordinates = squarePosition;
+                square.CenterPosition = boardPosition;
+                square.BoardElement = null;
+                Board[BoardWidth + i].Add(square);
+                square.gameObject.SetActive(false);
+                //square
+            }
         }
     }
 

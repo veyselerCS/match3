@@ -14,14 +14,32 @@ public class Square : MonoBehaviour
 
     public BoardManager _boardManager;
     public RectTransform RectTransform;
-
+    
+    public Square Up
+    {
+        get { return _boardManager.Board[Coordinates.x + 1][Coordinates.y]; }
+    }   
+    
+    public Square Down
+    {
+        get { return _boardManager.Board[Coordinates.x - 1][Coordinates.y]; }
+    }  
+    
+    public Square Left
+    {
+        get { return _boardManager.Board[Coordinates.x ][Coordinates.y - 1]; }
+    }  
+    public Square Right
+    {
+        get { return _boardManager.Board[Coordinates.x][Coordinates.y + 1]; }
+    } 
+    
     private void Start()
     {
         _boardManager = BoardManager.Instance;
         
         CenterPosition = transform.position;
-        
     }
-
-
 }
+
+
