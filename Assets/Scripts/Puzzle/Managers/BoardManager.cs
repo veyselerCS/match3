@@ -68,13 +68,14 @@ public class BoardManager : MonoBehaviour
 
                 var boardPosition =  squareScreenPosition - boardOffset + 
                                      new Vector3(_squareSize.x * (k + 1/2f) * lossyScale.x , _squareSize.y * (i+ 1/2f) * lossyScale.y, 0);
-
+                
+                var squarePosition = new Vector2Int(i, k);
                 squareTransform.position = boardPosition;
-                square.Coordinates = new Vector2Int(i, k);
+                square.Coordinates = squarePosition;
                 square.BoardElement = drop;
                 
                 drop.transform.position = boardPosition;
-
+                drop.SquarePosition = squarePosition;
                 Board[i].Add(square);
             }
         }

@@ -28,6 +28,7 @@ public class SwipeManager : MonoBehaviour
             .Join(swipeEndElement.BoardElement.transform.DOMove(swipeStartElement.CenterPosition, 0.5f))
             .OnComplete(() =>
             {
+                (board[data.From.x][data.From.y].BoardElement.SquarePosition, board[data.To.x][data.To.y].BoardElement.SquarePosition) = (board[data.To.x][data.To.y].BoardElement.SquarePosition, board[data.From.x][data.From.y].BoardElement.SquarePosition);
                 (board[data.From.x][data.From.y].BoardElement, board[data.To.x][data.To.y].BoardElement) = (board[data.To.x][data.To.y].BoardElement, board[data.From.x][data.From.y].BoardElement);
                 
                 _signalBus.Fire(new SwipeEndSignal(data.From, data.To));
