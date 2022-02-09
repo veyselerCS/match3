@@ -8,5 +8,8 @@ public class MainInstaller : MonoInstaller
 
         Container.DeclareSignal<SwipeStartSignal>();
         Container.DeclareSignal<SwipeEndSignal>();
+        Container.DeclareSignal<BoardElementPopSignal>();
+        Container.DeclareSignal<BoardElementFallSignal>();
+        Container.DeclareSignal<BoardElementSpawnedSignal>();
     }
 }

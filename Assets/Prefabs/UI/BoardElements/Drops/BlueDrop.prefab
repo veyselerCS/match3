@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6153238223345841023}
   - component: {fileID: 5433146884536509859}
   - component: {fileID: 2482925690794432248}
+  - component: {fileID: 3507934017709488395}
   m_Layer: 5
   m_Name: BlueDrop
   m_TagString: Untagged
@@ -88,3 +89,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DropType: 0
+--- !u!114 &3507934017709488395
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8645518574580190223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 717a02054ef2699498e6bd4234fd7995, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _containerSource: 0

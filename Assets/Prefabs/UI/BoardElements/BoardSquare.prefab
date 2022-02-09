@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6966829279015721312}
   - component: {fileID: 6563126271286046574}
   - component: {fileID: 3606653514933048469}
+  - component: {fileID: 3179814609672502278}
   m_Layer: 5
   m_Name: BoardSquare
   m_TagString: Untagged
@@ -91,4 +92,18 @@ MonoBehaviour:
   CenterPosition: {x: 0, y: 0, z: 0}
   Coordinates: {x: 0, y: 0}
   Locked: 0
+  _boardManager: {fileID: 0}
   RectTransform: {fileID: 1783470618133514996}
+--- !u!114 &3179814609672502278
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1207151042426442575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 717a02054ef2699498e6bd4234fd7995, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _containerSource: 0
