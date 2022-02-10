@@ -115,6 +115,11 @@ public class BoardManager : SingletonManager<BoardManager>
         InitBoard();
     }
 
+    public bool IsInBoardLimits(Vector2Int pos)
+    {
+        return pos.x >= 0 && pos.y >= 0 && pos.x < BoardHeight && pos.y < BoardWidth;
+    }
+    
     private void OnDrawGizmos()
     {
         for (int i = 0; i < Board.Count; i++)

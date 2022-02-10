@@ -8,6 +8,8 @@ public class InputManager : SingletonManager<InputManager>
     [Inject] private SignalBus _signalBus;
     
     private BoardManager _boardManager;
+    private CheatManager _cheatManager;
+    private SceneComponentService _sceneComponentService;
     
     private Vector2 _squareSize;
     private Vector2Int _firstTouchedBoardPos;
@@ -18,6 +20,8 @@ public class InputManager : SingletonManager<InputManager>
     private void Start()
     {
         _boardManager = BoardManager.Instance;
+        _cheatManager = CheatManager.Instance;
+        _sceneComponentService = SceneComponentService.Instance;
         _signalBus.Subscribe<SwipeEndSignal>(OnSwipeEndSignal);
     }
 
@@ -29,6 +33,21 @@ public class InputManager : SingletonManager<InputManager>
     private void Update()
     {
         if(_lock) return;
+
+        if (_cheatManager.CheatMode)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                _firstTouchedBoardPos = GetTouchBoardPosition();
+                if(!_boardManager.IsInBoardLimits(_firstTouchedBoardPos)) return;
+                    
+                var cheatElement = Instantiate(_cheatManager.PickedElement, _sceneComponentService.BoardElementParent.transform);
+                cheatElement.transform.position = _boardManager.Board.At(_firstTouchedBoardPos).CenterPosition;
+                Destroy(_boardManager.Board.At(_firstTouchedBoardPos).BoardElement.gameObject);
+                _boardManager.Board.At(_firstTouchedBoardPos).BoardElement = cheatElement;
+            }
+            return;
+        }
         
         if (Input.GetMouseButtonDown(0))
         {
