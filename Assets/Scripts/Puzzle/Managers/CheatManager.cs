@@ -47,7 +47,7 @@ public class CheatManager : SingletonManager<CheatManager>
         
         if(Input.GetKeyUp(KeyCode.M))
         {
-            _matchManager.CheatCheckMatch();
+            _matchManager.CheckMatchNoSignal();
         }
 
         CheatToggle.isOn = CheatMode;

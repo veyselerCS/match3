@@ -53,7 +53,6 @@ public class InputManager : SingletonManager<InputManager>
         if (Input.GetMouseButtonDown(0))
         {
             _firstTouchedBoardPos = GetTouchBoardPosition();
-            Debug.LogWarning("Touch x : " + _firstTouchedBoardPos.x + " y : " + _firstTouchedBoardPos.y);
         }
 
         if (Input.GetMouseButton(0) && !_swipeSent)
