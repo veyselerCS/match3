@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using NaughtyAttributes;
 using UnityEngine;
 using Zenject;
@@ -10,10 +11,14 @@ public class MatchManager : SingletonManager<MatchManager>
     [Inject] private SignalBus _signalBus;
     
     private BoardManager _boardManager;
-
+    private PowerupManager _powerupManager;
+    private Sequence _matchSequence = null;
+    private Vector2Int _matchSourcePosition;
+    
     private void Start()
     {
         _boardManager = BoardManager.Instance;
+        _powerupManager = PowerupManager.Instance;
         _signalBus.Subscribe<SwipeEndSignal>(OnSwipeEndSignal);
         _signalBus.Subscribe<FallEndSignal>(OnFallEndSignal);
     }
@@ -39,11 +44,14 @@ public class MatchManager : SingletonManager<MatchManager>
     {
         var board = _boardManager.Board;
         _visited.Clear();
+        _matchSequence = DOTween.Sequence();
+        
         for (int i = 0; i < board.Count; i++)
         {
             for (int k = 0; k < board[i].Count; k++)
             {
-                var square = board[i][k];
+                _matchSourcePosition = new Vector2Int(i, k);
+                var square = board.At(_matchSourcePosition);
                 
                 if(_visited.Contains(square.Coordinates)) continue;
                 
@@ -53,8 +61,8 @@ public class MatchManager : SingletonManager<MatchManager>
                     xOccurences.Clear();
                     yOccurences.Clear();
                     neighbourhood.Clear();
-
-                    CheckNeighboursRec(square.Coordinates, xOccurences, yOccurences, neighbourhood, drop.DropType);
+                
+                    CheckNeighboursRec(_matchSourcePosition, xOccurences, yOccurences, neighbourhood, drop.DropType);
                     CheckPowerUp(xOccurences, yOccurences, neighbourhood);
                     foreach (var squareInNeighbourhood in neighbourhood)
                     {
@@ -63,8 +71,11 @@ public class MatchManager : SingletonManager<MatchManager>
                 }
             }
         }
-        
-        _signalBus.Fire<MatchEndSignal>();
+
+        _matchSequence.OnComplete(() =>
+        {
+            _signalBus.Fire<MatchEndSignal>();
+        });
     }
     
     private bool CheckSquareMatch(Dictionary<int, int> xOccurences, Dictionary<int, int> yOccurences)
@@ -135,12 +146,7 @@ public class MatchManager : SingletonManager<MatchManager>
         }
         else if (CheckMatchVerticalByCount(xOccurences, yOccurences,4))
         {
-            foreach (var coordinate in neighbourhood)
-            {
-                var square = board[coordinate.x][coordinate.y];
-                Destroy(square.BoardElement.gameObject);
-                square.BoardElement = null;
-            }
+            _powerupManager.CreateVerticalRocket(_matchSequence, _matchSourcePosition, neighbourhood, PowerUpType.VerticalRocket);
         }
         else if (CheckMatchHorizontalByCount(xOccurences, yOccurences, 4))
         {
