@@ -10,10 +10,16 @@ public class CheatManager : SingletonManager<CheatManager>
     [SerializeField] private GameObject BoardElementsParent;
     [SerializeField] private Toggle CheatToggle;
 
+    private BoardManager _boardManager;
+    private MatchManager _matchManager;
+    
     public bool CheatMode;
     public BoardElement PickedElement;
     private void Start()
     {
+        _boardManager = BoardManager.Instance;
+        _matchManager = MatchManager.Instance;
+        
         BoardElements = BoardElementsParent.GetComponentsInChildren<BoardElement>().ToList();
         foreach (var boardElement in BoardElements)
         {
@@ -32,6 +38,16 @@ public class CheatManager : SingletonManager<CheatManager>
         if(Input.GetKeyUp(KeyCode.C))
         {
             CheatMode = !CheatMode;
+        }       
+        
+        if(Input.GetKeyUp(KeyCode.D))
+        {
+            _boardManager.DeleteBoard();
+        }      
+        
+        if(Input.GetKeyUp(KeyCode.M))
+        {
+            _matchManager.CheatCheckMatch();
         }
 
         CheatToggle.isOn = CheatMode;

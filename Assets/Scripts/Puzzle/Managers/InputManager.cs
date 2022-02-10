@@ -43,7 +43,8 @@ public class InputManager : SingletonManager<InputManager>
                     
                 var cheatElement = Instantiate(_cheatManager.PickedElement, _sceneComponentService.BoardElementParent.transform);
                 cheatElement.transform.position = _boardManager.Board.At(_firstTouchedBoardPos).CenterPosition;
-                Destroy(_boardManager.Board.At(_firstTouchedBoardPos).BoardElement.gameObject);
+                if (_boardManager.Board.At(_firstTouchedBoardPos).BoardElement)
+                    Destroy(_boardManager.Board.At(_firstTouchedBoardPos).BoardElement.gameObject);
                 _boardManager.Board.At(_firstTouchedBoardPos).BoardElement = cheatElement;
             }
             return;

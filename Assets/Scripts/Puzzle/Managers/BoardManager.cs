@@ -111,8 +111,20 @@ public class BoardManager : SingletonManager<BoardManager>
         {
             Destroy(_sceneComponentService.BoardElementParent.transform.GetChild(i).gameObject);
         }
-
+        
         InitBoard();
+    }
+    
+    public void DeleteBoard()
+    {
+        for (int i = 0; i < BoardWidth; i++)
+        {
+            for (int k = 0; k < BoardHeight; k++)
+            {
+                if (Board[i][k].BoardElement != null)
+                    Destroy(Board[i][k].BoardElement.gameObject);
+            }
+        }
     }
 
     public bool IsInBoardLimits(Vector2Int pos)

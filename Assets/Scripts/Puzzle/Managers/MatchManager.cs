@@ -40,7 +40,7 @@ public class MatchManager : SingletonManager<MatchManager>
     List<Vector2Int> neighbourhood = new List<Vector2Int>();
     
     [Button("Check match")]
-    private void CheckMatch()
+    public void CheckMatch()
     {
         var board = _boardManager.Board;
         _visited.Clear();
@@ -76,6 +76,39 @@ public class MatchManager : SingletonManager<MatchManager>
         {
             _signalBus.Fire<MatchEndSignal>();
         });
+    }
+
+    public void CheatCheckMatch()
+    {
+        var board = _boardManager.Board;
+        _visited.Clear();
+        _matchSequence = DOTween.Sequence();
+        
+        for (int i = 0; i < board.Count; i++)
+        {
+            for (int k = 0; k < board[i].Count; k++)
+            {
+                _matchSourcePosition = new Vector2Int(i, k);
+                var square = board.At(_matchSourcePosition);
+                
+                if(_visited.Contains(square.Coordinates)) continue;
+                
+                var boardElement = square.BoardElement;
+                if (boardElement != null && boardElement is Drop drop)
+                {
+                    xOccurences.Clear();
+                    yOccurences.Clear();
+                    neighbourhood.Clear();
+                
+                    CheckNeighboursRec(_matchSourcePosition, xOccurences, yOccurences, neighbourhood, drop.DropType);
+                    CheckPowerUp(xOccurences, yOccurences, neighbourhood);
+                    foreach (var squareInNeighbourhood in neighbourhood)
+                    {
+                        _visited.Add(squareInNeighbourhood);
+                    }
+                }
+            }
+        }
     }
     
     private bool CheckSquareMatch(Dictionary<int, int> xOccurences, Dictionary<int, int> yOccurences)
