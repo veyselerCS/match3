@@ -50,9 +50,10 @@ public class SpawnManager : Manager
     {
         var board = _boardManager.Board;
         int count = 0;
-        for (int i = 0; i < 9; i++)
+        for (int i = _boardManager.BoardHeight - 1; i >= 0; i--)
         {
             var boardElement = board[i][col].BoardElement;
+            if (boardElement != null && boardElement.IsStable) break;
             if (boardElement == null) count++;
         }
 

@@ -30,23 +30,37 @@ public class FallManager : Manager
     {
         var sequence = DOTween.Sequence();
         bool fall = false;
+        int row;
         for (int i = 0; i < _boardManager.BoardWidth; i++)
         {
-            var available = GetFirstAvailableSquareInColumn(i);
-            if(available == null) continue;
-            
-            var nonEmptySquares = GetNonEmptySquaresInColumn(available.Coordinates.x, i);
-            for (int k = 0; k < nonEmptySquares.Count; k++)
+            row = 0;
+            while (row < _boardManager.Board.Count)
             {
-                var boardElement = nonEmptySquares[k].BoardElement;
-                var speed = BaseSpeed - SpeedGap * k;
-                var distance = nonEmptySquares[k].CenterPosition - available.CenterPosition;
-                var duration = distance.y / speed;
-                sequence.Join(boardElement.transform.DOMove(available.CenterPosition, duration)); 
-                available.BoardElement = boardElement;
-                available = available.Up;
-                nonEmptySquares[k].BoardElement = null;
-                fall = true;
+                var stableSquare = GetFirstStableInColumn(row, i);
+                int topLimit = stableSquare == null ? _boardManager.Board.Count : stableSquare.Coordinates.x;
+            
+                var available = GetFirstAvailableSquareInColumn(row, i);
+                if (available == null)
+                {
+                    row = topLimit + 1;
+                    continue;
+                }
+            
+                var nonEmptySquares = GetNonEmptySquaresInColumn(available.Coordinates.x, i, topLimit);
+                for (int k = 0; k < nonEmptySquares.Count; k++)
+                {
+                    var boardElement = nonEmptySquares[k].BoardElement;
+                    var speed = BaseSpeed - SpeedGap * k;
+                    var distance = nonEmptySquares[k].CenterPosition - available.CenterPosition;
+                    var duration = distance.y / speed;
+                    sequence.Join(boardElement.transform.DOMove(available.CenterPosition, duration)); 
+                    available.BoardElement = boardElement;
+                    available = available.Up;
+                    nonEmptySquares[k].BoardElement = null;
+                    fall = true;
+                }
+
+                row = topLimit + 1;
             }
         }
 
@@ -59,9 +73,29 @@ public class FallManager : Manager
         }
     }
 
-    private Square GetFirstAvailableSquareInColumn(int col)
+    public void check()
     {
-        for (int i = 0; i < _boardManager.BoardHeight; i++)
+        var sequence = DOTween.Sequence();
+        bool fall = false;
+    }
+
+    private Square GetFirstStableInColumn(int startRow, int col)
+    {
+        for (int i = startRow; i < _boardManager.BoardHeight; i++)
+        {
+            var square = _boardManager.Board[i][col];
+            if (square.BoardElement != null && square.BoardElement.IsStable)
+            {
+                return _boardManager.Board[i][col];
+            }
+        }
+
+        return null;
+    }
+    
+    private Square GetFirstAvailableSquareInColumn(int startRow, int col)
+    {
+        for (int i = startRow; i < _boardManager.BoardHeight; i++)
         {
             if (AvailableForFall(i, col))
             {
@@ -73,10 +107,10 @@ public class FallManager : Manager
     }
     
     
-    private List<Square> GetNonEmptySquaresInColumn(int start, int col)
+    private List<Square> GetNonEmptySquaresInColumn(int start, int col, int topLimit)
     {
         List<Square> result = new List<Square>();
-        for (int i = start; i < _boardManager.Board.Count; i++)
+        for (int i = start; i < topLimit; i++)
         {
             if (_boardManager.Board[i][col].BoardElement != null)
             {

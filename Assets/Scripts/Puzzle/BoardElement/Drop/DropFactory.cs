@@ -64,7 +64,6 @@ public class DropFactory : Manager
     {
         var drop = _dropPool[dropType].TryPop(null);
         drop.transform.SetParent(_sceneComponentService.BoardElementParent.transform);
-
         
         if (drop == null)
         {

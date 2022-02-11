@@ -91,7 +91,7 @@ public class BoardManager : Manager
                 square.CenterPosition = boardPosition;
                 square.BoardElement = null;
                 Board[BoardWidth + i].Add(square);
-                square.gameObject.SetActive(false);
+                //square.gameObject.SetActive(false);
                 //square
             }
         }

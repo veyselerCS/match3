@@ -102,6 +102,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SquarePosition: {x: 0, y: 0}
-  isStable: 1
-  isSwappable: 0
+  IsStable: 1
+  IsSwappable: 0
+  IsTappable: 0
+  Triggers: 01000000
   ObstacleType: 0

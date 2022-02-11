@@ -14,7 +14,7 @@ public class Square : MonoBehaviour
 
     public BoardManager _boardManager;
     public RectTransform RectTransform;
-    
+
     public Square Up
     {
         get { return _boardManager.Board[Coordinates.x + 1][Coordinates.y]; }
