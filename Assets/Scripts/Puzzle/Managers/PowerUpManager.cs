@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
-public class PowerupManager : SingletonManager<PowerupManager>
+public class PowerUpManager : SingletonManager<PowerUpManager>
 {
     private BoardManager _boardManager;
     private PowerUpFactory _powerUpFactory;
@@ -16,14 +16,14 @@ public class PowerupManager : SingletonManager<PowerupManager>
         _sceneComponentService = SceneComponentService.Instance;
     }
 
-    public void CreateVerticalRocket(Sequence matchSequence, Vector2Int mergePosition, List<Vector2Int> dropPositions, PowerUpType type)
+    public void CreatePowerUp(Sequence matchSequence, Vector2Int mergePosition, List<Vector2Int> involvedPositions, PowerUpType type)
     {
         var board = _boardManager.Board;
         var mergeDropSquare = board.At(mergePosition);
 
-        for (var index = 0; index < dropPositions.Count; index++)
+        for (var index = 0; index < involvedPositions.Count; index++)
         {
-            var dropPosition = dropPositions[index];
+            var dropPosition = involvedPositions[index];
             if (dropPosition != mergePosition)
             {
                 var dropSquare = board.At(dropPosition);
@@ -35,7 +35,7 @@ public class PowerupManager : SingletonManager<PowerupManager>
                     }));
             }
 
-            if (index == dropPositions.Count - 1)
+            if (index == involvedPositions.Count - 1)
             {
                 matchSequence.AppendCallback(() =>
                 {

@@ -23,6 +23,7 @@ public class FallManager : SingletonManager<FallManager>
     public void CheckSquaresForFall()
     {
         var sequence = DOTween.Sequence();
+        bool fall = false;
         for (int i = 0; i < _boardManager.BoardWidth; i++)
         {
             var available = GetFirstAvailableSquareInColumn(i);
@@ -39,13 +40,17 @@ public class FallManager : SingletonManager<FallManager>
                 available.BoardElement = boardElement;
                 available = available.Up;
                 nonEmptySquares[k].BoardElement = null;
+                fall = true;
             }
         }
 
-        sequence.OnComplete(() =>
+        if (fall)
         {
-            _signalBus.Fire<FallEndSignal>();
-        });
+            sequence.OnComplete(() =>
+            {
+                _signalBus.Fire<FallEndSignal>();
+            });
+        }
     }
 
     private Square GetFirstAvailableSquareInColumn(int col)

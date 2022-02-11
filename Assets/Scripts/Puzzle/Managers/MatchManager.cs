@@ -9,16 +9,21 @@ using Zenject;
 public class MatchManager : SingletonManager<MatchManager>
 {
     [Inject] private SignalBus _signalBus;
-    
+
     private BoardManager _boardManager;
-    private PowerupManager _powerupManager;
+    private MatchResultManager _matchResultManager;
+    private PatternService _patternService;
     private Sequence _matchSequence = null;
     private Vector2Int _matchSourcePosition;
+    private HashSet<Vector2Int> _matched = new HashSet<Vector2Int>();
     
+    private List<Vector2Int> _swipedSquareCoordinates = new List<Vector2Int>();
     private void Start()
     {
         _boardManager = BoardManager.Instance;
-        _powerupManager = PowerupManager.Instance;
+        _matchResultManager = MatchResultManager.Instance;
+        _patternService = PatternService.Instance;
+
         _signalBus.Subscribe<SwipeEndSignal>(OnSwipeEndSignal);
         _signalBus.Subscribe<FallEndSignal>(OnFallEndSignal);
     }
@@ -26,8 +31,12 @@ public class MatchManager : SingletonManager<MatchManager>
     private void OnSwipeEndSignal(SwipeEndSignal data)
     {
         _matchSequence = DOTween.Sequence();
-        CheckFromSource(data.To);
-        CheckFromSource(data.From);
+
+        _swipedSquareCoordinates.Clear();
+        _swipedSquareCoordinates.Add(data.From);
+        _swipedSquareCoordinates.Add(data.To);
+
+        CheckFullBoard();
     }
 
     private void OnFallEndSignal()
@@ -35,174 +44,87 @@ public class MatchManager : SingletonManager<MatchManager>
         CheckFullBoard();
     }
 
-    private HashSet<Vector2Int> _visited = new HashSet<Vector2Int>();
-    
-    Dictionary<int, int> xOccurences = new Dictionary<int, int>();
-    Dictionary<int, int> yOccurences = new Dictionary<int, int>();
-    List<Vector2Int> neighbourhood = new List<Vector2Int>();
-    
     [Button("Check match")]
     public void CheckFullBoard()
     {
-        CheckMatchNoSignal();
+        var match = CheckMatchNoSignal();
         _matchSequence.OnComplete(() =>
         {
-            _signalBus.Fire<MatchEndSignal>();
+            if(match)
+                _signalBus.Fire<MatchEndSignal>();
         });
     }
 
-    public void CheckFromSource(Vector2Int source)
+    public bool CheckMatchNoSignal()
     {
         var board = _boardManager.Board;
-        var square = board.At(source);
-        var boardElement = square.BoardElement;
-        
-        if (boardElement != null && boardElement is Drop drop)
-        {
-            xOccurences.Clear();
-            yOccurences.Clear();
-            neighbourhood.Clear();
-                
-            CheckNeighboursRec(source, xOccurences, yOccurences, neighbourhood, drop.DropType);
-            CheckPowerUp(xOccurences, yOccurences, neighbourhood, source);
-            foreach (var squareInNeighbourhood in neighbourhood)
-            {
-                _visited.Add(squareInNeighbourhood);
-            }
-        }
-    }
-
-    public void CheckMatchNoSignal()
-    {
-        var board = _boardManager.Board;
-        _visited.Clear();
+        _matched.Clear();
         _matchSequence = DOTween.Sequence();
-        
-        for (int i = 0; i < board.Count; i++)
+
+        var patternShapes = _patternService.PatternShapes;
+        bool match = false;
+        foreach (var patternShape in patternShapes)
         {
-            for (int k = 0; k < board[i].Count; k++)
+            
+            for (int i = 0; i < _boardManager.BoardHeight - patternShape.PatternHeight; i++)
             {
-                _matchSourcePosition = new Vector2Int(i, k);
-                var square = board.At(_matchSourcePosition);
-                
-                if(_visited.Contains(square.Coordinates)) continue;
-                
-                var boardElement = square.BoardElement;
-                if (boardElement != null && boardElement is Drop drop)
+                for (int k = 0; k < _boardManager.BoardWidth - patternShape.PatternWidth; k++)
                 {
-                    xOccurences.Clear();
-                    yOccurences.Clear();
-                    neighbourhood.Clear();
-                
-                    CheckNeighboursRec(_matchSourcePosition, xOccurences, yOccurences, neighbourhood, drop.DropType);
-                    CheckPowerUp(xOccurences, yOccurences, neighbourhood, _matchSourcePosition);
-                    foreach (var squareInNeighbourhood in neighbourhood)
+                    var firstNonZero = patternShape.NonZeros[0];
+                    var firstNonZeroSquare = board[i + firstNonZero.x][k + firstNonZero.y];
+
+                    if (firstNonZeroSquare.BoardElement != null && firstNonZeroSquare.BoardElement is Drop firstDrop && !_matched.Contains(firstNonZeroSquare.Coordinates))
                     {
-                        _visited.Add(squareInNeighbourhood);
+                        var dropType = firstDrop.DropType;
+                        var patternFound = true;
+                        for (int j = 1; j < patternShape.NonZeros.Count; j++)
+                        {
+                            var nonZero = patternShape.NonZeros[j];
+                            var nonZeroSquare = board[i + nonZero.x][k + nonZero.y];
+                            if (nonZeroSquare.BoardElement == null ||
+                                !(nonZeroSquare.BoardElement is Drop drop) ||
+                                dropType != drop.DropType ||
+                                _matched.Contains(nonZeroSquare.Coordinates))
+                            {
+                                patternFound = false;
+                                break;
+                            }
+                        }
+                        
+                        //pattern match found
+                        var mergePosition = firstNonZeroSquare.Coordinates;
+                        List<Vector2Int> involvedPositions = new List<Vector2Int>();
+                        for (int j = 0; patternFound && j < patternShape.NonZeros.Count; j++)
+                        {
+                            var nonZero = patternShape.NonZeros[j];
+                            var nonZeroSquare = board[i + nonZero.x][k + nonZero.y];
+                            if (_swipedSquareCoordinates.Contains(nonZeroSquare.Coordinates))
+                            {
+                                mergePosition = nonZeroSquare.Coordinates;
+                            }
+                            involvedPositions.Add(nonZeroSquare.Coordinates);
+                            _matched.Add(nonZeroSquare.Coordinates);
+                        }
+
+                        if (patternFound)
+                        {
+                            _matchResultManager.ApplyResult(_matchSequence, mergePosition, involvedPositions, patternShape.MatchResultType);
+                            match = true;
+                        }
                     }
                 }
             }
         }
+
+        return match;
     }
-    
-    private void CheckPowerUp(Dictionary<int, int> xOccurences, Dictionary<int, int> yOccurences, List<Vector2Int> neighbourhood, Vector2Int sourcePosition)
-    {
-        var board = _boardManager.Board;
+}
 
-        if (CheckSquareMatch(xOccurences, yOccurences))
-        {
-            foreach (var coordinate in neighbourhood)
-            {
-                var square = board[coordinate.x][coordinate.y];
-                Destroy(square.BoardElement.gameObject);
-                square.BoardElement = null;
-            }
-        }
-        else if (CheckMatchVerticalByCount(xOccurences, yOccurences,4))
-        {
-            _powerupManager.CreateVerticalRocket(_matchSequence, sourcePosition, neighbourhood, PowerUpType.VerticalRocket);
-        }
-        else if (CheckMatchHorizontalByCount(xOccurences, yOccurences, 4))
-        {
-            foreach (var coordinate in neighbourhood)
-            {
-                var square = board[coordinate.x][coordinate.y];
-                Destroy(square.BoardElement.gameObject);
-                square.BoardElement = null;
-            }
-        }
-        else if (CheckMatchVerticalByCount(xOccurences, yOccurences,3))
-        {
-            foreach (var coordinate in neighbourhood)
-            {
-                var square = board[coordinate.x][coordinate.y];
-                Destroy(square.BoardElement.gameObject);
-                square.BoardElement = null;
-            }
-        }
-        else if (CheckMatchHorizontalByCount(xOccurences, yOccurences, 3))
-        {
-            foreach (var coordinate in neighbourhood)
-            {
-                var square = board[coordinate.x][coordinate.y];
-                Destroy(square.BoardElement.gameObject);
-                square.BoardElement = null;
-            }
-        }
-    }
-    
-    private bool CheckSquareMatch(Dictionary<int, int> xOccurences, Dictionary<int, int> yOccurences)
-    {
-        if (xOccurences.Count == 2 && yOccurences.Count == 2)
-        {
-            return true;
-        }
-
-        return false;
-    }
-
-    private bool CheckMatchHorizontalByCount(Dictionary<int, int> xOccurences, Dictionary<int, int> yOccurences, int count)
-    {
-        if (yOccurences.Count >= count)
-        {
-            return true;
-        }
-
-        return false;
-    }  
-    
-    private bool CheckMatchVerticalByCount(Dictionary<int, int> xOccurences, Dictionary<int, int> yOccurences, int count)
-    {
-        if (xOccurences.Count >= count)
-        {
-            return true;
-        }
-
-        return false;
-    }
-    
-    private void CheckNeighboursRec(Vector2Int coordinates, Dictionary<int, int> xOccurences, Dictionary<int, int> yOccurences, List<Vector2Int> neighbourhood, DropType dropType)
-    {
-        var board = _boardManager.Board;
-        
-        int xCoord = coordinates.x;
-        int yCoord = coordinates.y;
-        
-        if(xCoord > _boardManager.BoardHeight - 1 || yCoord > _boardManager.BoardWidth - 1 || yCoord < 0 || xCoord < 0) return;
-        if(neighbourhood.Contains(coordinates)) return;
-
-        if (board[xCoord][yCoord].BoardElement != null && board[xCoord][yCoord].BoardElement is Drop drop && drop.DropType == dropType)
-        {
-            xOccurences[xCoord] = xOccurences.ContainsKey(xCoord) ? xOccurences[xCoord] + 1 : 1;
-            yOccurences[yCoord] = yOccurences.ContainsKey(yCoord) ? yOccurences[yCoord] + 1 : 1;
-            neighbourhood.Add(coordinates);
-            
-            CheckNeighboursRec(new Vector2Int(xCoord + 1, yCoord), xOccurences, yOccurences, neighbourhood, dropType);
-            CheckNeighboursRec(new Vector2Int(xCoord , yCoord + 1 ), xOccurences, yOccurences, neighbourhood, dropType);
-            CheckNeighboursRec(new Vector2Int(xCoord - 1, yCoord), xOccurences, yOccurences, neighbourhood, dropType);
-            CheckNeighboursRec(new Vector2Int(xCoord , yCoord - 1), xOccurences, yOccurences, neighbourhood, dropType);
-        }
-    }
-
-    
+public enum MatchResultType
+{
+    DropPop = 0,
+    VerticalRocket = 1,
+    HorizontalRocket = 2,
+    Propeller = 3,
+    TNT = 4
 }
