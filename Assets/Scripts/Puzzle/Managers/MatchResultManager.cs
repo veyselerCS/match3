@@ -29,23 +29,18 @@ public class MatchResultManager : Manager
         {
             case MatchResultType.DropPop:
                 HandleDropCase(involvedPositions);
-                Debug.LogWarning(MatchResultType.DropPop);
                 break;
             case MatchResultType.VerticalRocket:
                 _powerUpManager.CreatePowerUp(matchSequence, mergePosition, involvedPositions, PowerUpType.VerticalRocket);
-                Debug.LogWarning(MatchResultType.VerticalRocket);
                 break;
             case MatchResultType.HorizontalRocket:
                 _powerUpManager.CreatePowerUp(matchSequence, mergePosition, involvedPositions, PowerUpType.HorizontalRocket);
-                Debug.LogWarning(MatchResultType.HorizontalRocket);
                 break;
             case MatchResultType.Propeller:
                 _powerUpManager.CreatePowerUp(matchSequence, mergePosition, involvedPositions, PowerUpType.Propeller);
-                Debug.LogWarning(MatchResultType.Propeller);
                 break;
             case MatchResultType.TNT:
                 _powerUpManager.CreatePowerUp(matchSequence, mergePosition, involvedPositions, PowerUpType.TNT);
-                Debug.LogWarning(MatchResultType.TNT);
                 break;
         }
     }

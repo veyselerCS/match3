@@ -6,7 +6,7 @@ public class MainInstaller : MonoInstaller
     {
         SignalBusInstaller.Install(Container);
 
-        Container.DeclareSignal<ManagerReadySignal>();
+        Container.DeclareSignal<ManagerReadySignal>().OptionalSubscriber();
         Container.DeclareSignal<ManagerProviderReadySignal>();
     }
 }

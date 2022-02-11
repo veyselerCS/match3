@@ -17,7 +17,6 @@ public abstract class Manager : MonoBehaviour
         _managerProvider.Register(this);
     }
 
-    private bool _init = false;
     private void Start()
     {
         Init();
@@ -56,7 +55,6 @@ public abstract class Manager : MonoBehaviour
 
     protected void SetReady()
     {
-        Debug.LogWarning("Resolved" + this.name);
         _managerProvider.AddResolved(this);
         _signalBus.Fire(new ManagerReadySignal(this));
     }
