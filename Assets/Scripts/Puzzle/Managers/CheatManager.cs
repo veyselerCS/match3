@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class CheatManager : SingletonManager<CheatManager>
 {
     [SerializeField] private List<BoardElement> BoardElements;
-    [SerializeField] private GameObject BoardElementsParent;
+    [SerializeField] private List<GameObject> BoardElementsParents;
     [SerializeField] private Toggle CheatToggle;
 
     private BoardManager _boardManager;
@@ -19,15 +19,19 @@ public class CheatManager : SingletonManager<CheatManager>
     {
         _boardManager = BoardManager.Instance;
         _matchManager = MatchManager.Instance;
-        
-        BoardElements = BoardElementsParent.GetComponentsInChildren<BoardElement>().ToList();
-        foreach (var boardElement in BoardElements)
+
+        foreach (var BoardElementsParent in  BoardElementsParents)
         {
-            Button button;
-            (button = boardElement.gameObject.GetComponent<Button>()).onClick.AddListener(() =>
+            var boardElements = BoardElementsParent.GetComponentsInChildren<BoardElement>().ToList();
+            foreach (var boardElement in boardElements)
             {
-                PickedElement = boardElement;
-            });
+                Button button;
+                (button = boardElement.gameObject.GetComponent<Button>()).onClick.AddListener(() =>
+                {
+                    PickedElement = boardElement;
+                });
+                BoardElements.Add(boardElement);
+            }
         }
 
         PickedElement = BoardElements[0];
