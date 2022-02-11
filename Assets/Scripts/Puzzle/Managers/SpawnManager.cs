@@ -3,20 +3,28 @@ using DG.Tweening;
 using UnityEngine;
 using Zenject;
 
-public class SpawnManager : SingletonManager<SpawnManager>
+public class SpawnManager : Manager
 {
     [Inject] private SignalBus _signalBus;
     private BoardManager _boardManager;
     private DropFactory _dropFactory;
     private SceneComponentService _sceneComponentService;
-
-    private void Start()
+    
+    public override void Init()
     {
-        _boardManager = BoardManager.Instance;
-        _dropFactory = DropFactory.Instance;
-        _sceneComponentService = SceneComponentService.Instance;
+        _boardManager = _managerProvider.Get<BoardManager>();
+        _dropFactory = _managerProvider.Get<DropFactory>();
+        _sceneComponentService = _managerProvider.Get<SceneComponentService>();
         
+        _dependencies.Add(_boardManager);
+        _dependencies.Add(_dropFactory);
+        _dependencies.Add(_sceneComponentService);
+    }
+
+    public override void Begin()
+    {
         _signalBus.Subscribe<MatchEndSignal>(OnMatchEnd);
+        SetReady();
     }
 
     private void OnMatchEnd()
@@ -28,9 +36,9 @@ public class SpawnManager : SingletonManager<SpawnManager>
             for (int k = 0; k < neededCount; k++)
             {
                 var square = board[_boardManager.BoardHeight + k][i];
-                var dropPrefab = _dropFactory.GetDropByDropType((DropType)UnityEngine.Random.Range(0, 4));
-                Drop drop = Instantiate(dropPrefab, _sceneComponentService.BoardElementParent.transform);
+                Drop drop = _dropFactory.GetDropByDropType((DropType)UnityEngine.Random.Range(0, 4));
                 drop.transform.position = square.CenterPosition;
+                drop.gameObject.SetActive(true);
                 square.BoardElement = drop;
             }
         }

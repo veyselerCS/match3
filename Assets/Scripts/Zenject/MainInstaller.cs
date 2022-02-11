@@ -6,10 +6,7 @@ public class MainInstaller : MonoInstaller
     {
         SignalBusInstaller.Install(Container);
 
-        Container.DeclareSignal<SwipeStartSignal>();
-        Container.DeclareSignal<SwipeEndSignal>();
-        Container.DeclareSignal<MatchEndSignal>();
-        Container.DeclareSignal<SpawnEndSignal>();
-        Container.DeclareSignal<FallEndSignal>();
+        Container.DeclareSignal<ManagerReadySignal>();
+        Container.DeclareSignal<ManagerProviderReadySignal>();
     }
 }

@@ -5,16 +5,22 @@ using NaughtyAttributes;
 using UnityEngine;
 using Zenject;
 
-public class FallManager : SingletonManager<FallManager>
+public class FallManager : Manager
 {
     [Inject] private SignalBus _signalBus;
     
     private BoardManager _boardManager;
     
-    private void Start()
+    public override void Init()
     {
-        _boardManager = BoardManager.Instance;
+        _boardManager = _managerProvider.Get<BoardManager>();
+        _dependencies.Add(_boardManager);
+    }
+
+    public override void Begin()
+    {
         _signalBus.Subscribe<SpawnEndSignal>(CheckSquaresForFall);
+        SetReady();
     }
 
     [SerializeField] private float BaseSpeed = 200f;

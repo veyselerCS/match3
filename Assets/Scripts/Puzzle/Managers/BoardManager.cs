@@ -4,11 +4,8 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BoardManager : SingletonManager<BoardManager>
+public class BoardManager : Manager
 {
-    [SerializeField] private Square _boardSquarePrefab;
-    
-    private InputManager _inputManager;
     private DropFactory _dropFactory;
     private SceneComponentService _sceneComponentService;
 
@@ -18,17 +15,19 @@ public class BoardManager : SingletonManager<BoardManager>
     public List<List<Square>> Board = new List<List<Square>>();
 
     private Vector2 _squareSize;
-    
 
-    private void Start()
+    public override void Init()
     {
-        //init references
-        _inputManager = InputManager.Instance;
-        _dropFactory = DropFactory.Instance;
-        _sceneComponentService = SceneComponentService.Instance;
+        _dropFactory = _managerProvider.Get<DropFactory>();
+        _sceneComponentService = _managerProvider.Get<SceneComponentService>();
         
-        //set the size for grid layout
-        _squareSize = _boardSquarePrefab.RectTransform.sizeDelta;
+       _dependencies.Add(_dropFactory);
+       _dependencies.Add(_sceneComponentService);
+    }
+
+    public override void Begin()
+    {
+        _squareSize = _sceneComponentService.BoardSquarePrefab.RectTransform.sizeDelta;
 
         var boardRectTransform = _sceneComponentService.BoardParent.GetComponent<RectTransform>();
         var boardElementRectTransform = _sceneComponentService.BoardElementParent.GetComponent<RectTransform>();
@@ -38,8 +37,7 @@ public class BoardManager : SingletonManager<BoardManager>
         
         //init board
         InitBoard();
-        
-        _inputManager.SetBoardSquareSize(_squareSize);
+        SetReady();
     }
 
     private void InitBoard()
@@ -53,14 +51,12 @@ public class BoardManager : SingletonManager<BoardManager>
             Board.Add(new List<Square>());
             for (int k = 0; k < BoardHeight; k++)
             {
-                Square square = Instantiate(_boardSquarePrefab, _sceneComponentService.BoardParent.transform);
+                Square square = Instantiate(_sceneComponentService.BoardSquarePrefab, _sceneComponentService.BoardParent.transform);
                 var squareTransform = square.transform;
                 var squareScreenPosition = (squareTransform.position);
                 var lossyScale = square.RectTransform.lossyScale;
                 
-                var dropPrefab = _dropFactory.GetDropByDropType((DropType)UnityEngine.Random.Range(0, 4));
-                Drop drop = Instantiate(dropPrefab, _sceneComponentService.BoardElementParent.transform);
-
+                var drop = _dropFactory.GetDropByDropType((DropType)UnityEngine.Random.Range(0, 4));
                 var boardPosition =  squareScreenPosition - boardOffset + 
                                      new Vector3(_squareSize.x * (k + 1/2f) * lossyScale.x , _squareSize.y * (i+ 1/2f) * lossyScale.y, 0);
                 
@@ -71,6 +67,7 @@ public class BoardManager : SingletonManager<BoardManager>
                 
                 drop.transform.position = boardPosition;
                 drop.SquarePosition = squarePosition;
+                drop.gameObject.SetActive(true);
                 Board[i].Add(square);
             }
         }
@@ -80,7 +77,7 @@ public class BoardManager : SingletonManager<BoardManager>
             Board.Add(new List<Square>());
             for (int k = 0; k < BoardHeight; k++)
             {
-                Square square = Instantiate(_boardSquarePrefab, _sceneComponentService.BoardParent.transform);
+                Square square = Instantiate(_sceneComponentService.BoardSquarePrefab, _sceneComponentService.BoardParent.transform);
                 var squareTransform = square.transform;
                 var squareScreenPosition = (squareTransform.position);
                 var lossyScale = square.RectTransform.lossyScale;

@@ -3,17 +3,26 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
-public class PowerUpManager : SingletonManager<PowerUpManager>
+public class PowerUpManager : Manager
 {
     private BoardManager _boardManager;
     private PowerUpFactory _powerUpFactory;
     private SceneComponentService _sceneComponentService;
     
-    private void Start()
+    public override void Init()
     {
-        _boardManager = BoardManager.Instance;
-        _powerUpFactory = PowerUpFactory.Instance;
-        _sceneComponentService = SceneComponentService.Instance;
+        _boardManager = _managerProvider.Get<BoardManager>();
+        _powerUpFactory = _managerProvider.Get<PowerUpFactory>();
+        _sceneComponentService = _managerProvider.Get<SceneComponentService>();
+        
+        _dependencies.Add(_boardManager);
+        _dependencies.Add(_powerUpFactory);
+        _dependencies.Add(_sceneComponentService);
+    }
+
+    public override void Begin()
+    {
+        SetReady();
     }
 
     public void CreatePowerUp(Sequence matchSequence, Vector2Int mergePosition, List<Vector2Int> involvedPositions, PowerUpType type)
@@ -30,7 +39,7 @@ public class PowerUpManager : SingletonManager<PowerUpManager>
                 matchSequence.Join(dropSquare.BoardElement.transform.DOMove(mergeDropSquare.CenterPosition, 0.25f)
                     .OnComplete(() =>
                     {
-                        Destroy(dropSquare.BoardElement.gameObject);
+                        dropSquare.BoardElement.BackToPool();
                         dropSquare.BoardElement = null;
                     }));
             }
@@ -39,10 +48,10 @@ public class PowerUpManager : SingletonManager<PowerUpManager>
             {
                 matchSequence.AppendCallback(() =>
                 {
-                    var powerUpPrefab = _powerUpFactory.GetPowerUpByPowerUpType(type);
-                    var powerUp = Instantiate(powerUpPrefab, _sceneComponentService.BoardElementParent.transform);
+                    PowerUp powerUp = _powerUpFactory.GetPowerUpByPowerUpType(type);
                     powerUp.transform.position = mergeDropSquare.CenterPosition;
-                    Destroy(mergeDropSquare.BoardElement.gameObject);
+                    powerUp.gameObject.SetActive(true);
+                    mergeDropSquare.BoardElement.BackToPool();
                     mergeDropSquare.BoardElement = powerUp;
                 });
             }

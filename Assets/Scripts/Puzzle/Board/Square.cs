@@ -36,7 +36,7 @@ public class Square : MonoBehaviour
     
     private void Start()
     {
-        _boardManager = BoardManager.Instance;
+        _boardManager = ManagerProvider.Instance.Get<BoardManager>();
         
         CenterPosition = transform.position;
     }

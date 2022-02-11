@@ -3,13 +3,17 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class PatternService : SingletonManager<PatternService>
+public class PatternService : Manager
 {
     public List<PatternShape> PatternShapes = new List<PatternShape>();
 
     [SerializeField] private int SelectedIndex = 0;
 
-    private void Start()
+    public override void Init()
+    {
+    }
+
+    public override void Begin()
     {
         //ordering is important
         PatternShapes = new List<PatternShape>()
@@ -24,6 +28,7 @@ public class PatternService : SingletonManager<PatternService>
             Vertical3(),
             Horizontal3()
         };
+        SetReady();
     }
 
     void OnDrawGizmosSelected()

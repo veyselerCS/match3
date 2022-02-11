@@ -3,15 +3,23 @@ using DG.Tweening;
 using UnityEngine;
 using Zenject;
 
-public class SwipeManager : SingletonManager<SwipeManager>
+public class SwipeManager : Manager
 {
     [Inject] private SignalBus _signalBus;
 
     private BoardManager _boardManager;
-    private void Start()
+    
+    public override void Init()
     {
-        _boardManager = BoardManager.Instance;
+        _boardManager = _managerProvider.Get<BoardManager>();
+        
+        _dependencies.Add(_boardManager);
+    }
+
+    public override void Begin()
+    {
         _signalBus.Subscribe<SwipeStartSignal>(OnSwipeStarted);
+        SetReady();
     }
 
     private void OnSwipeStarted(SwipeStartSignal data)

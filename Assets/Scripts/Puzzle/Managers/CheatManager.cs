@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CheatManager : SingletonManager<CheatManager>
+public class CheatManager : Manager
 {
     [SerializeField] private List<BoardElement> BoardElements;
     [SerializeField] private List<GameObject> BoardElementsParents;
@@ -15,11 +15,17 @@ public class CheatManager : SingletonManager<CheatManager>
     
     public bool CheatMode;
     public BoardElement PickedElement;
-    private void Start()
+    public override void Init()
     {
-        _boardManager = BoardManager.Instance;
-        _matchManager = MatchManager.Instance;
+        _boardManager = _managerProvider.Get<BoardManager>();
+        _matchManager = _managerProvider.Get<MatchManager>();
+        
+        _dependencies.Add(_boardManager);
+        _dependencies.Add(_matchManager);
+    }
 
+    public override void Begin()
+    {
         foreach (var BoardElementsParent in  BoardElementsParents)
         {
             var boardElements = BoardElementsParent.GetComponentsInChildren<BoardElement>().ToList();
@@ -35,6 +41,7 @@ public class CheatManager : SingletonManager<CheatManager>
         }
 
         PickedElement = BoardElements[0];
+        SetReady();
     }
 
     private void Update()

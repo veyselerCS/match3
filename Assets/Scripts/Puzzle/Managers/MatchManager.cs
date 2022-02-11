@@ -6,7 +6,7 @@ using NaughtyAttributes;
 using UnityEngine;
 using Zenject;
 
-public class MatchManager : SingletonManager<MatchManager>
+public class MatchManager : Manager
 {
     [Inject] private SignalBus _signalBus;
 
@@ -18,14 +18,23 @@ public class MatchManager : SingletonManager<MatchManager>
     private HashSet<Vector2Int> _matched = new HashSet<Vector2Int>();
     
     private List<Vector2Int> _swipedSquareCoordinates = new List<Vector2Int>();
-    private void Start()
-    {
-        _boardManager = BoardManager.Instance;
-        _matchResultManager = MatchResultManager.Instance;
-        _patternService = PatternService.Instance;
 
+    public override void Init()
+    {
+        _boardManager = _managerProvider.Get<BoardManager>();
+        _matchResultManager = _managerProvider.Get<MatchResultManager>();
+        _patternService = _managerProvider.Get<PatternService>();
+        
+        _dependencies.Add(_boardManager);
+        _dependencies.Add(_matchResultManager);
+        _dependencies.Add(_patternService);
+    }
+
+    public override void Begin()
+    {
         _signalBus.Subscribe<SwipeEndSignal>(OnSwipeEndSignal);
         _signalBus.Subscribe<FallEndSignal>(OnFallEndSignal);
+        SetReady();
     }
 
     private void OnSwipeEndSignal(SwipeEndSignal data)

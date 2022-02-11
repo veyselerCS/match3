@@ -3,15 +3,23 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
-public class MatchResultManager : SingletonManager<MatchResultManager>
+public class MatchResultManager : Manager
 {
     private PowerUpManager _powerUpManager;
     private BoardManager _boardManager;
 
-    private void Start()
+    public override void Init()
     {
-        _powerUpManager = PowerUpManager.Instance;
-        _boardManager = BoardManager.Instance;
+        _powerUpManager = _managerProvider.Get<PowerUpManager>();
+        _boardManager = _managerProvider.Get<BoardManager>();
+        
+        _dependencies.Add(_powerUpManager);
+        _dependencies.Add(_boardManager);
+    }
+
+    public override void Begin()
+    {
+        SetReady();
     }
 
     public void ApplyResult(Sequence matchSequence, Vector2Int mergePosition, List<Vector2Int> involvedPositions,
@@ -49,7 +57,7 @@ public class MatchResultManager : SingletonManager<MatchResultManager>
         foreach (var coordinate in involvedPositions)
         {
             var square = board[coordinate.x][coordinate.y];
-            Destroy(square.BoardElement.gameObject);
+            square.BoardElement.BackToPool();
             square.BoardElement = null;
         }
     }
