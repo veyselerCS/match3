@@ -12,6 +12,7 @@ public class PowerUpFactory : Manager
     [SerializeField] private Transform PoolParent;
 
     private SceneComponentService _sceneComponentService;
+    private BoardManager _boardManager;
 
     private Dictionary<PowerUpType, PowerUp> _powerUpDictionary = new Dictionary<PowerUpType, PowerUp>();
     private Dictionary<PowerUpType, List<PowerUp>> _powerUpPool = new Dictionary<PowerUpType, List<PowerUp>>();
@@ -19,6 +20,7 @@ public class PowerUpFactory : Manager
     public override void Init()
     {
         _sceneComponentService = ManagerProvider.Instance.Get<SceneComponentService>();
+        _boardManager = ManagerProvider.Instance.Get<BoardManager>();
 
         _dependencies.Add(_sceneComponentService);
     }
@@ -70,8 +72,8 @@ public class PowerUpFactory : Manager
             powerUp = Instantiate(_powerUpDictionary[powerUpType],
                 _sceneComponentService.BoardElementParent.transform);
         }
-
-        powerUp.IsActivated = false;
+        
+        powerUp.transform.SetParent(_sceneComponentService.BoardElementParent.transform);
         return powerUp;
     }
 }

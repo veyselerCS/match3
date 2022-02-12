@@ -1,8 +1,30 @@
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 public class PropellarPowerUp : PowerUp
 {
+    public override void Activate()
+    {
+        var triggerZone = GetTriggerZone();
+        foreach (var square in triggerZone)
+        {
+            square.Locked = true;
+        }
+
+        DOVirtual.DelayedCall(0.2f, () =>
+        {
+            foreach (var square in triggerZone)
+            {
+                square.Locked = false;
+            }
+            BackToPool();
+            _boardManager.Board.At(SquarePosition).BoardElement = null;
+            _signalBus.Fire(new TriggerSignal(triggerZone, TriggerType.Special));
+            _signalBus.Fire<MatchEndSignal>();
+        });
+    }
+
     public override List<Square> GetTriggerZone()
     {
         List<Square> triggerZone = new List<Square>();

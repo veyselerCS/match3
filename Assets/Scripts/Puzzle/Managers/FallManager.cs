@@ -17,19 +17,27 @@ public class FallManager : Manager
         _dependencies.Add(_boardManager);
     }
 
-    private Sequence sequence;
     public override void Begin()
     {
-        sequence = DOTween.Sequence();
         _signalBus.Subscribe<SpawnEndSignal>(CheckSquaresForFall);
         SetReady();
     }
 
+    private bool fallLock;
+    private bool fallQueued;
     [SerializeField] private float BaseSpeed = 200f;
     [SerializeField] private float SpeedGap = 10f;
     [Button("Check fall")]
     public void CheckSquaresForFall()
     {
+        if (fallLock)
+        {
+            fallQueued = true;
+            return;
+        }
+        
+        fallLock = true;
+        Sequence sequence = DOTween.Sequence();
         bool fall = false;
         int row;
         for (int i = 0; i < _boardManager.BoardWidth; i++)
@@ -81,6 +89,14 @@ public class FallManager : Manager
         {
             sequence.OnComplete(() =>
             {
+                fallLock = false;
+                if (fallQueued)
+                {
+                    fallQueued = false;
+                    //CheckSquaresForFall();
+                    return;
+                }
+                
                 _signalBus.Fire<FallEndSignal>();
             });
         }

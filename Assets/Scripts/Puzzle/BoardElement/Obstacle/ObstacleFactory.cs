@@ -68,7 +68,8 @@ public class ObstacleFactory : Manager
         {
             obstacle = Instantiate(_obstacleDictionary[obstacleType], _sceneComponentService.BoardElementParent.transform);
         }
-
+       
+        obstacle.transform.SetParent(_sceneComponentService.BoardElementParent.transform);
         return obstacle;
     }
 }

@@ -9,6 +9,7 @@ public class CheatManager : Manager
     [SerializeField] private List<BoardElement> BoardElements;
     [SerializeField] private List<GameObject> BoardElementsParents;
     [SerializeField] private Toggle CheatToggle;
+    [SerializeField] private GameObject CheatParent;
 
     private BoardManager _boardManager;
     private MatchManager _matchManager;
@@ -39,7 +40,8 @@ public class CheatManager : Manager
                 BoardElements.Add(boardElement);
             }
         }
-
+        
+        CheatParent.SetActive(true);
         PickedElement = BoardElements[0];
         SetReady();
     }

@@ -42,7 +42,7 @@ public class PowerUpManager : Manager
             if (dropPosition != mergePosition)
             {
                 var dropSquare = board.At(dropPosition);
-                matchSequence.Join(dropSquare.BoardElement.transform.DOMove(mergeDropSquare.CenterPosition, 0.25f)
+                matchSequence.Join(dropSquare.BoardElement.transform.DOMove(mergeDropSquare.CenterPosition, 0.1f)
                     .OnComplete(() =>
                     {
                         dropSquare.BoardElement.BackToPool();
@@ -91,7 +91,6 @@ public class PowerUpManager : Manager
             }
         }
         
-        _signalBus.Fire(new TriggerSignal(_triggered));
     }
 
     private void OnDrawGizmosSelected()
@@ -110,7 +109,7 @@ public class PowerUpManager : Manager
         if (boardElement != null && boardElement is PowerUp powerUp)
         {
             var sequence = DOTween.Sequence();
-            ActivatePowerUp(sequence, new List<PowerUp>(){ powerUp});
+            powerUp.Activate();//ActivatePowerUp(sequence, new List<PowerUp>(){ powerUp});
         }
     }
 }

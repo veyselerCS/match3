@@ -63,13 +63,13 @@ public class DropFactory : Manager
     public Drop GetDropByDropType(DropType dropType)
     {
         var drop = _dropPool[dropType].TryPop(null);
-        drop.transform.SetParent(_sceneComponentService.BoardElementParent.transform);
         
         if (drop == null)
         {
             drop = Instantiate(_dropDictionary[dropType]);
         }
-
+        
+        drop.transform.SetParent(_sceneComponentService.BoardElementParent.transform);
         return drop;
     }
 }

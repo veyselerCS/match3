@@ -27,13 +27,23 @@ public class SpawnManager : Manager
         SetReady();
     }
 
+    private bool spawnQueued;
+    private bool spawnLock;
     private void OnMatchEnd()
     {
+        if (spawnLock)
+        {
+            spawnQueued = true;
+            return;
+        }
+        
+        spawnLock = true;
         var board = _boardManager.Board;
         for (int i = 0; i < 9; i++)
         {
             var neededCount = GetNeededDropCountForColumn(i);
-            for (int k = 0; k < neededCount; k++)
+            var createdCount = GetCreatedDropCountForColumn(i);
+            for (int k = createdCount; k < neededCount; k++)
             {
                 var square = board[_boardManager.BoardHeight + k][i];
                 Drop drop = _dropFactory.GetDropByDropType((DropType)UnityEngine.Random.Range(0, 4));
@@ -41,6 +51,15 @@ public class SpawnManager : Manager
                 drop.gameObject.SetActive(true);
                 square.BoardElement = drop;
             }
+        }
+
+        spawnLock = false;
+
+        if (spawnQueued)
+        {
+            spawnQueued = false;
+            //OnMatchEnd();
+            return;
         }
         
         _signalBus.Fire<SpawnEndSignal>();
@@ -55,6 +74,19 @@ public class SpawnManager : Manager
             var boardElement = board[i][col].BoardElement;
             if (boardElement != null && boardElement.IsStable) break;
             if (boardElement == null) count++;
+        }
+
+        return count;
+    }  
+    
+    private int GetCreatedDropCountForColumn(int col)
+    {
+        var board = _boardManager.Board;
+        int count = 0;
+        for (int i = _boardManager.Board.Count - 1; i >= _boardManager.BoardHeight; i--)
+        {
+            var boardElement = board[i][col].BoardElement;
+            if (boardElement != null) count++;
         }
 
         return count;

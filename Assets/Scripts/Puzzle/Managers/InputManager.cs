@@ -9,6 +9,9 @@ public class InputManager : Manager
 
     private BoardManager _boardManager;
     private CheatManager _cheatManager;
+    private DropFactory _dropFactory;
+    private ObstacleFactory _obstacleFactory;
+    private PowerUpFactory _powerUpFactory;
     private SceneComponentService _sceneComponentService;
 
     private Vector2 _squareSize;
@@ -21,10 +24,16 @@ public class InputManager : Manager
     {
         _boardManager = _managerProvider.Get<BoardManager>();
         _cheatManager = _managerProvider.Get<CheatManager>();
+        _dropFactory = _managerProvider.Get<DropFactory>();
+        _obstacleFactory = _managerProvider.Get<ObstacleFactory>();
+        _powerUpFactory = _managerProvider.Get<PowerUpFactory>();
         _sceneComponentService = _managerProvider.Get<SceneComponentService>();
         
         _dependencies.Add(_boardManager);
         _dependencies.Add(_cheatManager);
+        _dependencies.Add(_dropFactory);
+        _dependencies.Add(_powerUpFactory);
+        _dependencies.Add(_obstacleFactory);
         _dependencies.Add(_sceneComponentService);
     }
     
@@ -48,9 +57,23 @@ public class InputManager : Manager
                 
                 _firstTouchedBoardPos = GetTouchBoardPosition();
                 var square = _boardManager.Board.At(_firstTouchedBoardPos);
-                
-                var cheatElement = Instantiate(_cheatManager.PickedElement, _sceneComponentService.BoardElementParent.transform);
+
+                BoardElement cheatElement = null;
+                if (_cheatManager.PickedElement is Drop drop)
+                {
+                    cheatElement = _dropFactory.GetDropByDropType(drop.DropType);
+                }
+                else if (_cheatManager.PickedElement is Obstacle obstacle)
+                {
+                    cheatElement = _obstacleFactory.GetObstacleByObstacleType(obstacle.ObstacleType);
+                }          
+                else if (_cheatManager.PickedElement is PowerUp powerUp)
+                {
+                    cheatElement = _powerUpFactory.GetPowerUpByPowerUpType(powerUp.Type);
+
+                }
                 cheatElement.transform.position = square.CenterPosition;
+                cheatElement.gameObject.SetActive(true);
                 
                 if (square.BoardElement)
                     Destroy(square.BoardElement.gameObject);
@@ -104,10 +127,7 @@ public class InputManager : Manager
     private Vector2Int GetTouchBoardPosition()
     {
         var touchPos = Input.mousePosition;
-        var offSet = touchPos - _sceneComponentService.BoardElementParent.transform.position;
-        var lossyScale = _sceneComponentService.BoardElementParent.transform.lossyScale;
-        return new Vector2Int((int)((offSet.y / _squareSize.y) * (1f / lossyScale.y)),
-            (int)((offSet.x / _squareSize.x) * (1f / lossyScale.x)));
+        return _boardManager.GetBoardPosition(touchPos);
     }
 
     private void OnSwipeEndSignal(SwipeEndSignal data)

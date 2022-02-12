@@ -159,4 +159,12 @@ public class BoardManager : Manager
             }
         }
     }
+
+    public Vector2Int GetBoardPosition(Vector3 pos)
+    {
+        var offSet = pos - _sceneComponentService.BoardElementParent.transform.position;
+        var lossyScale = _sceneComponentService.BoardElementParent.transform.lossyScale;
+        return new Vector2Int((int)((offSet.y / _squareSize.y) * (1f / lossyScale.y)),
+            (int)((offSet.x / _squareSize.x) * (1f / lossyScale.x)));
+    }
 }
