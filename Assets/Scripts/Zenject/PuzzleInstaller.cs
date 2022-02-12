@@ -11,5 +11,6 @@ public class PuzzleInstaller : MonoInstaller
         Container.DeclareSignal<SpawnEndSignal>();
         Container.DeclareSignal<FallEndSignal>();
         Container.DeclareSignal<TapSignal>();
+        Container.DeclareSignal<TriggerSignal>();
     }
 }

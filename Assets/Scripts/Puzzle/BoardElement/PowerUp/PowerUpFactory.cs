@@ -63,14 +63,15 @@ public class PowerUpFactory : Manager
 
     public PowerUp GetPowerUpByPowerUpType(PowerUpType powerUpType)
     {
-        var obstacle = _powerUpPool[powerUpType].TryPop(null);
+        var powerUp = _powerUpPool[powerUpType].TryPop(null);
 
-        if (obstacle == null)
+        if (powerUp == null)
         {
-            obstacle = Instantiate(_powerUpDictionary[powerUpType],
+            powerUp = Instantiate(_powerUpDictionary[powerUpType],
                 _sceneComponentService.BoardElementParent.transform);
         }
 
-        return obstacle;
+        powerUp.IsActivated = false;
+        return powerUp;
     }
 }

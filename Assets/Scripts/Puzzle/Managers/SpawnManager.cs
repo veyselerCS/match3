@@ -42,8 +42,8 @@ public class SpawnManager : Manager
                 square.BoardElement = drop;
             }
         }
+        
         _signalBus.Fire<SpawnEndSignal>();
-
     }
 
     private int GetNeededDropCountForColumn(int col)
