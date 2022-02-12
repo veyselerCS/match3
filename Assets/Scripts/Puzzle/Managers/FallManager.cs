@@ -17,8 +17,10 @@ public class FallManager : Manager
         _dependencies.Add(_boardManager);
     }
 
+    private Sequence sequence;
     public override void Begin()
     {
+        sequence = DOTween.Sequence();
         _signalBus.Subscribe<SpawnEndSignal>(CheckSquaresForFall);
         SetReady();
     }
@@ -28,7 +30,6 @@ public class FallManager : Manager
     [Button("Check fall")]
     public void CheckSquaresForFall()
     {
-        var sequence = DOTween.Sequence();
         bool fall = false;
         int row;
         for (int i = 0; i < _boardManager.BoardWidth; i++)
@@ -49,12 +50,22 @@ public class FallManager : Manager
                 var nonEmptySquares = GetNonEmptySquaresInColumn(available.Coordinates.x, i, topLimit);
                 for (int k = 0; k < nonEmptySquares.Count; k++)
                 {
+                    var fallingElementSquare = nonEmptySquares[k];
+                    
+                    fallingElementSquare.Locked = true;
+                    available.Locked = true;
+                    
                     var boardElement = nonEmptySquares[k].BoardElement;
                     var speed = BaseSpeed - SpeedGap * k;
                     var distance = nonEmptySquares[k].CenterPosition - available.CenterPosition;
                     var duration = distance.y / speed;
-                    
-                    sequence.Join(boardElement.transform.DOMove(available.CenterPosition, duration));
+
+                    var available1 = available;
+                    sequence.Join(boardElement.transform.DOMove(available.CenterPosition, duration).OnComplete(() =>
+                    {
+                        fallingElementSquare.Locked = false;
+                        available1.Locked = false;
+                    }));
                     boardElement.SquarePosition = available.Coordinates;
                     available.BoardElement = boardElement;
                     available = available.Up;

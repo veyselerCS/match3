@@ -23,33 +23,15 @@ public class TriggerManager : Manager
 
     public void OnTrigger(TriggerSignal data)
     {
-        if (_triggerSequence == null) _triggerSequence = DOTween.Sequence();
-
         foreach (var square in data.TriggeredSquares)
         {
-            if (square.BoardElement == null) return;
-
-            if (square.TryGetByType(out PowerUp powerUp, null))
-            {
-                powerUp.OnActivated(_triggerSequence);
-            }
-
             if (square.BoardElement != null)
             {
                 square.BoardElement.BackToPool();
                 square.BoardElement = null;
             }
-            _triggerSequence.AppendCallback(() =>
-            {
-
-            });
         }
-
-        _triggerSequence.OnComplete(() =>
-        {
-            _triggerSequence = null;
-            _signalBus.Fire<MatchEndSignal>();
-        });
+        _signalBus.Fire<MatchEndSignal>();
     }
 }
 

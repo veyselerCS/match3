@@ -4,6 +4,7 @@ using UnityEngine;
 public abstract class PowerUp : BoardElement
 {
     public PowerUpType Type;
+    public bool IsActivated;
     
     private PowerUpFactory _powerUpFactory;
     protected BoardManager _boardManager;

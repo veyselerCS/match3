@@ -81,14 +81,16 @@ public class InputManager : Manager
         
         if (Input.GetMouseButton(0) && !_swipeSent)
         {
+            var board = _boardManager.Board;
             var currentTouchPos = GetTouchBoardPosition();
+            
             if (!_boardManager.IsInBoardLimits(currentTouchPos)) return;
+            if(board.At(_firstTouchedBoardPos).Locked || board.At(currentTouchPos).Locked) return;
             
             if (currentTouchPos != _firstTouchedBoardPos)
             {
                 _lock = true;
                 _swipeSent = true;
-
                 _signalBus.Fire(new SwipeStartSignal(_firstTouchedBoardPos, currentTouchPos));
             }
         }

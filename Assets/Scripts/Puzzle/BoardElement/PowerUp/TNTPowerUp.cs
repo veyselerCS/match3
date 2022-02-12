@@ -18,7 +18,9 @@ public class TNTPowerUp : PowerUp
         {
             for (int k = bottomLeft.y; k <= TopRight.y; k++)
             {
-                triggerZone.Add(_boardManager.Board[i][k]);
+                var square = _boardManager.Board[i][k];
+                if(!square.Locked)
+                    triggerZone.Add(_boardManager.Board[i][k]);
             }
         }
 

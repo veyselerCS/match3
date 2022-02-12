@@ -71,6 +71,7 @@ public class PowerUpManager : Manager
         powerUpTriggers.Clear();
         var board = _boardManager.Board;
         HashSet<PowerUp> activated = new HashSet<PowerUp>();
+        List<Square> _triggered = new List<Square>();
         while (!powerUps.IsEmpty())
         {
             var powerUp = powerUps.Dequeue();
@@ -81,12 +82,16 @@ public class PowerUpManager : Manager
             foreach (var square in triggerZone)
             {
                 powerUpTriggers.Add(square);
+                if(!_triggered.Contains(square))
+                    _triggered.Add(square);
                 if (square.TryGetByType(out PowerUp nextPowerUp, null))
                 {
                     powerUps.Add(nextPowerUp);
                 }
             }
         }
+        
+        _signalBus.Fire(new TriggerSignal(_triggered));
     }
 
     private void OnDrawGizmosSelected()

@@ -7,6 +7,9 @@ public class HorizontalRocketPowerUp : PowerUp
 
     public override List<Square> GetTriggerZone()
     {
-        return _boardManager.Board[SquarePosition.x];
+        return _boardManager.Board[SquarePosition.x].FindAll((square) =>
+        {
+            return !square.Locked;
+        } );
     }
 }

@@ -146,12 +146,14 @@ public class BoardManager : Manager
             {
                 if (Board[i][k].BoardElement == null)
                 {
-                    Gizmos.color = Color.black;
+                    Gizmos.color = Color.green;
+                    if(Board[i][k].Locked) Gizmos.color = Color.black;
                     Gizmos.DrawLine(Board[i][k].transform.position, Board[i][k].transform.position + new Vector3(25,25,0));
                 }
                 else
                 {
-                    Gizmos.color = Color.white;
+                    Gizmos.color = Color.magenta;
+                    if(Board[i][k].Locked) Gizmos.color = Color.black;
                     Gizmos.DrawLine(Board[i][k].transform.position, Board[i][k].transform.position + new Vector3(25,25,0));
                 }
             }

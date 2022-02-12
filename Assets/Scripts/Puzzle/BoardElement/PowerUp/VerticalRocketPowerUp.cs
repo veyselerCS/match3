@@ -9,7 +9,9 @@ public class VerticalRocketPowerUp : PowerUp
         
         for (int i = 0; i < _boardManager.BoardHeight; i++)
         {
-            triggerZone.Add(_boardManager.Board[i][SquarePosition.y]);
+            var square = _boardManager.Board[i][SquarePosition.y];
+            if(!square.Locked)
+                triggerZone.Add(_boardManager.Board[i][SquarePosition.y]);
         }
 
         return triggerZone;

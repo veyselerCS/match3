@@ -44,7 +44,8 @@ public class MatchManager : Manager
     {
         var board = _boardManager.Board;
         _matchSequence = DOTween.Sequence();
-
+        
+        
         _swipedSquareCoordinates.Clear();
         _swipedSquareCoordinates.Add(data.From);
         _swipedSquareCoordinates.Add(data.To);
