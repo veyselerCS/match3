@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using UnityEngine;
+
 public abstract class PowerUp : BoardElement
 {
     public PowerUpType Type;
@@ -16,5 +19,5 @@ public abstract class PowerUp : BoardElement
         _powerUpFactory.BackToPool(this);
     }
 
-    public abstract void OnPowerUpActivated();
+    public abstract List<Square> GetTriggerZone();
 }

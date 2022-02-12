@@ -106,4 +106,4 @@ MonoBehaviour:
   IsSwappable: 1
   IsTappable: 1
   Triggers: 01000000
-  Type: 0
+  Type: 3

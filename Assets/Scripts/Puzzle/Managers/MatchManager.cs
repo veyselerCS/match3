@@ -12,6 +12,7 @@ public class MatchManager : Manager
 
     private BoardManager _boardManager;
     private MatchResultManager _matchResultManager;
+    private PowerUpManager _powerUpManager;
     private PatternService _patternService;
     private Sequence _matchSequence = null;
     private Vector2Int _matchSourcePosition;
@@ -24,6 +25,7 @@ public class MatchManager : Manager
         _boardManager = _managerProvider.Get<BoardManager>();
         _matchResultManager = _managerProvider.Get<MatchResultManager>();
         _patternService = _managerProvider.Get<PatternService>();
+        _powerUpManager = _managerProvider.Get<PowerUpManager>();
         
         _dependencies.Add(_boardManager);
         _dependencies.Add(_matchResultManager);
@@ -34,17 +36,29 @@ public class MatchManager : Manager
     {
         _signalBus.Subscribe<SwipeEndSignal>(OnSwipeEndSignal);
         _signalBus.Subscribe<FallEndSignal>(OnFallEndSignal);
+        
         SetReady();
     }
 
     private void OnSwipeEndSignal(SwipeEndSignal data)
     {
+        var board = _boardManager.Board;
         _matchSequence = DOTween.Sequence();
 
         _swipedSquareCoordinates.Clear();
         _swipedSquareCoordinates.Add(data.From);
         _swipedSquareCoordinates.Add(data.To);
 
+        foreach (var swipedSquare in _swipedSquareCoordinates)
+        {
+            var boardElement = board.At(swipedSquare).BoardElement;
+            
+            if (boardElement != null && boardElement is PowerUp powerUp)
+            {
+                Debug.LogWarning("Powerup found on swipe");
+            }
+        }
+        
         CheckFullBoard();
     }
 
@@ -56,7 +70,7 @@ public class MatchManager : Manager
     [Button("Check match")]
     public void CheckFullBoard()
     {
-        var match = CheckMatchNoSignal();
+        var match = CheckMatch();
         _matchSequence.OnComplete(() =>
         {
             if(match)
@@ -64,7 +78,7 @@ public class MatchManager : Manager
         });
     }
 
-    public bool CheckMatchNoSignal()
+    public bool CheckMatch()
     {
         var board = _boardManager.Board;
         _matched.Clear();
@@ -81,8 +95,8 @@ public class MatchManager : Manager
                 {
                     var firstNonZero = patternShape.NonZeros[0];
                     var firstNonZeroSquare = board[i + firstNonZero.x][k + firstNonZero.y];
-
-                    if (firstNonZeroSquare.BoardElement != null && firstNonZeroSquare.BoardElement is Drop firstDrop && !_matched.Contains(firstNonZeroSquare.Coordinates))
+                    
+                    if (firstNonZeroSquare.TryGetByType(out Drop firstDrop, null) && !_matched.Contains(firstNonZeroSquare.Coordinates))
                     {
                         var dropType = firstDrop.DropType;
                         var patternFound = true;

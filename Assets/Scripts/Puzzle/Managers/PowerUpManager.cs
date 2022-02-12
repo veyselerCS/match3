@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
 using UnityEngine;
 using Zenject;
@@ -10,7 +11,8 @@ public class PowerUpManager : Manager
     private BoardManager _boardManager;
     private PowerUpFactory _powerUpFactory;
     private SceneComponentService _sceneComponentService;
-    
+    private List<PowerUp> powerUpQueue = new List<PowerUp>();
+
     public override void Init()
     {
         _boardManager = _managerProvider.Get<BoardManager>();
@@ -25,6 +27,7 @@ public class PowerUpManager : Manager
     public override void Begin()
     {
         _signalBus.Subscribe<TapSignal>(OnTapSignal);
+        
         SetReady();
     }
 
@@ -56,8 +59,42 @@ public class PowerUpManager : Manager
                     powerUp.gameObject.SetActive(true);
                     mergeDropSquare.BoardElement.BackToPool();
                     mergeDropSquare.BoardElement = powerUp;
+                    powerUp.SquarePosition = mergeDropSquare.Coordinates;
                 });
             }
+        }
+    }
+
+    private HashSet<Square> powerUpTriggers = new HashSet<Square>();
+    public void ActivatePowerUp(Sequence sequence, List<PowerUp> powerUps)
+    {
+        powerUpTriggers.Clear();
+        var board = _boardManager.Board;
+        HashSet<PowerUp> activated = new HashSet<PowerUp>();
+        while (!powerUps.IsEmpty())
+        {
+            var powerUp = powerUps.Dequeue();
+            if(activated.Contains(powerUp)) continue;
+            
+            activated.Add(powerUp);
+            var triggerZone = powerUp.GetTriggerZone();
+            foreach (var square in triggerZone)
+            {
+                powerUpTriggers.Add(square);
+                if (square.TryGetByType(out PowerUp nextPowerUp, null))
+                {
+                    powerUps.Add(nextPowerUp);
+                }
+            }
+        }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        foreach (var square in powerUpTriggers)
+        {      
+            Rect rect = new Rect(square.CenterPosition - new Vector3(50,50),new Vector2(100,100));
+            UnityEditor.Handles.DrawSolidRectangleWithOutline(rect, Color.black, Color.white);
         }
     }
 
@@ -67,7 +104,8 @@ public class PowerUpManager : Manager
         var boardElement = board.At(data.On).BoardElement;
         if (boardElement != null && boardElement is PowerUp powerUp)
         {
-            Debug.LogWarning("Tap on powerup");
+            var sequence = DOTween.Sequence();
+            ActivatePowerUp(sequence, new List<PowerUp>(){ powerUp});
         }
     }
 }

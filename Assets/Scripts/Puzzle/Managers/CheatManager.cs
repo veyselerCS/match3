@@ -58,7 +58,7 @@ public class CheatManager : Manager
         
         if(Input.GetKeyUp(KeyCode.M))
         {
-            _matchManager.CheckMatchNoSignal();
+            _matchManager.CheckMatch();
         }
 
         CheatToggle.isOn = CheatMode;

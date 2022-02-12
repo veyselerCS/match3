@@ -4,13 +4,9 @@ using UnityEngine;
 public class HorizontalRocketPowerUp : PowerUp
 {
     [SerializeField] private GameObject ParticleSystem;
-    
-    public override void OnPowerUpActivated()
-    {
-    }
 
-    private List<Square>  GetInvolvedSquares()
+    public override List<Square> GetTriggerZone()
     {
-       return _boardManager.Board[SquarePosition.x];
+        return _boardManager.Board[SquarePosition.x];
     }
 }

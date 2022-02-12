@@ -1,5 +1,6 @@
 ﻿using System;
 using DG.Tweening;
+using JetBrains.Annotations;
 using UnityEngine;
 using Zenject;
 
@@ -39,6 +40,20 @@ public class Square : MonoBehaviour
         _boardManager = ManagerProvider.Instance.Get<BoardManager>();
         
         CenterPosition = transform.position;
+    }
+
+    public bool TryGetByType<T>(out T value, T defaultValue) where T : BoardElement
+    {
+        value = defaultValue;
+        if (BoardElement == null) return false;
+        
+        if (BoardElement is T casted)
+        {
+            value = casted;
+            return true;
+        }
+
+        return false;
     }
 }
 

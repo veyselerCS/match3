@@ -47,13 +47,16 @@ public class InputManager : Manager
                 if (!_boardManager.IsInBoardLimits(currentTouchPos)) return;
                 
                 _firstTouchedBoardPos = GetTouchBoardPosition();
-
-                var cheatElement = Instantiate(_cheatManager.PickedElement,
-                    _sceneComponentService.BoardElementParent.transform);
-                cheatElement.transform.position = _boardManager.Board.At(_firstTouchedBoardPos).CenterPosition;
-                if (_boardManager.Board.At(_firstTouchedBoardPos).BoardElement)
-                    Destroy(_boardManager.Board.At(_firstTouchedBoardPos).BoardElement.gameObject);
-                _boardManager.Board.At(_firstTouchedBoardPos).BoardElement = cheatElement;
+                var square = _boardManager.Board.At(_firstTouchedBoardPos);
+                
+                var cheatElement = Instantiate(_cheatManager.PickedElement, _sceneComponentService.BoardElementParent.transform);
+                cheatElement.transform.position = square.CenterPosition;
+                
+                if (square.BoardElement)
+                    Destroy(square.BoardElement.gameObject);
+                
+                square.BoardElement = cheatElement;
+                cheatElement.SquarePosition = square.Coordinates;
             }
 
             return;

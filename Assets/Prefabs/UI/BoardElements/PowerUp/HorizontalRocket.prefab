@@ -257,7 +257,8 @@ MonoBehaviour:
   IsSwappable: 1
   IsTappable: 1
   Triggers: 0000000001000000
-  Type: 0
+  Type: 1
+  ParticleSystem: {fileID: 0}
 --- !u!1001 &1300294436079328811
 PrefabInstance:
   m_ObjectHideFlags: 0

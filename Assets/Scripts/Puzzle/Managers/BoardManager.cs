@@ -16,6 +16,10 @@ public class BoardManager : Manager
 
     private Vector2 _squareSize;
 
+    public int MaxRight => BoardWidth - 1;
+    public int MaxTop => BoardHeight - 1;
+
+
     public override void Init()
     {
         _dropFactory = _managerProvider.Get<DropFactory>();
@@ -127,6 +131,11 @@ public class BoardManager : Manager
     public bool IsInBoardLimits(Vector2Int pos)
     {
         return pos.x >= 0 && pos.y >= 0 && pos.x < BoardHeight && pos.y < BoardWidth;
+    }   
+    
+    public bool IsInBoardLimits(int x, int y)
+    {
+        return x >= 0 && y >= 0 && x < BoardHeight && y < BoardWidth;
     }
     
     private void OnDrawGizmos()

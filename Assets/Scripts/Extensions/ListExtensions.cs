@@ -24,4 +24,12 @@ public static class ListExtensions
         
         return defaultValue;
     }
+    
+    public static T Dequeue<T>(this List<T> list)
+    {
+        var element = list[0];
+        list.RemoveAt(0);
+        
+        return element;
+    }
 }

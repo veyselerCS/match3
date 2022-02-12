@@ -53,7 +53,9 @@ public class FallManager : Manager
                     var speed = BaseSpeed - SpeedGap * k;
                     var distance = nonEmptySquares[k].CenterPosition - available.CenterPosition;
                     var duration = distance.y / speed;
-                    sequence.Join(boardElement.transform.DOMove(available.CenterPosition, duration)); 
+                    
+                    sequence.Join(boardElement.transform.DOMove(available.CenterPosition, duration));
+                    boardElement.SquarePosition = available.Coordinates;
                     available.BoardElement = boardElement;
                     available = available.Up;
                     nonEmptySquares[k].BoardElement = null;
