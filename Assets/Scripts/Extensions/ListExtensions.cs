@@ -32,4 +32,14 @@ public static class ListExtensions
         
         return element;
     }
+    
+    public static T TryDequeue<T>(this List<T> list, T defaultValue)
+    {
+        if (list.Count == 0) return defaultValue;
+
+        defaultValue = list[0];
+        list.RemoveAt(0);
+        
+        return defaultValue;
+    }
 }

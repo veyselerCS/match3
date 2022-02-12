@@ -46,8 +46,6 @@ public class InputManager : Manager
 
     private void Update()
     {
-        if (_lock) return;
-
         if (_cheatManager.CheatMode)
         {
             if (Input.GetMouseButtonDown(0))
@@ -95,8 +93,9 @@ public class InputManager : Manager
 
         if (Input.GetMouseButtonUp(0))
         {
+            var board = _boardManager.Board;
             var currentTouchPos = GetTouchBoardPosition();
-            if (currentTouchPos == _firstTouchedBoardPos)
+            if (currentTouchPos == _firstTouchedBoardPos && !(board.At(_firstTouchedBoardPos).Locked))
             {
                 _signalBus.Fire(new TapSignal(currentTouchPos));
             }
@@ -112,7 +111,6 @@ public class InputManager : Manager
             
             if (currentTouchPos != _firstTouchedBoardPos)
             {
-                _lock = true;
                 _swipeSent = true;
                 _signalBus.Fire(new SwipeStartSignal(_firstTouchedBoardPos, currentTouchPos));
             }

@@ -66,32 +66,6 @@ public class PowerUpManager : Manager
     }
 
     private HashSet<Square> powerUpTriggers = new HashSet<Square>();
-    public void ActivatePowerUp(Sequence sequence, List<PowerUp> powerUps)
-    {
-        powerUpTriggers.Clear();
-        var board = _boardManager.Board;
-        HashSet<PowerUp> activated = new HashSet<PowerUp>();
-        List<Square> _triggered = new List<Square>();
-        while (!powerUps.IsEmpty())
-        {
-            var powerUp = powerUps.Dequeue();
-            if(activated.Contains(powerUp)) continue;
-            
-            activated.Add(powerUp);
-            var triggerZone = powerUp.GetTriggerZone();
-            foreach (var square in triggerZone)
-            {
-                powerUpTriggers.Add(square);
-                if(!_triggered.Contains(square))
-                    _triggered.Add(square);
-                if (square.TryGetByType(out PowerUp nextPowerUp, null))
-                {
-                    powerUps.Add(nextPowerUp);
-                }
-            }
-        }
-        
-    }
 
     private void OnDrawGizmosSelected()
     {
@@ -105,11 +79,11 @@ public class PowerUpManager : Manager
     private void OnTapSignal(TapSignal data)
     {
         var board = _boardManager.Board;
+        
         var boardElement = board.At(data.On).BoardElement;
         if (boardElement != null && boardElement is PowerUp powerUp)
         {
-            var sequence = DOTween.Sequence();
-            powerUp.Activate();//ActivatePowerUp(sequence, new List<PowerUp>(){ powerUp});
+            powerUp.Activate();
         }
     }
 }

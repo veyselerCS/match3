@@ -64,7 +64,7 @@ public class FallManager : Manager
                     available.Locked = true;
                     
                     var boardElement = nonEmptySquares[k].BoardElement;
-                    var speed = BaseSpeed - SpeedGap * k;
+                    var speed = BaseSpeed;
                     var distance = nonEmptySquares[k].CenterPosition - available.CenterPosition;
                     var duration = distance.y / speed;
 
@@ -93,7 +93,7 @@ public class FallManager : Manager
                 if (fallQueued)
                 {
                     fallQueued = false;
-                    //CheckSquaresForFall();
+                    CheckSquaresForFall();
                     return;
                 }
                 

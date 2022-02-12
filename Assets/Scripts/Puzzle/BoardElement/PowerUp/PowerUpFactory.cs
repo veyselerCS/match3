@@ -65,7 +65,7 @@ public class PowerUpFactory : Manager
 
     public PowerUp GetPowerUpByPowerUpType(PowerUpType powerUpType)
     {
-        var powerUp = _powerUpPool[powerUpType].TryPop(null);
+        var powerUp = _powerUpPool[powerUpType].TryDequeue(null);
 
         if (powerUp == null)
         {

@@ -34,14 +34,14 @@ public class HorizontalRocketPowerUp : PowerUp
                 var rightCurrent = _boardManager.GetBoardPosition(Right.transform.position);
                 var leftCurrent = _boardManager.GetBoardPosition(Left.transform.position);
                 
-                if (_boardManager.IsInBoardLimits(rightCurrent) && rightCurrent != topStartPos)
+                if (rightCurrent != topStartPos && triggerZone.Contains(_boardManager.Board.At(rightCurrent)))
                 {
                     Debug.LogWarning("Changed right");
                     _signalBus.Fire(new TriggerSignal(new List<Square>{_boardManager.Board.At(rightCurrent)}, TriggerType.Special));
                     topStartPos = rightCurrent;
                 }        
                 
-                if (_boardManager.IsInBoardLimits(rightCurrent) && leftCurrent != botStartPos)
+                if (leftCurrent != botStartPos && triggerZone.Contains(_boardManager.Board.At(leftCurrent)))
                 {
                     Debug.LogWarning("Changed left");
                     _signalBus.Fire(new TriggerSignal(new List<Square>{_boardManager.Board.At(leftCurrent)}, TriggerType.Special));

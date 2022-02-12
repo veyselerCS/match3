@@ -8,7 +8,7 @@ public class DropFactory : Manager
     [SerializeField] private Drop RedDropPrefab;
     [SerializeField] private Drop YellowDropPrefab;
 
-    [SerializeField] private int PoolSize = 50;
+    [SerializeField] private int PoolSize = 75;
     [SerializeField] private Transform PoolParent;
 
     private SceneComponentService _sceneComponentService;
@@ -62,7 +62,7 @@ public class DropFactory : Manager
     
     public Drop GetDropByDropType(DropType dropType)
     {
-        var drop = _dropPool[dropType].TryPop(null);
+        var drop = _dropPool[dropType].TryDequeue(null);
         
         if (drop == null)
         {
