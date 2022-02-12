@@ -5,9 +5,13 @@ using UnityEngine;
 
 public class TNTPowerUp : PowerUp
 {
-    private Square GetInvolvedSquares()
+    public GameObject Particle;
+    public GameObject TNTImage;
+    
+    private void ResetComponent()
     {
-        return null;
+        TNTImage.SetActive(true);
+        Particle.SetActive(false);
     }
 
     public override void Activate()
@@ -17,14 +21,17 @@ public class TNTPowerUp : PowerUp
         {
             square.Locked = true;
         }
-
-        DOVirtual.DelayedCall(0.2f, () =>
+        
+        Particle.gameObject.SetActive(true);
+        TNTImage.gameObject.SetActive(false);
+        DOVirtual.DelayedCall(0.4f, () =>
         {
             foreach (var square in triggerZone)
             {
                 square.Locked = false;
             }
             BackToPool();
+            ResetComponent();
             _boardManager.Board.At(SquarePosition).BoardElement = null;
             _signalBus.Fire(new TriggerSignal(triggerZone, TriggerType.Special));
             _signalBus.Fire<MatchEndSignal>();
