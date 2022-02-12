@@ -29,7 +29,6 @@ public class HorizontalRocketPowerUp : PowerUp
         
         var sequence = DOTween.Sequence();
         sequence
-            .AppendInterval(0.15f)
             .Join(Right.DOMove(rightSquare.CenterPosition.IncX(100), 0.4f))
             .Join(Left.DOMove(leftSquare.CenterPosition.IncX(-100), 0.4f))
             .OnUpdate(() =>
