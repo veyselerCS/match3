@@ -12,7 +12,7 @@ public class InputManager : Manager
     private SceneComponentService _sceneComponentService;
 
     private Vector2 _squareSize;
-    private Vector2Int _firstTouchedBoardPos;
+    private Vector2Int _firstTouchedBoardPos = new Vector2Int(-1, -1);
 
     private bool _lock;
     private bool _swipeSent;
@@ -43,8 +43,10 @@ public class InputManager : Manager
         {
             if (Input.GetMouseButtonDown(0))
             {
+                var currentTouchPos = GetTouchBoardPosition();
+                if (!_boardManager.IsInBoardLimits(currentTouchPos)) return;
+                
                 _firstTouchedBoardPos = GetTouchBoardPosition();
-                if (!_boardManager.IsInBoardLimits(_firstTouchedBoardPos)) return;
 
                 var cheatElement = Instantiate(_cheatManager.PickedElement,
                     _sceneComponentService.BoardElementParent.transform);
@@ -56,15 +58,29 @@ public class InputManager : Manager
 
             return;
         }
-
+    
         if (Input.GetMouseButtonDown(0))
         {
+            var currentTouchPos = GetTouchBoardPosition();
+            if (!_boardManager.IsInBoardLimits(currentTouchPos)) return;
+            
             _firstTouchedBoardPos = GetTouchBoardPosition();
         }
 
+        if (Input.GetMouseButtonUp(0))
+        {
+            var currentTouchPos = GetTouchBoardPosition();
+            if (currentTouchPos == _firstTouchedBoardPos)
+            {
+                _signalBus.Fire(new TapSignal(currentTouchPos));
+            }
+        }
+        
         if (Input.GetMouseButton(0) && !_swipeSent)
         {
             var currentTouchPos = GetTouchBoardPosition();
+            if (!_boardManager.IsInBoardLimits(currentTouchPos)) return;
+            
             if (currentTouchPos != _firstTouchedBoardPos)
             {
                 _lock = true;

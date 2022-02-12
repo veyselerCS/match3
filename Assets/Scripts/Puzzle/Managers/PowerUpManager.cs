@@ -2,9 +2,11 @@ using System;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
+using Zenject;
 
 public class PowerUpManager : Manager
 {
+    [Inject] private SignalBus _signalBus;
     private BoardManager _boardManager;
     private PowerUpFactory _powerUpFactory;
     private SceneComponentService _sceneComponentService;
@@ -22,6 +24,7 @@ public class PowerUpManager : Manager
 
     public override void Begin()
     {
+        _signalBus.Subscribe<TapSignal>(OnTapSignal);
         SetReady();
     }
 
@@ -55,6 +58,16 @@ public class PowerUpManager : Manager
                     mergeDropSquare.BoardElement = powerUp;
                 });
             }
+        }
+    }
+
+    private void OnTapSignal(TapSignal data)
+    {
+        var board = _boardManager.Board;
+        var boardElement = board.At(data.On).BoardElement;
+        if (boardElement != null && boardElement is PowerUp powerUp)
+        {
+            Debug.LogWarning("Tap on powerup");
         }
     }
 }
