@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6488104234533085764}
   - component: {fileID: 4593810820361234480}
   - component: {fileID: 7210214855347559842}
-  - component: {fileID: -851504390030132991}
+  - component: {fileID: 5789793086143803205}
   m_Layer: 5
   m_Name: VerticalRocket
   m_TagString: Untagged
@@ -89,7 +89,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &-851504390030132991
+--- !u!114 &5789793086143803205
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -98,8 +98,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 8689093684908252468}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7e4605cf442742f9a748295c4ebe099d, type: 3}
+  m_Script: {fileID: 11500000, guid: bce59f2cf6a24588a195ba0f81754999, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   SquarePosition: {x: 0, y: 0}
+  IsStable: 0
+  IsSwappable: 1
+  IsTappable: 1
+  Triggers: 0000000001000000
   Type: 0

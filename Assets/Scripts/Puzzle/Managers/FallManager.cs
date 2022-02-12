@@ -73,12 +73,6 @@ public class FallManager : Manager
         }
     }
 
-    public void check()
-    {
-        var sequence = DOTween.Sequence();
-        bool fall = false;
-    }
-
     private Square GetFirstStableInColumn(int startRow, int col)
     {
         for (int i = startRow; i < _boardManager.BoardHeight; i++)

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 792346674073293578}
   - component: {fileID: 8013282444057680254}
   - component: {fileID: 3817732257186639084}
-  - component: {fileID: 2655507720614299727}
+  - component: {fileID: 5136057206910698973}
   m_Layer: 5
   m_Name: Propeller
   m_TagString: Untagged
@@ -89,7 +89,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &2655507720614299727
+--- !u!114 &5136057206910698973
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -98,8 +98,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 2909685846474976378}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7e4605cf442742f9a748295c4ebe099d, type: 3}
+  m_Script: {fileID: 11500000, guid: 503c8d0daeba4e158bdc1341e5153139, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   SquarePosition: {x: 0, y: 0}
-  Type: 2
+  IsStable: 0
+  IsSwappable: 1
+  IsTappable: 1
+  Triggers: 01000000
+  Type: 0

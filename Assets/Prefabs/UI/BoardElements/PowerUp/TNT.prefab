@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5769408796624778216}
   - component: {fileID: 3880713425652955548}
   - component: {fileID: 7932170328848223246}
-  - component: {fileID: 9094376861584681133}
+  - component: {fileID: 4470085129807284808}
   m_Layer: 5
   m_Name: TNT
   m_TagString: Untagged
@@ -89,7 +89,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &9094376861584681133
+--- !u!114 &4470085129807284808
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -98,8 +98,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 8254731421098429592}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7e4605cf442742f9a748295c4ebe099d, type: 3}
+  m_Script: {fileID: 11500000, guid: 7a9cb6eb6a8b4bf6a0b9b3af9986f547, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   SquarePosition: {x: 0, y: 0}
-  Type: 3
+  IsStable: 0
+  IsSwappable: 1
+  IsTappable: 1
+  Triggers: 01000000
+  Type: 0
