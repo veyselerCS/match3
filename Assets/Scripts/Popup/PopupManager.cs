@@ -25,7 +25,9 @@ public class PopupManager : Manager
 
     public async void Show<TPopupData>(TPopupData data) where TPopupData : BasePopupData
     {
-        var popupGO = await _addressableManager.LoadAsset<GameObject>(data.Name);
+        var handle = _addressableManager.LoadAsset<GameObject>(data.Name);
+        await handle.Task;
+        var popupGO = handle.Result;
         BasePopup<TPopupData> popup = Instantiate(popupGO, PopupCanvas.transform).GetComponent<BasePopup<TPopupData>>();
         popup.PopupData = data;
         _activePopups.Add(popup);

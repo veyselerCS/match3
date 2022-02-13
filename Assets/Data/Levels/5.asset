@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbbc363f4c6c43fd857612c322e59c6c, type: 3}
+  m_Name: 5
+  m_EditorClassIdentifier: 
+  LevelNo: 5
+  GridWidth: 9
+  GridHeight: 9
+  MoveCount: 35
+  Squares: 105, 105, 102, 103, 101, 101, 102, 107, 107, 105, 105, 101, 103, 102,
+    103, 101, 107, 107, 105, 105, 103, 102, 103, 100, 101, 107, 107, 105, 105, 101,
+    100, 102, 100, 100, 104, 104, 105, 105, 103, 101, 101, 102, 102, 104, 104, 105,
+    105, 102, 103, 100, 100, 103, 104, 104, 106, 106, 102, 100, 102, 100, 101, 104,
+    104, 106, 106, 101, 102, 102, 103, 100, 104, 104, 106, 106, 101, 103, 100, 103,
+    103, 104, 104

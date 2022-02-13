@@ -1,5 +1,7 @@
 using System.Threading.Tasks;
+using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class AddressableManager : Manager
 {
@@ -8,8 +10,8 @@ public class AddressableManager : Manager
         SetReady();
     }
     
-    public async Task<T> LoadAsset<T>(string label)
+    public AsyncOperationHandle<T> LoadAsset<T>(string label)
     {
-        return await Addressables.LoadAssetAsync<T>(label).Task;
+        return Addressables.LoadAsset<T>(label);
     }
 }
