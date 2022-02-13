@@ -3,6 +3,11 @@ using UnityEngine;
 
 public class LevelData
 {
+    public int LevelNo;
+    public int GridWidth;
+    public int GridHeight;
+    public int MoveCount;
+    
     public Dictionary<DropType, List<Vector2Int>> Drops = new Dictionary<DropType, List<Vector2Int>>()
     {
         { DropType.Blue , new List<Vector2Int>()},
@@ -17,12 +22,7 @@ public class LevelData
         { ObstacleType.Crisp , new List<Vector2Int>()},
         { ObstacleType.Cake , new List<Vector2Int>()}
     };
-
-    public int LevelNo;
-    public int GridWidth;
-    public int GridHeight;
-    public int MoveCount;
-
+    
     public LevelData(int levelNo, int gridWidth, int gridHeight, int moveCount)
     {
         LevelNo = levelNo;
