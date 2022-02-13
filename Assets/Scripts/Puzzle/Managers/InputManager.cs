@@ -14,10 +14,8 @@ public class InputManager : Manager
     private PowerUpFactory _powerUpFactory;
     private SceneComponentService _sceneComponentService;
 
-    private Vector2 _squareSize;
     private Vector2Int _firstTouchedBoardPos = new Vector2Int(-1, -1);
 
-    private bool _lock;
     private bool _swipeSent;
     
     public override void Init()
@@ -39,8 +37,6 @@ public class InputManager : Manager
     
     public override void Begin()
     {
-        _signalBus.Subscribe<SwipeEndSignal>(OnSwipeEndSignal);
-        _squareSize = _sceneComponentService.BoardSquarePrefab.RectTransform.sizeDelta;
         SetReady();
     }
 
@@ -126,10 +122,5 @@ public class InputManager : Manager
     {
         var touchPos = Input.mousePosition;
         return _boardManager.GetBoardPosition(touchPos);
-    }
-
-    private void OnSwipeEndSignal(SwipeEndSignal data)
-    {
-        _lock = false;
     }
 }

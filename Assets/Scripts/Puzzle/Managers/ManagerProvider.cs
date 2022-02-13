@@ -26,7 +26,7 @@ public class ManagerProvider : MonoBehaviour
         var name = manager.GetType().Name;
         if (Managers.ContainsKey(name))
         {
-            Debug.LogWarning("Manager with same name already added under " + Managers[name].gameObject.name + " game object.");
+            Debug.LogWarning("Manager with name " +name+" name already added under " + Managers[name].gameObject.name + " game object.");
             Application.Quit();
             return;
         }

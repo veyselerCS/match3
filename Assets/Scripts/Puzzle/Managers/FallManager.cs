@@ -7,9 +7,13 @@ using Zenject;
 
 public class FallManager : Manager
 {
-    [Inject] private SignalBus _signalBus;
+    [SerializeField] private float BaseSpeed = 200f;
     
+    [Inject] private SignalBus _signalBus;
     private BoardManager _boardManager;
+    
+    private bool fallLock;
+    private bool fallQueued;
     
     public override void Init()
     {
@@ -23,10 +27,7 @@ public class FallManager : Manager
         SetReady();
     }
 
-    private bool fallLock;
-    private bool fallQueued;
-    [SerializeField] private float BaseSpeed = 200f;
-    [SerializeField] private float SpeedGap = 10f;
+
     [Button("Check fall")]
     public void CheckSquaresForFall()
     {
