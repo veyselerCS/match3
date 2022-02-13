@@ -97,7 +97,7 @@ public class MatchManager : Manager
                     var firstNonZero = patternShape.NonZeros[0];
                     var firstNonZeroSquare = board[i + firstNonZero.x][k + firstNonZero.y];
                     
-                    if (firstNonZeroSquare.TryGetByType(out Drop firstDrop, null) && !_matched.Contains(firstNonZeroSquare.Coordinates))
+                    if (firstNonZeroSquare.TryGetByType(out Drop firstDrop, null) && !_matched.Contains(firstNonZeroSquare.Coordinates) && !firstNonZeroSquare.Locked)
                     {
                         var dropType = firstDrop.DropType;
                         var patternFound = true;
@@ -106,9 +106,11 @@ public class MatchManager : Manager
                             var nonZero = patternShape.NonZeros[j];
                             var nonZeroSquare = board[i + nonZero.x][k + nonZero.y];
                             if (nonZeroSquare.BoardElement == null ||
+                                nonZeroSquare.Locked ||
                                 !(nonZeroSquare.BoardElement is Drop drop) ||
                                 dropType != drop.DropType ||
-                                _matched.Contains(nonZeroSquare.Coordinates))
+                                _matched.Contains(nonZeroSquare.Coordinates)
+                                )
                             {
                                 patternFound = false;
                                 break;

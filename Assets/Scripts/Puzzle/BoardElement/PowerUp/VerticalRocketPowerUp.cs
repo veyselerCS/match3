@@ -49,7 +49,7 @@ public class VerticalRocketPowerUp : PowerUp
         Vector2Int topStartPos = SquarePosition;
         Vector2Int botStartPos = SquarePosition;
         
-        _boardManager.Board.At(SquarePosition).BoardElement = null;
+        
         
         Full.gameObject.SetActive(false);
         Top.gameObject.SetActive(true);
@@ -84,9 +84,9 @@ public class VerticalRocketPowerUp : PowerUp
                 {
                     square.Locked = false;
                 }
+                _boardManager.Board.At(SquarePosition).BoardElement = null;
                 BackToPool();
                 ResetComponents();
-                
                 _signalBus.Fire<MatchEndSignal>();
             });
     }
