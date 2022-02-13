@@ -95,7 +95,7 @@ public class BoardManager : Manager
                 square.CenterPosition = boardPosition;
                 square.BoardElement = null;
                 Board[BoardWidth + i].Add(square);
-                square.gameObject.SetActive(false);
+                square.gameObject.SetActive(true);
                 //square
             }
         }
@@ -140,21 +140,29 @@ public class BoardManager : Manager
     
     private void OnDrawGizmos()
     {
+        Color locked = new Color(0, 0, 0, 0.2f);
+        Color nulled = new Color(0, 0, 255, 0.2f);
+        Color fulled = new Color(255, 0, 0, 0.2f);
+
+        Color color;
         for (int i = 0; i < Board.Count; i++)
         {
             for (int k = 0; k < Board[i].Count; k++)
             {
-                if (Board[i][k].BoardElement == null)
+                var square = Board[i][k];
+                if (square == null)
                 {
-                    Gizmos.color = Color.green;
-                    if(Board[i][k].Locked) Gizmos.color = Color.black;
-                    Gizmos.DrawLine(Board[i][k].transform.position, Board[i][k].transform.position + new Vector3(25,25,0));
+                    color = nulled;
+                    if(square.Locked) color = locked;
+                    Rect rect = new Rect(square.CenterPosition.IncX(-50).IncY(-50), new Vector2(100,100));
+                    Handles.DrawSolidRectangleWithOutline(rect, color, Color.white);
                 }
                 else
                 {
-                    Gizmos.color = Color.magenta;
-                    if(Board[i][k].Locked) Gizmos.color = Color.black;
-                    Gizmos.DrawLine(Board[i][k].transform.position, Board[i][k].transform.position + new Vector3(25,25,0));
+                    color = fulled;
+                    if(Board[i][k].Locked) color = locked;
+                    Rect rect = new Rect(square.CenterPosition.IncX(-50).IncY(-50), new Vector2(100,100));
+                    Handles.DrawSolidRectangleWithOutline(rect, color, Color.white);
                 }
             }
         }

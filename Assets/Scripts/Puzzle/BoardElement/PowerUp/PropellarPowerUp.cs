@@ -10,18 +10,18 @@ public class PropellarPowerUp : PowerUp
         triggerZone.Add(_boardManager.Board.At(SquarePosition));
         foreach (var square in triggerZone)
         {
-            square.Locked = true;
+            square.Lock();
         }
-
+        
+        _signalBus.Fire(new TriggerSignal(triggerZone, TriggerType.Special));
         DOVirtual.DelayedCall(0.2f, () =>
         {
             foreach (var square in triggerZone)
             {
-                square.Locked = false;
+                square.Unlock();
             }
             BackToPool();
             _boardManager.Board.At(SquarePosition).BoardElement = null;
-            _signalBus.Fire(new TriggerSignal(triggerZone, TriggerType.Special));
             _signalBus.Fire<MatchEndSignal>();
         });
     }

@@ -61,6 +61,11 @@ public class CheatManager : Manager
         if(Input.GetKeyUp(KeyCode.M))
         {
             _matchManager.CheckMatch();
+        }    
+        
+        if(Input.GetKeyUp(KeyCode.R))
+        {
+            _boardManager.ResetBoard();
         }
 
         CheatToggle.isOn = CheatMode;

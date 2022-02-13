@@ -19,21 +19,22 @@ public class TNTPowerUp : PowerUp
         var triggerZone = GetTriggerZone();
         foreach (var square in triggerZone)
         {
-            square.Locked = true;
+            square.Lock();
         }
         
+        Debug.LogWarning("tnt");
+        _signalBus.Fire(new TriggerSignal(triggerZone, TriggerType.Special));
         Particle.gameObject.SetActive(true);
         TNTImage.gameObject.SetActive(false);
-        DOVirtual.DelayedCall(0.4f, () =>
+        DOVirtual.DelayedCall(0.2f, () =>
         {
             foreach (var square in triggerZone)
             {
-                square.Locked = false;
+                square.Unlock();
             }
+            _boardManager.Board.At(SquarePosition).BoardElement = null;
             BackToPool();
             ResetComponent();
-            _boardManager.Board.At(SquarePosition).BoardElement = null;
-            _signalBus.Fire(new TriggerSignal(triggerZone, TriggerType.Special));
             _signalBus.Fire<MatchEndSignal>();
         });
     }
@@ -53,7 +54,6 @@ public class TNTPowerUp : PowerUp
             }
         }
 
-        triggerZone.Remove(_boardManager.Board.At(SquarePosition));
         return triggerZone;
     }
 }

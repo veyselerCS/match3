@@ -43,13 +43,10 @@ public class VerticalRocketPowerUp : PowerUp
         var triggerZone = GetTriggerZone();
         foreach (var square in triggerZone)
         {
-            square.Locked = true;
+            square.Lock();
         }
-
         Vector2Int topStartPos = SquarePosition;
         Vector2Int botStartPos = SquarePosition;
-        
-        
         
         Full.gameObject.SetActive(false);
         Top.gameObject.SetActive(true);
@@ -82,7 +79,7 @@ public class VerticalRocketPowerUp : PowerUp
             {
                 foreach (var square in triggerZone)
                 {
-                    square.Locked = false;
+                    square.Unlock();
                 }
                 _boardManager.Board.At(SquarePosition).BoardElement = null;
                 BackToPool();

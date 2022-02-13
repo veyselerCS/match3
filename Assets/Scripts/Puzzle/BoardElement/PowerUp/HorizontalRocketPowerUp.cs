@@ -17,7 +17,7 @@ public class HorizontalRocketPowerUp : PowerUp
         var triggerZone = GetTriggerZone();
         foreach (var square in triggerZone)
         {
-            square.Locked = true;
+            square.Lock();
         }
 
         Vector2Int topStartPos = SquarePosition;
@@ -54,7 +54,7 @@ public class HorizontalRocketPowerUp : PowerUp
             {
                 foreach (var square in triggerZone)
                 {
-                    square.Locked = false;
+                    square.Unlock();
                 }
                 
                 BackToPool();

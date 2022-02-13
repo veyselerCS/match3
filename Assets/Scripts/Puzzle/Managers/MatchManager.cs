@@ -109,8 +109,7 @@ public class MatchManager : Manager
                                 nonZeroSquare.Locked ||
                                 !(nonZeroSquare.BoardElement is Drop drop) ||
                                 dropType != drop.DropType ||
-                                _matched.Contains(nonZeroSquare.Coordinates)
-                                )
+                                _matched.Contains(nonZeroSquare.Coordinates))
                             {
                                 patternFound = false;
                                 break;

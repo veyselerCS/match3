@@ -11,8 +11,16 @@ public class Square : MonoBehaviour
     public BoardElement BoardElement;
     public Vector3 CenterPosition;
     public Vector2Int Coordinates;
-    public bool Locked;
+    public bool Locked
+    {
+        get
+        {
+            if(_lockCount < 0) Debug.LogWarning("LOCK ERROR");
+            return _lockCount != 0;
+        }
+    }
 
+    private int _lockCount;
     public BoardManager _boardManager;
     public RectTransform RectTransform;
     public Square Up
@@ -53,6 +61,16 @@ public class Square : MonoBehaviour
         }
 
         return false;
+    }
+
+    public void Lock()
+    {
+        _lockCount++;
+    }   
+    
+    public void Unlock()
+    {
+        _lockCount--;
     }
 }
 

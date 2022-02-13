@@ -19,7 +19,7 @@ public class FallManager : Manager
 
     public override void Begin()
     {
-        _signalBus.Subscribe<SpawnEndSignal>(CheckSquaresForFall);
+        _signalBus.Subscribe<SpawnEndSignal>(() => fallQueued = true);
         SetReady();
     }
 
@@ -60,8 +60,8 @@ public class FallManager : Manager
                 {
                     var fallingElementSquare = nonEmptySquares[k];
                     
-                    fallingElementSquare.Locked = true;
-                    available.Locked = true;
+                    fallingElementSquare.Lock();
+                    available.Lock();
                     
                     var boardElement = nonEmptySquares[k].BoardElement;
                     var speed = BaseSpeed;
@@ -71,14 +71,15 @@ public class FallManager : Manager
                     var available1 = available;
                     sequence.Join(boardElement.transform.DOMove(available.CenterPosition, duration).OnComplete(() =>
                     {
-                        fallingElementSquare.Locked = false;
-                        available1.Locked = false;
+                        fallingElementSquare.Unlock();
+                        available1.Unlock();
                     }));
                     boardElement.SquarePosition = available.Coordinates;
                     available.BoardElement = boardElement;
                     available = available.Up;
                     nonEmptySquares[k].BoardElement = null;
-                    fall = true;
+                    if(!fall)
+                        fall = true;
                 }
 
                 row = topLimit + 1;
@@ -90,15 +91,22 @@ public class FallManager : Manager
             sequence.OnComplete(() =>
             {
                 fallLock = false;
-                if (fallQueued)
-                {
-                    fallQueued = false;
-                    CheckSquaresForFall();
-                    return;
-                }
-                
-                _signalBus.Fire<FallEndSignal>();
             });
+        }
+        else
+        {
+            fallLock = false;
+            Debug.LogWarning("Fall");
+            _signalBus.Fire<FallEndSignal>();
+        }
+    }
+
+
+    private void Update()
+    {
+        if (!fallLock && fallQueued)
+        {
+            CheckSquaresForFall();
         }
     }
 
