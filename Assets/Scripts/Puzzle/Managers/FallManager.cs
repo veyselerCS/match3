@@ -35,7 +35,8 @@ public class FallManager : Manager
             fallQueued = true;
             return;
         }
-        
+
+        fallQueued = false;
         fallLock = true;
         Sequence sequence = DOTween.Sequence();
         bool fall = false;

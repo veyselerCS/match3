@@ -123,11 +123,14 @@ public class MatchManager : Manager
                         {
                             var nonZero = patternShape.NonZeros[j];
                             var nonZeroSquare = board[i + nonZero.x][k + nonZero.y];
+                            
                             if (_swipedSquareCoordinates.Contains(nonZeroSquare.Coordinates))
                             {
                                 mergePosition = nonZeroSquare.Coordinates;
                             }
+                            
                             involvedPositions.Add(nonZeroSquare.Coordinates);
+                            nonZeroSquare.Lock();
                             _matched.Add(nonZeroSquare.Coordinates);
                         }
 

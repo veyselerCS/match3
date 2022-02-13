@@ -5,7 +5,7 @@ using Zenject;
 public abstract class PowerUp : BoardElement
 {
     [Inject] protected SignalBus _signalBus;
-    
+    public bool Activated = false;
     public PowerUpType Type;
     
     protected PowerUpFactory _powerUpFactory;
@@ -19,6 +19,7 @@ public abstract class PowerUp : BoardElement
 
     public override void BackToPool()
     {
+        Activated = false;
         _powerUpFactory.BackToPool(this);
     }
 

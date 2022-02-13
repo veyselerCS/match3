@@ -52,6 +52,7 @@ public class MatchResultManager : Manager
         foreach (var coordinate in involvedPositions)
         {
             var square = board[coordinate.x][coordinate.y];
+            square.Unlock();
             square.BoardElement.BackToPool();
             square.BoardElement = null;
         }

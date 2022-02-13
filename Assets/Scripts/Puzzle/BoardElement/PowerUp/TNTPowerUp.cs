@@ -16,6 +16,8 @@ public class TNTPowerUp : PowerUp
 
     public override void Activate()
     {
+        Activated = true;
+        
         var triggerZone = GetTriggerZone();
         foreach (var square in triggerZone)
         {
@@ -26,7 +28,7 @@ public class TNTPowerUp : PowerUp
         _signalBus.Fire(new TriggerSignal(triggerZone, TriggerType.Special));
         Particle.gameObject.SetActive(true);
         TNTImage.gameObject.SetActive(false);
-        DOVirtual.DelayedCall(0.2f, () =>
+        DOVirtual.DelayedCall(0.4f, () =>
         {
             foreach (var square in triggerZone)
             {

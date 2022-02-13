@@ -31,6 +31,8 @@ public class TriggerManager : Manager
             {
                 if (square.BoardElement is PowerUp powerUp)
                 {
+                    if(powerUp.Activated) continue;
+                    
                     powerUp.Activate();
                 }
                 else

@@ -60,6 +60,11 @@ public class PowerUpManager : Manager
                     mergeDropSquare.BoardElement.BackToPool();
                     mergeDropSquare.BoardElement = powerUp;
                     powerUp.SquarePosition = mergeDropSquare.Coordinates;
+
+                    foreach (var square in involvedPositions)
+                    {
+                       board.At(square).Unlock();
+                    }
                 });
             }
         }
@@ -79,9 +84,9 @@ public class PowerUpManager : Manager
     private void OnTapSignal(TapSignal data)
     {
         var board = _boardManager.Board;
-        
-        var boardElement = board.At(data.On).BoardElement;
-        if (boardElement != null && boardElement is PowerUp powerUp)
+        var square = board.At(data.On);
+        var boardElement = square.BoardElement;
+        if (boardElement != null && !square.Locked && boardElement is PowerUp powerUp)
         {
             powerUp.Activate();
         }

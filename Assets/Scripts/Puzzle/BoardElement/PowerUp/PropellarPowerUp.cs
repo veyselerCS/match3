@@ -6,6 +6,8 @@ public class PropellarPowerUp : PowerUp
 {
     public override void Activate()
     {
+        Activated = true;
+
         var triggerZone = GetTriggerZone();
         triggerZone.Add(_boardManager.Board.At(SquarePosition));
         foreach (var square in triggerZone)

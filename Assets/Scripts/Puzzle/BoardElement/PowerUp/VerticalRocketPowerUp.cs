@@ -36,6 +36,8 @@ public class VerticalRocketPowerUp : PowerUp
     
     public override void Activate()
     {
+        Activated = true;
+
         var board = _boardManager.Board;
         var topSquare = board[_boardManager.MaxTop][SquarePosition.y];
         var bottomSquare = board[0][SquarePosition.y];
