@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public class DataManager : Manager
 {
+    [Inject] private SignalBus _signalBus;
     [SerializeField] private int MaxLevel = 5;
 
     private AddressableManager _addressableManager;
@@ -28,6 +30,7 @@ public class DataManager : Manager
         }
 
         SetReady();
+        _signalBus.Fire<DataReadySignal>();
     }
 
     private LevelData HanleRawData(LevelRawData rawData)

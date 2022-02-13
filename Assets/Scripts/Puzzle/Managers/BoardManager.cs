@@ -8,6 +8,7 @@ public class BoardManager : Manager
 {
     private DropFactory _dropFactory;
     private SceneComponentService _sceneComponentService;
+    private DataManager _dataManager;
 
     public int BoardWidth = 9; 
     public int BoardHeight = 9;
@@ -19,14 +20,15 @@ public class BoardManager : Manager
     public int MaxRight => BoardWidth - 1;
     public int MaxTop => BoardHeight - 1;
 
-
     public override void Init()
     {
         _dropFactory = _managerProvider.Get<DropFactory>();
+        _dataManager = _managerProvider.Get<DataManager>();
         _sceneComponentService = _managerProvider.Get<SceneComponentService>();
         
        _dependencies.Add(_dropFactory);
        _dependencies.Add(_sceneComponentService);
+       _dependencies.Add(_dataManager);
     }
 
     public override void Begin()
