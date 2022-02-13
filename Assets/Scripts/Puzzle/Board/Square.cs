@@ -6,8 +6,6 @@ using Zenject;
 
 public class Square : MonoBehaviour
 {
-    [Inject] private SignalBus _signalBus;
-
     public BoardElement BoardElement;
     public Vector3 CenterPosition;
     public Vector2Int Coordinates;
@@ -45,8 +43,6 @@ public class Square : MonoBehaviour
     private void Start()
     {
         _boardManager = ManagerProvider.Instance.Get<BoardManager>();
-        
-        CenterPosition = transform.position;
     }
 
     public bool TryGetByType<T>(out T value, T defaultValue) where T : BoardElement

@@ -12,6 +12,6 @@ public class AddressableManager : Manager
     
     public AsyncOperationHandle<T> LoadAsset<T>(string label)
     {
-        return Addressables.LoadAsset<T>(label);
+        return Addressables.LoadAssetAsync<T>(label);
     }
 }

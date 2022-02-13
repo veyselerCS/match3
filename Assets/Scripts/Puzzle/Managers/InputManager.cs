@@ -93,6 +93,7 @@ public class InputManager : Manager
             var currentTouchPos = GetTouchBoardPosition();
             if (currentTouchPos == _firstTouchedBoardPos && !(board.At(_firstTouchedBoardPos).Locked))
             {
+                Debug.LogWarning("Tap on " + currentTouchPos);
                 _signalBus.Fire(new TapSignal(currentTouchPos));
             }
         }

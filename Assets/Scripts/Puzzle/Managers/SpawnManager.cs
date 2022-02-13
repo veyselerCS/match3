@@ -39,7 +39,7 @@ public class SpawnManager : Manager
         
         spawnLock = true;
         var board = _boardManager.Board;
-        for (int i = 0; i < 9; i++)
+        for (int i = 0; i < _boardManager.BoardWidth; i++)
         {
             var neededCount = GetNeededDropCountForColumn(i);
             var createdCount = GetCreatedDropCountForColumn(i);
@@ -58,7 +58,6 @@ public class SpawnManager : Manager
         if (spawnQueued)
         {
             spawnQueued = false;
-            //OnMatchEnd();
             return;
         }
         

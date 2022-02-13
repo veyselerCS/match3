@@ -7,39 +7,50 @@ using UnityEngine.UI;
 public class BoardManager : Manager
 {
     private DropFactory _dropFactory;
+    private ObstacleFactory _obstacleFactory;
     private SceneComponentService _sceneComponentService;
-    private DataManager _dataManager;
-
-    public int BoardWidth = 9; 
-    public int BoardHeight = 9;
+    private PuzzleLoadManager _puzzleLoadManager;
+    
+    [HideInInspector]
+    public int BoardWidth; 
+    [HideInInspector]
+    public int BoardHeight;
     
     public List<List<Square>> Board = new List<List<Square>>();
-
-    private Vector2 _squareSize;
-
     public int MaxRight => BoardWidth - 1;
     public int MaxTop => BoardHeight - 1;
+    
+    private Vector2 _squareSize;
+    private LevelData _levelData;
 
     public override void Init()
     {
         _dropFactory = _managerProvider.Get<DropFactory>();
-        _dataManager = _managerProvider.Get<DataManager>();
+        _obstacleFactory = _managerProvider.Get<ObstacleFactory>();
         _sceneComponentService = _managerProvider.Get<SceneComponentService>();
+        _puzzleLoadManager = _managerProvider.Get<PuzzleLoadManager>();
         
        _dependencies.Add(_dropFactory);
        _dependencies.Add(_sceneComponentService);
-       _dependencies.Add(_dataManager);
+       _dependencies.Add(_puzzleLoadManager);
+       _dependencies.Add(_obstacleFactory);
     }
 
     public override void Begin()
     {
+        _levelData = _puzzleLoadManager.LevelToLoad;
+
+        BoardWidth = _levelData.GridWidth;
+        BoardHeight = _levelData.GridHeight;
+        
         _squareSize = _sceneComponentService.BoardSquarePrefab.RectTransform.sizeDelta;
 
         var boardRectTransform = _sceneComponentService.BoardParent.GetComponent<RectTransform>();
         var boardElementRectTransform = _sceneComponentService.BoardElementParent.GetComponent<RectTransform>();
-        
-        boardRectTransform.sizeDelta = _squareSize * 9;
-        boardElementRectTransform.sizeDelta = _squareSize * 9;
+
+        var boardRTSize = new Vector2(_squareSize.x * BoardWidth, _squareSize.y * BoardHeight);
+        boardRectTransform.sizeDelta = boardRTSize;
+        boardElementRectTransform.sizeDelta = boardRTSize;
         
         //init board
         InitBoard();
@@ -48,40 +59,40 @@ public class BoardManager : Manager
 
     private void InitBoard()
     {
+        Board.Clear();
         var boardRectTransform = _sceneComponentService.BoardParent.GetComponent<RectTransform>();
         
+        //create empty squares
         Vector3 boardOffset = boardRectTransform.sizeDelta / 2 * boardRectTransform.lossyScale;
-        Board.Clear();
-        for (int i = 0; i < BoardWidth; i++)
+        for (int i = 0; i < BoardHeight; i++)
         {
             Board.Add(new List<Square>());
-            for (int k = 0; k < BoardHeight; k++)
+            for (int k = 0; k < BoardWidth; k++)
             {
                 Square square = Instantiate(_sceneComponentService.BoardSquarePrefab, _sceneComponentService.BoardParent.transform);
                 var squareTransform = square.transform;
                 var squareScreenPosition = (squareTransform.position);
                 var lossyScale = square.RectTransform.lossyScale;
                 
-                var drop = _dropFactory.GetDropByDropType((DropType)UnityEngine.Random.Range(0, 4));
                 var boardPosition =  squareScreenPosition - boardOffset + 
                                      new Vector3(_squareSize.x * (k + 1/2f) * lossyScale.x , _squareSize.y * (i+ 1/2f) * lossyScale.y, 0);
                 
                 var squarePosition = new Vector2Int(i, k);
+                
                 squareTransform.position = boardPosition;
                 square.Coordinates = squarePosition;
-                square.BoardElement = drop;
+                square.CenterPosition = boardPosition;
+                square.BoardElement = null;
                 
-                drop.transform.position = boardPosition;
-                drop.SquarePosition = squarePosition;
-                drop.gameObject.SetActive(true);
                 Board[i].Add(square);
             }
         }
-
-        for (int i = 0; i < BoardWidth; i++)
+        
+        //add fall squares
+        for (int i = 0; i < BoardHeight; i++)
         {
             Board.Add(new List<Square>());
-            for (int k = 0; k < BoardHeight; k++)
+            for (int k = 0; k < BoardWidth; k++)
             {
                 Square square = Instantiate(_sceneComponentService.BoardSquarePrefab, _sceneComponentService.BoardParent.transform);
                 var squareTransform = square.transform;
@@ -96,9 +107,41 @@ public class BoardManager : Manager
                 square.Coordinates = squarePosition;
                 square.CenterPosition = boardPosition;
                 square.BoardElement = null;
-                Board[BoardWidth + i].Add(square);
-                square.gameObject.SetActive(true);
+                Board[BoardHeight + i].Add(square);
+                square.gameObject.SetActive(false);
                 //square
+            }
+        }
+        
+        //add drops
+        foreach (var dropTypePositionPair in _levelData.Drops)
+        {
+            foreach (var position in dropTypePositionPair.Value)
+            {
+                var drop = _dropFactory.GetDropByDropType(dropTypePositionPair.Key);
+                var square = Board.At(position);
+                
+                drop.transform.SetParent(_sceneComponentService.BoardElementParent.transform);
+                drop.transform.position = square.CenterPosition;
+                drop.SquarePosition = position;
+                drop.gameObject.SetActive(true);
+                square.BoardElement = drop;
+            }
+        }       
+        
+        //add obstacles
+        foreach (var obstacleTypePositionPair in _levelData.Obstacles)
+        {
+            foreach (var position in obstacleTypePositionPair.Value)
+            {
+                var obstacle = _obstacleFactory.GetObstacleByObstacleType(obstacleTypePositionPair.Key);
+                var square = Board.At(position);
+                
+                obstacle.transform.SetParent(_sceneComponentService.BoardElementParent.transform);
+                obstacle.transform.position = square.CenterPosition;
+                obstacle.SquarePosition = position;
+                obstacle.gameObject.SetActive(true);
+                square.BoardElement = obstacle;
             }
         }
     }
