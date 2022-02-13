@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Zenject;
+using UnityEngine.SceneManagement;
 
 public class ManagerProvider : MonoBehaviour
 {
-    [Inject] private SignalBus _signalBus;
     public static ManagerProvider Instance;
     private Dictionary<string, Manager> Managers = new Dictionary<string, Manager>();
     private List<Manager> _resolved = new List<Manager>();
@@ -14,6 +13,7 @@ public class ManagerProvider : MonoBehaviour
     {
         Instance = this;
         DontDestroyOnLoad(gameObject);
+        SceneManager.LoadScene("MainScene");
     }
 
     public void AddResolved(Manager manager)

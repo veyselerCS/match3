@@ -21,6 +21,14 @@ public class EditorLayout
             if (!saved)
                 return;
             EditorSceneManager.OpenScene("Assets/Scenes/InitScene.unity");
+        }    
+        
+        if (GUILayout.Button(new GUIContent("Main", "Switch to Main scene.")))
+        {
+            bool saved = EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo();
+            if (!saved)
+                return;
+            EditorSceneManager.OpenScene("Assets/Scenes/MainScene.unity");
         }
         
         if (GUILayout.Button(new GUIContent("Puzzle", "Switch to Puzzle scene.")))
