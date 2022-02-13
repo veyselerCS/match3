@@ -5,9 +5,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "LevelRawData", menuName = "Level Raw Data", order = 1)]
 public class LevelRawData : ScriptableObject
 {
-    public string LevelNo;
-    public string GridWidth;
-    public string GridHeight;
-    public string MoveCount;
+    public int LevelNo;
+    public int GridWidth;
+    public int GridHeight;
+    public int MoveCount;
     public string Squares;
 }

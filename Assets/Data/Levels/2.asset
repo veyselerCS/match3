@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LevelNo: 2
   GridWidth: 7
-  GridHeight: 7
+  GridHeight: 9
   MoveCount: 20
   Squares: 105, 105, 105, 101, 101, 100, 102, 105, 105, 105, 100, 103, 101, 102,
     105, 105, 105, 101, 102, 102, 100, 105, 105, 105, 102, 100, 103, 100, 105, 105,
