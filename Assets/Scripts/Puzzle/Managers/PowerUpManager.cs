@@ -45,8 +45,11 @@ public class PowerUpManager : Manager
                 matchSequence.Join(dropSquare.BoardElement.transform.DOMove(mergeDropSquare.CenterPosition, 0.1f)
                     .OnComplete(() =>
                     {
-                        dropSquare.BoardElement.BackToPool();
-                        dropSquare.BoardElement = null;
+                        if (dropSquare.BoardElement != null)
+                        {
+                            dropSquare.BoardElement.BackToPool();
+                            dropSquare.BoardElement = null;
+                        }
                     }));
             }
 

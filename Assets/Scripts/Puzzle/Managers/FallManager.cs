@@ -92,6 +92,7 @@ public class FallManager : Manager
             sequence.OnComplete(() =>
             {
                 fallLock = false;
+                _signalBus.Fire<FallEndSignal>();
             });
         }
         else
