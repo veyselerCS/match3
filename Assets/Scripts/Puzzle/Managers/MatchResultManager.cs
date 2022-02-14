@@ -2,19 +2,25 @@ using System;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
+using Zenject;
 
 public class MatchResultManager : Manager
 {
+    [Inject] private SignalBus _signalBus;
+    
     private PowerUpManager _powerUpManager;
     private BoardManager _boardManager;
+    private TriggerManager _triggerManager;
 
     public override void Init()
     {
         _powerUpManager = _managerProvider.Get<PowerUpManager>();
         _boardManager = _managerProvider.Get<BoardManager>();
+        _triggerManager = _managerProvider.Get<TriggerManager>();
         
         _dependencies.Add(_powerUpManager);
         _dependencies.Add(_boardManager);
+        _dependencies.Add(_triggerManager);
     }
 
     public override void Begin()
@@ -43,6 +49,8 @@ public class MatchResultManager : Manager
                 _powerUpManager.CreatePowerUp(matchSequence, mergePosition, involvedPositions, PowerUpType.TNT);
                 break;
         }
+
+        TriggerNearSquares(involvedPositions);
     }
 
     private void HandleDropCase(List<Vector2Int> involvedPositions)
@@ -56,5 +64,25 @@ public class MatchResultManager : Manager
             square.BoardElement.BackToPool();
             square.BoardElement = null;
         }
+    }
+
+    private void TriggerNearSquares(List<Vector2Int> involvedPositions)
+    {
+        List<Square> triggerZone = new List<Square>();
+        var board = _boardManager.Board;
+        foreach (var position in involvedPositions)
+        {
+            var square = board.At(position);
+            var nearSquares = square.GetNearSquares();
+            foreach (var nearSquare in nearSquares)
+            {
+                if (nearSquare != null && !involvedPositions.Contains(nearSquare.Coordinates))
+                {
+                    triggerZone.Add(nearSquare);
+                }
+            }
+        }
+        
+        _signalBus.Fire(new TriggerSignal(triggerZone, TriggerType.NearMatch));
     }
 }

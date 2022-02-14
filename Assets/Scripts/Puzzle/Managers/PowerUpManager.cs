@@ -11,8 +11,9 @@ public class PowerUpManager : Manager
     private BoardManager _boardManager;
     private PowerUpFactory _powerUpFactory;
     private SceneComponentService _sceneComponentService;
-    private List<PowerUp> powerUpQueue = new List<PowerUp>();
 
+    public int PowerUpCount = 0;
+    
     public override void Init()
     {
         _boardManager = _managerProvider.Get<BoardManager>();
@@ -71,6 +72,8 @@ public class PowerUpManager : Manager
                 });
             }
         }
+
+        PowerUpCount++;
     }
 
     private HashSet<Square> powerUpTriggers = new HashSet<Square>();

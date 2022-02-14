@@ -11,6 +11,8 @@ public class HorizontalRocketPowerUp : PowerUp
     public override void Activate()
     {
         Activated = true;
+        _powerUpManager.PowerUpCount--;
+        
         var board = _boardManager.Board;
         var rightSquare = board[SquarePosition.x][_boardManager.MaxRight];
         var leftSquare = board[SquarePosition.x][0];

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 public class TriggerSignal
 {
     public List<Square> TriggeredSquares;
-    public TriggerType Type;
+    public TriggerType TriggerType;
 
-    public TriggerSignal(List<Square> triggeredSquares, TriggerType type)
+    public TriggerSignal(List<Square> triggeredSquares, TriggerType triggerType)
     {
         TriggeredSquares = triggeredSquares;
-        Type = type;
+        TriggerType = triggerType;
     }
 }

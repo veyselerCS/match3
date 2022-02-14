@@ -105,5 +105,5 @@ MonoBehaviour:
   IsStable: 0
   IsSwappable: 1
   IsTappable: 0
-  Triggers: 
+  Triggers: 0000000001000000
   ObstacleType: 1

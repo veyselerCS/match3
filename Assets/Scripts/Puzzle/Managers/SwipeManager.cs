@@ -30,7 +30,7 @@ public class SwipeManager : Manager
         var swipeStartElement = board[data.From.x][data.From.y];
         var swipeEndElement = board[data.To.x][data.To.y];
        
-        Swipe(swipeStartElement, swipeEndElement, () =>
+        Swap(swipeStartElement, swipeEndElement, () =>
         {
             _signalBus.Fire(new SwipeEndSignal(swipeStartElement.Coordinates, swipeEndElement.Coordinates));
         });
@@ -43,10 +43,10 @@ public class SwipeManager : Manager
         var swipeStartElement = board[data.From.x][data.From.y];
         var swipeEndElement = board[data.To.x][data.To.y];
 
-        Swipe(swipeStartElement, swipeEndElement);
+        Swap(swipeStartElement, swipeEndElement);
     }
 
-    private void Swipe(Square swipeStartElement, Square swipeEndElement, Action onSwipeEnd = null)
+    private void Swap(Square swipeStartElement, Square swipeEndElement, Action onSwipeEnd = null)
     {
         var board = _boardManager.Board;
 
@@ -57,11 +57,11 @@ public class SwipeManager : Manager
             .Join(swipeEndElement.BoardElement.transform.DOMove(swipeStartElement.CenterPosition, 0.2f))
             .OnComplete(() =>
             {
-                //swap sqı
+                //swap square position data
                 (board[swipeStartElement.Coordinates.x][swipeStartElement.Coordinates.y].BoardElement.SquarePosition, board[swipeEndElement.Coordinates.x][swipeEndElement.Coordinates.y].BoardElement.SquarePosition) = 
                     (board[swipeEndElement.Coordinates.x][swipeEndElement.Coordinates.y].BoardElement.SquarePosition, board[swipeStartElement.Coordinates.x][swipeStartElement.Coordinates.y].BoardElement.SquarePosition);
                 
-                
+                //swap board element data
                 (board[swipeStartElement.Coordinates.x][swipeStartElement.Coordinates.y].BoardElement, board[swipeEndElement.Coordinates.x][swipeEndElement.Coordinates.y].BoardElement) =
                     (board[swipeEndElement.Coordinates.x][swipeEndElement.Coordinates.y].BoardElement, board[swipeStartElement.Coordinates.x][swipeStartElement.Coordinates.y].BoardElement);
                 

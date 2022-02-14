@@ -5,8 +5,6 @@ public class TriggerManager : Manager
 {
     [Inject] private SignalBus _signalBus;
     private BoardManager _boardManager;
-    private Sequence _triggerSequence;
-
     public override void Init()
     {
         _boardManager = _managerProvider.Get<BoardManager>();
@@ -17,14 +15,11 @@ public class TriggerManager : Manager
     public override void Begin()
     {
         _signalBus.Subscribe<TriggerSignal>(OnTrigger);
-        _triggerSequence = null;
         SetReady();
     }
 
     public void OnTrigger(TriggerSignal data)
     {
-        if (_triggerSequence == null) _triggerSequence = DOTween.Sequence();
-
         foreach (var square in data.TriggeredSquares)
         {
             if (square.BoardElement != null)
@@ -37,8 +32,11 @@ public class TriggerManager : Manager
                 }
                 else
                 {
-                    square.BoardElement.BackToPool();
-                    square.BoardElement = null;  
+                    if (square.BoardElement.Triggers.Contains(data.TriggerType))
+                    {
+                        square.BoardElement.BackToPool();
+                        square.BoardElement = null;  
+                    }
                 }
             }
         }

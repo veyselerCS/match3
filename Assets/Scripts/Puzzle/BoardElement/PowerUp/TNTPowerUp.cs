@@ -17,6 +17,7 @@ public class TNTPowerUp : PowerUp
     public override void Activate()
     {
         Activated = true;
+        _powerUpManager.PowerUpCount--;
         
         var triggerZone = GetTriggerZone();
         foreach (var square in triggerZone)

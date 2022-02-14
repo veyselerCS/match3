@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using DG.Tweening;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -21,23 +22,52 @@ public class Square : MonoBehaviour
     private int _lockCount;
     public BoardManager _boardManager;
     public RectTransform RectTransform;
+    
     public Square Up
     {
-        get { return _boardManager.Board[Coordinates.x + 1][Coordinates.y]; }
+        get
+        {
+            if (_boardManager.IsInBoardLimits(Coordinates.x + 1, Coordinates.y))
+            {
+              return _boardManager.Board[Coordinates.x + 1][Coordinates.y];
+            }
+            return null;
+        }
     }   
     
     public Square Down
     {
-        get { return _boardManager.Board[Coordinates.x - 1][Coordinates.y]; }
+        get
+        {
+            if (_boardManager.IsInBoardLimits(Coordinates.x - 1, Coordinates.y))
+            {
+                return _boardManager.Board[Coordinates.x - 1][Coordinates.y];
+            }
+            return null;
+        }
     }  
     
     public Square Left
     {
-        get { return _boardManager.Board[Coordinates.x ][Coordinates.y - 1]; }
+        get
+        {
+            if (_boardManager.IsInBoardLimits(Coordinates.x, Coordinates.y - 1))
+            {
+                return _boardManager.Board[Coordinates.x][Coordinates.y - 1];
+            }
+            return null;
+        }
     }  
     public Square Right
     {
-        get { return _boardManager.Board[Coordinates.x][Coordinates.y + 1]; }
+        get
+        {
+            if (_boardManager.IsInBoardLimits(Coordinates.x, Coordinates.y + 1))
+            {
+                return _boardManager.Board[Coordinates.x][Coordinates.y + 1];
+            }
+            return null;
+        }
     } 
     
     private void Start()
@@ -57,6 +87,11 @@ public class Square : MonoBehaviour
         }
 
         return false;
+    }
+
+    public List<Square> GetNearSquares()
+    {
+        return new List<Square> { Up, Down, Left, Right };
     }
 
     public void Lock()

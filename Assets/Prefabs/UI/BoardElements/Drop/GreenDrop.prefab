@@ -63,7 +63,7 @@ MonoBehaviour:
   IsStable: 0
   IsSwappable: 1
   IsTappable: 0
-  Triggers: 
+  Triggers: 01000000
   DropType: 1
 --- !u!114 &8472087451468470554
 MonoBehaviour:
