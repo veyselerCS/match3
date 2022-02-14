@@ -105,6 +105,8 @@ public class InputManager : Manager
             
             if (!_boardManager.IsInBoardLimits(currentTouchPos)) return;
             if(board.At(_firstTouchedBoardPos).Locked || board.At(currentTouchPos).Locked) return;
+            if(board.At(_firstTouchedBoardPos).BoardElement == null || board.At(currentTouchPos).BoardElement == null) return;
+            if(!board.At(_firstTouchedBoardPos).BoardElement.IsSwappable || !board.At(currentTouchPos).BoardElement.IsSwappable) return;
             
             if (currentTouchPos != _firstTouchedBoardPos)
             {

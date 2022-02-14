@@ -61,7 +61,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SquarePosition: {x: 0, y: 0}
   IsStable: 0
-  IsSwappable: 0
+  IsSwappable: 1
   IsTappable: 0
   Triggers: 
   DropType: 3

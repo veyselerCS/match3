@@ -60,6 +60,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SquarePosition: {x: 0, y: 0}
+  IsStable: 0
+  IsSwappable: 1
+  IsTappable: 0
+  Triggers: 
   DropType: 0
 --- !u!114 &3507934017709488395
 MonoBehaviour:
