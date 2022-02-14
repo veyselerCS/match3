@@ -59,8 +59,11 @@ public class MatchManager : Manager
                 Debug.LogWarning("Powerup found on swipe");
             }
         }
-        
-        CheckFullBoard();
+
+        if (!CheckFullBoard())
+        {
+            _signalBus.Fire(new SwipeFailSignal(data.To, data.From));
+        }
     }
 
     private void OnFallEndSignal()
@@ -69,7 +72,7 @@ public class MatchManager : Manager
     }
 
     [Button("Check match")]
-    public void CheckFullBoard()
+    public bool CheckFullBoard()
     {
         var match = CheckMatch();
         _matchSequence.OnComplete(() =>
@@ -77,6 +80,7 @@ public class MatchManager : Manager
             if(match)
                 _signalBus.Fire<MatchEndSignal>();
         });
+        return match;
     }
 
     public bool CheckMatch()

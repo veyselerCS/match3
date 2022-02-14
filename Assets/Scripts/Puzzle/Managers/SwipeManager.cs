@@ -19,6 +19,7 @@ public class SwipeManager : Manager
     public override void Begin()
     {
         _signalBus.Subscribe<SwipeStartSignal>(OnSwipeStarted);
+        _signalBus.Subscribe<SwipeFailSignal>(OnSwipeFail);
         SetReady();
     }
 
@@ -28,18 +29,43 @@ public class SwipeManager : Manager
 
         var swipeStartElement = board[data.From.x][data.From.y];
         var swipeEndElement = board[data.To.x][data.To.y];
-        
+       
+        Swipe(swipeStartElement, swipeEndElement, () =>
+        {
+            _signalBus.Fire(new SwipeEndSignal(swipeStartElement.Coordinates, swipeEndElement.Coordinates));
+        });
+    }    
+    
+    private void OnSwipeFail(SwipeFailSignal data)
+    {
+        var board = _boardManager.Board;
+
+        var swipeStartElement = board[data.From.x][data.From.y];
+        var swipeEndElement = board[data.To.x][data.To.y];
+
+        Swipe(swipeStartElement, swipeEndElement);
+    }
+
+    private void Swipe(Square swipeStartElement, Square swipeEndElement, Action onSwipeEnd = null)
+    {
+        var board = _boardManager.Board;
+
         var sequence = DOTween.Sequence();
 
         sequence
-            .Join(swipeStartElement.BoardElement.transform.DOMove(swipeEndElement.CenterPosition, 0.5f))
-            .Join(swipeEndElement.BoardElement.transform.DOMove(swipeStartElement.CenterPosition, 0.5f))
+            .Join(swipeStartElement.BoardElement.transform.DOMove(swipeEndElement.CenterPosition, 0.2f))
+            .Join(swipeEndElement.BoardElement.transform.DOMove(swipeStartElement.CenterPosition, 0.2f))
             .OnComplete(() =>
             {
-                (board[data.From.x][data.From.y].BoardElement.SquarePosition, board[data.To.x][data.To.y].BoardElement.SquarePosition) = (board[data.To.x][data.To.y].BoardElement.SquarePosition, board[data.From.x][data.From.y].BoardElement.SquarePosition);
-                (board[data.From.x][data.From.y].BoardElement, board[data.To.x][data.To.y].BoardElement) = (board[data.To.x][data.To.y].BoardElement, board[data.From.x][data.From.y].BoardElement);
+                //swap sqı
+                (board[swipeStartElement.Coordinates.x][swipeStartElement.Coordinates.y].BoardElement.SquarePosition, board[swipeEndElement.Coordinates.x][swipeEndElement.Coordinates.y].BoardElement.SquarePosition) = 
+                    (board[swipeEndElement.Coordinates.x][swipeEndElement.Coordinates.y].BoardElement.SquarePosition, board[swipeStartElement.Coordinates.x][swipeStartElement.Coordinates.y].BoardElement.SquarePosition);
                 
-                _signalBus.Fire(new SwipeEndSignal(data.From, data.To));
+                
+                (board[swipeStartElement.Coordinates.x][swipeStartElement.Coordinates.y].BoardElement, board[swipeEndElement.Coordinates.x][swipeEndElement.Coordinates.y].BoardElement) =
+                    (board[swipeEndElement.Coordinates.x][swipeEndElement.Coordinates.y].BoardElement, board[swipeStartElement.Coordinates.x][swipeStartElement.Coordinates.y].BoardElement);
+                
+                onSwipeEnd?.Invoke();
             });
     }
 }
