@@ -185,7 +185,6 @@ public class BoardManager : Manager
     
     private void OnDrawGizmos()
     {
-        return;
         Color locked = new Color(0, 0, 0, 0.2f);
         Color nulled = new Color(0, 0, 255, 0.2f);
         Color fulled = new Color(255, 0, 0, 0.2f);

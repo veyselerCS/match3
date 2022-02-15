@@ -71,7 +71,10 @@ public class MatchManager : Manager
 
     private void OnFallEndSignal()
     {
-        CheckFullBoard();
+        if (!CheckFullBoard() && !CheckNoPossibleMove())
+        {
+            Debug.LogWarning("Game over");
+        }
     }
 
     [Button("Check match")]
@@ -93,7 +96,7 @@ public class MatchManager : Manager
         _matchSequence = DOTween.Sequence();
 
         var patternShapes = _patternService.PatternShapes;
-        bool match = false;
+        bool swipeFound = false;
         foreach (var patternShape in patternShapes)
         {
             
@@ -144,14 +147,14 @@ public class MatchManager : Manager
                         if (patternFound)
                         {
                             _matchResultManager.ApplyResult(_matchSequence, mergePosition, involvedPositions, patternShape.MatchResultType);
-                            match = true;
+                            swipeFound = true;
                         }
                     }
                 }
             }
         }
 
-        return match;
+        return swipeFound;
     }
 
     private List<Square> _possibleswipesquares = new List<Square>();
