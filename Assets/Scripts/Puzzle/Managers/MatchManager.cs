@@ -157,6 +157,7 @@ public class MatchManager : Manager
     private List<Square> _possibleswipesquares = new List<Square>();
     private Square _possibleSwipeSquare = null;
     [Button("Check no swipe")] 
+    //Looks ugly but optimized to return as early as possible to make minimum comparisons
     private bool CheckNoPossibleMove()
     {
         _possibleswipesquares.Clear();
@@ -191,6 +192,7 @@ public class MatchManager : Manager
                         DropType pickedType = firstDrop.DropType;
                         _possibleswipesquares.Clear();
                         _possibleswipesquares.Add(firstNonZeroSquare);
+                        
                         for (int j = 1; j < patternShape.NonZeros.Count; j++)
                         {
                             var nonZero = patternShape.NonZeros[j];
@@ -204,7 +206,7 @@ public class MatchManager : Manager
                                 break;
                             }
 
-                            var isInPossibleTypes = possibleMatchDropTypes.Contains(drop.DropType);                          
+                            var isInPossibleTypes = possibleMatchDropTypes.Contains(drop.DropType);               
 
                             if (!isInPossibleTypes && possibleMatchDropTypes.Count > 1)//no way to find a match since we can't fit 2 elements by swipe at any time
                             {
@@ -221,7 +223,7 @@ public class MatchManager : Manager
                             if(!isInPossibleTypes && canAcceptMoreTypes)
                             {
                                 possibleMatchDropTypes.Add(drop.DropType);
-                                if (j == patternShape.NonZeros.Count - 1)
+                                if (j == patternShape.NonZeros.Count - 1) //last element has to be the picked element if its the new type
                                 {
                                     possibleSwipeSquare = nonZeroSquare;
                                 }
@@ -229,7 +231,7 @@ public class MatchManager : Manager
                             
                             if (isInPossibleTypes && possibleMatchDropTypes.Count == 2) //we have already seen two types so the new one must be the match type if it is possible
                             {
-                                if (j > 2)
+                                if (j > 2 && pickedType != drop.DropType)//after deciding picked type we can't afford to have the other type back
                                 {
                                     possibleSwipeFound = false;
                                     break;
@@ -237,7 +239,7 @@ public class MatchManager : Manager
                                 
                                 pickedType = drop.DropType;
                                 
-                                if (drop.DropType == firstDrop.DropType) //change the drop type and the possible square
+                                if (drop.DropType == firstDrop.DropType && possibleSwipeSquare == firstNonZeroSquare) //change the drop type and the possible square
                                 {
                                     var prevNonZero = patternShape.NonZeros[j - 1];
                                     var prevnonZeroSquare = board[i + prevNonZero.x][k + prevNonZero.y];
@@ -252,7 +254,7 @@ public class MatchManager : Manager
 
                         if (possibleSwipeFound)
                         {
-                            _possibleswipesquares.Remove(possibleSwipeSquare);
+                            _possibleswipesquares.Remove(possibleSwipeSquare);//for gizmos
                             var nearSquares = possibleSwipeSquare.GetNearSquares();
                             foreach (var square in nearSquares)
                             {

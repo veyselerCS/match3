@@ -13,6 +13,7 @@ public class CheatManager : Manager
 
     private BoardManager _boardManager;
     private MatchManager _matchManager;
+    private PowerUpManager _powerUpManager;
     
     public bool CheatMode;
     public BoardElement PickedElement;
@@ -20,9 +21,11 @@ public class CheatManager : Manager
     {
         _boardManager = _managerProvider.Get<BoardManager>();
         _matchManager = _managerProvider.Get<MatchManager>();
+        _powerUpManager = _managerProvider.Get<PowerUpManager>();
         
         _dependencies.Add(_boardManager);
         _dependencies.Add(_matchManager);
+        _dependencies.Add(_powerUpManager);
     }
 
     public override void Begin()
@@ -56,6 +59,7 @@ public class CheatManager : Manager
         if(Input.GetKeyUp(KeyCode.D))
         {
             _boardManager.DeleteBoard();
+            _powerUpManager.PowerUpCount = 0;
         }      
         
         if(Input.GetKeyUp(KeyCode.M))
