@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6153238223345841023}
   - component: {fileID: 2482925690794432248}
   - component: {fileID: 3507934017709488395}
-  - component: {fileID: 7737471994485230745}
+  - component: {fileID: -2788681482066938074}
   m_Layer: 5
   m_Name: BlueDrop
   m_TagString: Untagged
@@ -78,7 +78,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _containerSource: 0
---- !u!114 &7737471994485230745
+--- !u!114 &-2788681482066938074
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -87,7 +87,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8645518574580190223}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dfd7b13540e94232b462a21c69889fc9, type: 3}
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}

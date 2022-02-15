@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2709672675880466057}
   - component: {fileID: 3250034605404413254}
   - component: {fileID: 8472087451468470554}
-  - component: {fileID: 4061533338778981040}
+  - component: {fileID: -9008371036773001154}
   m_Layer: 5
   m_Name: GreenDrop
   m_TagString: Untagged
@@ -78,7 +78,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _containerSource: 0
---- !u!114 &4061533338778981040
+--- !u!114 &-9008371036773001154
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -87,7 +87,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 505823965112519161}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dfd7b13540e94232b462a21c69889fc9, type: 3}
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}

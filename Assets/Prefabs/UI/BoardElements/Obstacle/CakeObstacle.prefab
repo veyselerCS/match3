@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 4090094028104523001}
   - component: {fileID: 7639115718747493817}
   - component: {fileID: 1267640731043392600}
-  - component: {fileID: 2515084708339517455}
   - component: {fileID: 5883597441373818995}
+  - component: {fileID: 4419290359127249427}
   m_Layer: 5
   m_Name: CakeObstacle
   m_TagString: Untagged
@@ -37,7 +37,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 80, y: 80}
+  m_SizeDelta: {x: 90, y: 90}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7639115718747493817
 CanvasRenderer:
@@ -60,7 +60,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _containerSource: 0
---- !u!114 &2515084708339517455
+--- !u!114 &5883597441373818995
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -69,7 +69,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 7986537241826034808}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dfd7b13540e94232b462a21c69889fc9, type: 3}
+  m_Script: {fileID: 11500000, guid: 8fa0d35305344668b73400b88c9ae1cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SquarePosition: {x: 0, y: 0}
+  IsStable: 1
+  IsSwappable: 1
+  IsTappable: 0
+  Triggers: 01000000
+  ObstacleType: 3
+--- !u!114 &4419290359127249427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7986537241826034808}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
@@ -89,21 +107,3 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &5883597441373818995
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7986537241826034808}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8fa0d35305344668b73400b88c9ae1cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SquarePosition: {x: 0, y: 0}
-  IsStable: 1
-  IsSwappable: 1
-  IsTappable: 0
-  Triggers: 01000000
-  ObstacleType: 3

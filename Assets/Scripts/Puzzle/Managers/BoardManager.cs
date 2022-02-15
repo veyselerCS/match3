@@ -45,8 +45,8 @@ public class BoardManager : Manager
         
         _squareSize = _sceneComponentService.BoardSquarePrefab.RectTransform.sizeDelta;
 
-        var boardRectTransform = _sceneComponentService.BoardParent.GetComponent<RectTransform>();
-        var boardElementRectTransform = _sceneComponentService.BoardElementParent.GetComponent<RectTransform>();
+        var boardRectTransform = _sceneComponentService.BoardParent;
+        var boardElementRectTransform = _sceneComponentService.BoardElementParent;
 
         var boardRTSize = new Vector2(_squareSize.x * BoardWidth, _squareSize.y * BoardHeight);
         boardRectTransform.sizeDelta = boardRTSize;
@@ -215,7 +215,7 @@ public class BoardManager : Manager
 
     public Vector2Int GetBoardPosition(Vector3 pos)
     {
-        var offSet = pos - _sceneComponentService.BoardElementParent.transform.position;
+        var offSet = pos - _sceneComponentService.BoardElementParent.GetBottomLeft();
         var lossyScale = _sceneComponentService.BoardElementParent.transform.lossyScale;
         return new Vector2Int((int)((offSet.y / _squareSize.y) * (1f / lossyScale.y)),
             (int)((offSet.x / _squareSize.x) * (1f / lossyScale.x)));

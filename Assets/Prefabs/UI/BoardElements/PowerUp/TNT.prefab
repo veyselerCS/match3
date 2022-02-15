@@ -4822,7 +4822,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3601128123608913757}
   - component: {fileID: 4383686794497753899}
-  - component: {fileID: 1093677191446098203}
+  - component: {fileID: 7088313536642437091}
   m_Layer: 5
   m_Name: TNTImage
   m_TagString: Untagged
@@ -4857,7 +4857,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7590367641057126946}
   m_CullTransparentMesh: 0
---- !u!114 &1093677191446098203
+--- !u!114 &7088313536642437091
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4866,7 +4866,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7590367641057126946}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dfd7b13540e94232b462a21c69889fc9, type: 3}
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
@@ -5037,6 +5037,7 @@ MonoBehaviour:
   IsSwappable: 1
   IsTappable: 1
   Triggers: 01000000
+  Activated: 0
   Type: 3
   Particle: {fileID: 7612599990610846983}
   TNTImage: {fileID: 7590367641057126946}

@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 8183892820822007992}
   - component: {fileID: 2200553463978739586}
   - component: {fileID: 8882208148564348406}
-  - component: {fileID: 2345350591422953572}
   - component: {fileID: 4329739836588292337}
+  - component: {fileID: 7135053268215292576}
   m_Layer: 5
   m_Name: BoxObstacle
   m_TagString: Untagged
@@ -60,7 +60,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _containerSource: 0
---- !u!114 &2345350591422953572
+--- !u!114 &4329739836588292337
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -69,7 +69,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 4329739836588292338}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dfd7b13540e94232b462a21c69889fc9, type: 3}
+  m_Script: {fileID: 11500000, guid: 8fa0d35305344668b73400b88c9ae1cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SquarePosition: {x: 0, y: 0}
+  IsStable: 1
+  IsSwappable: 0
+  IsTappable: 0
+  Triggers: 0000000001000000
+  ObstacleType: 0
+--- !u!114 &7135053268215292576
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4329739836588292338}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
@@ -89,21 +107,3 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &4329739836588292337
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4329739836588292338}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8fa0d35305344668b73400b88c9ae1cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SquarePosition: {x: 0, y: 0}
-  IsStable: 1
-  IsSwappable: 0
-  IsTappable: 0
-  Triggers: 0000000001000000
-  ObstacleType: 0

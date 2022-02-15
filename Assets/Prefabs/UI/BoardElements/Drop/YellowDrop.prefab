@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8282402783925500435}
   - component: {fileID: 1542049675144043540}
   - component: {fileID: 3025791459514825174}
-  - component: {fileID: 9099567637548907413}
+  - component: {fileID: 3761142822017627216}
   m_Layer: 5
   m_Name: YellowDrop
   m_TagString: Untagged
@@ -78,7 +78,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _containerSource: 0
---- !u!114 &9099567637548907413
+--- !u!114 &3761142822017627216
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -87,7 +87,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5795778356743193955}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dfd7b13540e94232b462a21c69889fc9, type: 3}
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
