@@ -53,9 +53,6 @@ public class PropellarPowerUp : PowerUp
         return triggerZone;
     }
 
-    [SerializeField] private Vector3 rotation = new Vector3(0, 0, 360);
-    [SerializeField] private float duration = 1f;
-    
     private bool playAnim;
     [Button("Play Anim")]
     private void PlayAnim()
@@ -63,17 +60,11 @@ public class PropellarPowerUp : PowerUp
         playAnim = !playAnim;
     }
 
-    private float _lastTime;
-    private float _rotationSpeed = 360 * 2;//half a second for a rotation
     private void Update()
     {
         if (playAnim)
         {
-            float passedTime = Time.deltaTime - _lastTime;
-            transform.rotation = Quaternion.Euler(0,0, transform.rotation.eulerAngles.z + _rotationSpeed * 720);
-            return;
+            transform.rotation = Quaternion.Euler(0,0, transform.rotation.eulerAngles.z + 6);
         }
-        
-        _lastTime = Time.deltaTime;
     }
 }
