@@ -8,11 +8,18 @@ using UnityEngine.UI;
 public class PropellarPowerUp : PowerUp
 {
     [SerializeField] private RectTransform _rectTransform;
+    [SerializeField] private List<GameObject> Particles;
     
     public override void Activate()
     {
         Activated = true;
+        _playRotation = true;
         _powerUpManager.PowerUpCount--;
+        
+        foreach (var particle in Particles)
+        {
+            particle.SetActive(true);
+        }
         
         var triggerZone = GetTriggerZone();
         triggerZone.Add(_boardManager.Board.At(SquarePosition));
@@ -28,12 +35,23 @@ public class PropellarPowerUp : PowerUp
             {
                 square.Unlock();
             }
+
+            ResetComponent();
             BackToPool();
             _boardManager.Board.At(SquarePosition).BoardElement = null;
             _signalBus.Fire<MatchEndSignal>();
         });
     }
 
+    public void ResetComponent()
+    {
+        _playRotation = false;
+        foreach (var particle in Particles)
+        {
+            particle.SetActive(false);
+        }
+    }
+    
     public override List<Square> GetTriggerZone()
     {
         List<Square> triggerZone = new List<Square>();
@@ -53,16 +71,16 @@ public class PropellarPowerUp : PowerUp
         return triggerZone;
     }
 
-    private bool playAnim;
+    private bool _playRotation;
     [Button("Play Anim")]
     private void PlayAnim()
     {
-        playAnim = !playAnim;
+        _playRotation = !_playRotation;
     }
 
     private void Update()
     {
-        if (playAnim)
+        if (_playRotation)
         {
             transform.rotation = Quaternion.Euler(0,0, transform.rotation.eulerAngles.z + 6);
         }
