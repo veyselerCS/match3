@@ -37,6 +37,14 @@ public class EditorLayout
             if (!saved)
                 return;
             EditorSceneManager.OpenScene("Assets/Scenes/PuzzleScene.unity");
+        }      
+        
+        if (GUILayout.Button(new GUIContent("Test", "Switch to Test scene.")))
+        {
+            bool saved = EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo();
+            if (!saved)
+                return;
+            EditorSceneManager.OpenScene("Assets/Scenes/TestScene.unity");
         } 
     }
 }

@@ -1,9 +1,14 @@
+using System;
 using System.Collections.Generic;
 using DG.Tweening;
+using NaughtyAttributes;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PropellarPowerUp : PowerUp
 {
+    [SerializeField] private RectTransform _rectTransform;
+    
     public override void Activate()
     {
         Activated = true;
@@ -46,5 +51,29 @@ public class PropellarPowerUp : PowerUp
             triggerZone.Add(_boardManager.Board[SquarePosition.x][SquarePosition.y + 1]);
         
         return triggerZone;
+    }
+
+    [SerializeField] private Vector3 rotation = new Vector3(0, 0, 360);
+    [SerializeField] private float duration = 1f;
+    
+    private bool playAnim;
+    [Button("Play Anim")]
+    private void PlayAnim()
+    {
+        playAnim = !playAnim;
+    }
+
+    private float _lastTime;
+    private float _rotationSpeed = 360 * 2;//half a second for a rotation
+    private void Update()
+    {
+        if (playAnim)
+        {
+            float passedTime = Time.deltaTime - _lastTime;
+            transform.rotation = Quaternion.Euler(0,0, transform.rotation.eulerAngles.z + _rotationSpeed * 720);
+            return;
+        }
+        
+        _lastTime = Time.deltaTime;
     }
 }
