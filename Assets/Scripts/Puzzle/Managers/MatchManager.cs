@@ -53,17 +53,19 @@ public class MatchManager : Manager
         _swipedSquareCoordinates.Add(data.From);
         _swipedSquareCoordinates.Add(data.To);
 
+        bool powerUpActivated = false;
         foreach (var swipedSquare in _swipedSquareCoordinates)
         {
             var boardElement = board.At(swipedSquare).BoardElement;
             
             if (boardElement != null && boardElement is PowerUp powerUp)
             {
-                Debug.LogWarning("Powerup found on swipe");
+                powerUpActivated = true;
+                powerUp.Activate();
             }
         }
 
-        if (!CheckFullBoard())
+        if (!CheckFullBoard() && !powerUpActivated)
         {
             _signalBus.Fire(new SwipeFailSignal(data.To, data.From));
         }
