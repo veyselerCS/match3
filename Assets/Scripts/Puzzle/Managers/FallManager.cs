@@ -7,8 +7,6 @@ using Zenject;
 
 public class FallManager : Manager
 {
-    [SerializeField] private float BaseSpeed = 200f;
-    
     [Inject] private SignalBus _signalBus;
     private BoardManager _boardManager;
     
@@ -66,20 +64,19 @@ public class FallManager : Manager
                     available.Lock();
                     
                     var boardElement = nonEmptySquares[k].BoardElement;
-                    var speed = BaseSpeed;
-                    var distance = nonEmptySquares[k].CenterPosition - available.CenterPosition;
-                    var duration = distance.y / speed;
 
                     var available1 = available;
-                    sequence.Join(boardElement.transform.DOMove(available.CenterPosition, duration).OnComplete(() =>
+                    sequence.Join(boardElement.transform.DOMove(available.CenterPosition, 0.2f).OnComplete(() =>
                     {
                         fallingElementSquare.Unlock();
                         available1.Unlock();
                     }));
+                    
                     boardElement.SquarePosition = available.Coordinates;
                     available.BoardElement = boardElement;
                     available = available.Up;
                     nonEmptySquares[k].BoardElement = null;
+                    
                     if(!fall)
                         fall = true;
                 }

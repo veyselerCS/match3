@@ -62,6 +62,7 @@ public class PropellarPowerUp : PowerUp
             .OnComplete(() =>
             {
                 _signalBus.Fire(new TriggerSignal(new List<Square>(){targetSquare}, TriggerType.Special));
+                _signalBus.Fire<CheckFallSignal>();
                 ResetComponent();
                 BackToPool();
             });

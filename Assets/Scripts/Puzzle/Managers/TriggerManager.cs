@@ -41,7 +41,7 @@ public class TriggerManager : Manager
                 else
                 {
                     square.BoardElement.BackToPool();
-                    square.BoardElement = null;  
+                    square.BoardElement = null;
                 }
             }
         }
