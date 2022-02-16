@@ -5,7 +5,6 @@ using Zenject;
 
 public class LevelEnterPopup : BasePopup<LevelEnterPopup.Data>
 {
-    
     [SerializeField] private RectTransform LevelsParent;
     [SerializeField] private LevelEnterPopupItem LevelEnterPopupTemplate;
 
@@ -23,7 +22,7 @@ public class LevelEnterPopup : BasePopup<LevelEnterPopup.Data>
         foreach (var level in PopupData.Levels)
         {
             LevelEnterPopupItem item = Instantiate(LevelEnterPopupTemplate, LevelsParent.transform);
-            item.Init(level.LevelNo, level.MoveCount, level.LevelNo == maxLevel && !_dataManager.UserData.MaxLevelShown);
+            item.Init(level.LevelNo, level.MoveCount, level.LevelNo == maxLevel && !_dataManager.UserData.IsMaxLevelShown);
             item.gameObject.SetActive(true);
         }
     }

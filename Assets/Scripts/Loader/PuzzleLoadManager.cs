@@ -26,14 +26,14 @@ public class PuzzleLoadManager : Manager
     {
         LevelToLoad = _dataManager.LevelData[levelId - 1];
         
-        _popupManager.Hide("LevelEnterPopup");
         LoadingManager.Instance.ShowLoadingImage();
         SceneManager.LoadSceneAsync("PuzzleScene", LoadSceneMode.Additive).completed += (a) =>
         {
             DOVirtual.DelayedCall(2f, () =>
             {
+                _popupManager.Hide("LevelEnterPopup");
                 LoadingManager.Instance.HideLoadingImage();
             });
-        };;
+        };
     }
 }

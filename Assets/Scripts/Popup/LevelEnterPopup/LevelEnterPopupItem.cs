@@ -37,10 +37,17 @@ public class LevelEnterPopupItem : MonoBehaviour
 
     private void OnHideFinish(HideLoadFinishSignal data)
     {
-        if (_shouldAnimate)
+        if (_shouldAnimate && gameObject.activeInHierarchy)
         {
-            GrayButtonRectTransform.DOSizeDelta(new Vector2(0, GrayButtonRectTransform.sizeDelta.y), 0.5f)
-                .OnComplete(() => GrayButtonRectTransform.gameObject.SetActive(false));
+            GrayButtonRectTransform
+                .DOSizeDelta(new Vector2(0, GrayButtonRectTransform.sizeDelta.y), 0.5f)
+                .OnComplete(() => GrayButtonRectTransform.gameObject.SetActive(false))
+                .SetLink(GrayButtonRectTransform.gameObject);
         }
+    }
+
+    private void OnDestroy()
+    {
+        _signalBus.Unsubscribe<HideLoadFinishSignal>(OnHideFinish);
     }
 }

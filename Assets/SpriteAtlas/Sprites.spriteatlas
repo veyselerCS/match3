@@ -48,6 +48,7 @@ SpriteAtlas:
   m_PackedSprites:
   - {fileID: 21300000, guid: 02c610807287d184782c94f316a825da, type: 3}
   - {fileID: 21300000, guid: 7a524b802a03dfa448cd5c4148a3fa6c, type: 3}
+  - {fileID: 21300000, guid: a1549bf02b981ab43a61887794cc5a5e, type: 3}
   - {fileID: 21300000, guid: 5f9a1121076ef9648872aad8b5c7f5e8, type: 3}
   - {fileID: 21300000, guid: 3dbf1952a9ae9c642be22b1f9eb7266b, type: 3}
   - {fileID: 21300000, guid: e011ad4354636614591dbad09c041ea5, type: 3}
@@ -120,9 +121,11 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 4f0eb6f63782b094b87823c242ade5c8, type: 3}
   - {fileID: 21300000, guid: 3655c17706093b84db6265e797aec934, type: 3}
   - {fileID: 21300000, guid: 6454db49a6d999c4bbde5fdf864cdd0f, type: 3}
+  - {fileID: 21300000, guid: abbb6099eae5c984f8b8e002622e797d, type: 3}
   - {fileID: 21300000, guid: 367ec4a9a9c46a642b63ffebc4cc990d, type: 3}
   - {fileID: 21300000, guid: e38cd5da9f6f88845b333b02db429fc3, type: 3}
   - {fileID: 21300000, guid: 9f2c2d0b4c3272d468120d20d359beb2, type: 3}
+  - {fileID: 21300000, guid: 500a302b8fd6f33469ed91c7dcc5b6c3, type: 3}
   - {fileID: 21300000, guid: 612db7bb36256524ba7095a100cba61d, type: 3}
   - {fileID: 21300000, guid: 1f52f88cb92f31f4d930036c08406052, type: 3}
   - {fileID: 21300000, guid: 659ef10d6ca0d3a4eb4bb43cba10660e, type: 3}
@@ -131,6 +134,7 @@ SpriteAtlas:
   m_PackedSpriteNamesToIndex:
   - Puzzle_Drop_Blue
   - Puzzle_PowerUp_Propeller
+  - star-white
   - Puzzle_PowerUp_Bomb
   - 5
   - Puzzle_Drop_Red
@@ -203,9 +207,11 @@ SpriteAtlas:
   - UI_Particle_Flame
   - Puzzle_Obstacle_Sugar
   - White
+  - start
   - PopupBg
   - Puzzle_Obstacle_Crisp
   - Puzzle_Obstacle_Cake
+  - sad
   - Puzzle_PowerUp_Rocket_Half
   - UI_Bg
   - Puzzle_Drop_Green

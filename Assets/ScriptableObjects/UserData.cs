@@ -6,19 +6,19 @@ using UnityEngine;
 public class UserData : ScriptableObject
 {
     public int MaxLevel;
-    public bool MaxLevelShown => _maxLevelShown == 1;
+    public int MaxLevelShown;
     
-    public int _maxLevelShown;
-
+    public bool IsMaxLevelShown => MaxLevelShown == 1;
+    
     private void Awake()
     {
         ReadData();
     }
 
-    private void UpdateData()
+    public void SetDataDirty()
     {
         PlayerPrefs.SetInt("MaxLevel", MaxLevel);
-        PlayerPrefs.SetInt("MaxLevelShown", _maxLevelShown);
+        PlayerPrefs.SetInt("MaxLevelShown", MaxLevelShown);
     }
 
     private void ReadData()
@@ -26,14 +26,14 @@ public class UserData : ScriptableObject
         if (PlayerPrefs.HasKey("MaxLevel"))
         {
             MaxLevel = PlayerPrefs.GetInt("MaxLevel");
-            _maxLevelShown = PlayerPrefs.GetInt("MaxLevelShown");
+            MaxLevelShown = PlayerPrefs.GetInt("MaxLevelShown");
             return;
         }
 
         MaxLevel = 1;
-        _maxLevelShown = 0;
+        MaxLevelShown = 0;
         
         PlayerPrefs.SetInt("MaxLevel", MaxLevel);
-        PlayerPrefs.SetInt("MaxLevelShown", _maxLevelShown);
+        PlayerPrefs.SetInt("MaxLevelShown", MaxLevelShown);
     }
 }
