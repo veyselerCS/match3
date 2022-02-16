@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -8,12 +9,18 @@ public class ManagerProvider : MonoBehaviour
     public static ManagerProvider Instance;
     private Dictionary<string, Manager> Managers = new Dictionary<string, Manager>();
     private List<Manager> _resolved = new List<Manager>();
-    
+
     private void Awake()
     {
         Instance = this;
         DontDestroyOnLoad(gameObject);
-        SceneManager.LoadScene("MainScene");
+        SceneManager.LoadSceneAsync("MainScene", LoadSceneMode.Additive).completed += (a) =>
+        {
+            DOVirtual.DelayedCall(2f, () =>
+            {
+                LoadingManager.Instance.HideLoadingImage();
+            });
+        };
     }
 
     public void AddResolved(Manager manager)

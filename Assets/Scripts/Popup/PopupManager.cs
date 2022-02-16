@@ -30,6 +30,8 @@ public class PopupManager : Manager
         var popupGO = handle.Result;
         BasePopup<TPopupData> popup = Instantiate(popupGO, PopupCanvas.transform).GetComponent<BasePopup<TPopupData>>();
         popup.PopupData = data;
+        popup.Init();
+        popup.Show();
         _activePopups.Add(popup);
     }
 

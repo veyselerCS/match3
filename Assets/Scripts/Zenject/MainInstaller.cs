@@ -9,5 +9,6 @@ public class MainInstaller : MonoInstaller
         Container.DeclareSignal<ManagerReadySignal>().OptionalSubscriber();
         Container.DeclareSignal<ManagerProviderReadySignal>();
         Container.DeclareSignal<DataReadySignal>();
+        Container.DeclareSignal<HideLoadFinishSignal>();
     }
 }

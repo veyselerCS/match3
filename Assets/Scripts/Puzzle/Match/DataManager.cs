@@ -7,11 +7,11 @@ public class DataManager : Manager
 {
     [Inject] private SignalBus _signalBus;
     [SerializeField] private int MaxLevel = 5;
-
+    [SerializeField] public UserData UserData;
+    
     private AddressableManager _addressableManager;
 
     public List<LevelData> LevelData = new List<LevelData>();
-
     public override void Init()
     {
         _addressableManager = _managerProvider.Get<AddressableManager>();

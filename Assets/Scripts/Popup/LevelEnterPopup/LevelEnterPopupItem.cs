@@ -1,0 +1,46 @@
+using System;
+using DG.Tweening;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+using Zenject;
+
+public class LevelEnterPopupItem : MonoBehaviour
+{
+    [Inject] private SignalBus _signalBus;
+
+    [SerializeField] private TextMeshProUGUI LevelText;
+    [SerializeField] private TextMeshProUGUI MoveText;
+    [SerializeField] private RectTransform GrayButtonRectTransform;
+    [SerializeField] private Button GreenButton;
+
+    private PuzzleLoadManager _puzzleLoadManager;
+    private int _levelNo;
+    private bool _shouldAnimate;
+
+    private void Start()
+    {
+        _puzzleLoadManager = ManagerProvider.Instance.Get<PuzzleLoadManager>();
+        _signalBus.Subscribe<HideLoadFinishSignal>(OnHideFinish);
+    }
+
+    public void Init(int levelNo, int moveCount, bool shouldAnimate)
+    {
+        _levelNo = levelNo;
+        
+        LevelText.text = levelNo.ToString();
+        MoveText.text = moveCount.ToString();
+        _shouldAnimate = shouldAnimate;
+        
+        GreenButton.onClick.AddListener(() => { _puzzleLoadManager.LoadLevel(_levelNo); });
+    }
+
+    private void OnHideFinish(HideLoadFinishSignal data)
+    {
+        if (_shouldAnimate)
+        {
+            GrayButtonRectTransform.DOSizeDelta(new Vector2(0, GrayButtonRectTransform.sizeDelta.y), 0.5f)
+                .OnComplete(() => GrayButtonRectTransform.gameObject.SetActive(false));
+        }
+    }
+}

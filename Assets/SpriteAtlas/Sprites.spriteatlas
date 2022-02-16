@@ -49,14 +49,82 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 02c610807287d184782c94f316a825da, type: 3}
   - {fileID: 21300000, guid: 7a524b802a03dfa448cd5c4148a3fa6c, type: 3}
   - {fileID: 21300000, guid: 5f9a1121076ef9648872aad8b5c7f5e8, type: 3}
+  - {fileID: 21300000, guid: 3dbf1952a9ae9c642be22b1f9eb7266b, type: 3}
   - {fileID: 21300000, guid: e011ad4354636614591dbad09c041ea5, type: 3}
+  - {fileID: 21300000, guid: ca629f839ab37b34e93469307714361d, type: 3}
+  - {fileID: 21300000, guid: c1677c640c618fb4aa549e382ce4d861, type: 3}
+  - {fileID: 21300004, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  - {fileID: 21300108, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  - {fileID: 21300106, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  - {fileID: 21300112, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  - {fileID: 21300110, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  - {fileID: 21300028, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  - {fileID: 21300116, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  - {fileID: 21300030, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  - {fileID: 21300114, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  - {fileID: 21300032, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  - {fileID: 21300120, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  - {fileID: 21300034, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  - {fileID: 21300118, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  - {fileID: 21300020, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  - {fileID: 21300022, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  - {fileID: 21300122, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  - {fileID: 21300024, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  - {fileID: 21300026, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  - {fileID: 21300036, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  - {fileID: 21300038, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  - {fileID: 21300102, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  - {fileID: 21300104, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  - {fileID: 21300086, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  - {fileID: 21300088, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  - {fileID: 21300058, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  - {fileID: 21300090, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  - {fileID: 21300064, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  - {fileID: 21300056, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  - {fileID: 21300092, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  - {fileID: 21300076, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  - {fileID: 21300066, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  - {fileID: 21300094, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  - {fileID: 21300074, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  - {fileID: 21300060, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  - {fileID: 21300096, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  - {fileID: 21300062, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  - {fileID: 21300050, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  - {fileID: 21300098, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  - {fileID: 21300072, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  - {fileID: 21300048, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  - {fileID: 21300100, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  - {fileID: 21300084, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  - {fileID: 21300054, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  - {fileID: 21300082, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  - {fileID: 21300068, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  - {fileID: 21300052, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  - {fileID: 21300080, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  - {fileID: 21300070, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  - {fileID: 21300042, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  - {fileID: 21300078, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  - {fileID: 21300040, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  - {fileID: 21300046, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  - {fileID: 21300044, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  - {fileID: 21300018, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  - {fileID: 21300016, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  - {fileID: 21300010, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  - {fileID: 21300008, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  - {fileID: 21300014, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  - {fileID: 21300012, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  - {fileID: 21300002, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  - {fileID: 21300000, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  - {fileID: 21300006, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
   - {fileID: 21300000, guid: fef3fed5ed33b814eb3d024d9ca1541f, type: 3}
   - {fileID: 21300000, guid: ad51b7f5e222f3a4981bb4e2c9e6d35a, type: 3}
   - {fileID: 21300000, guid: 4f0eb6f63782b094b87823c242ade5c8, type: 3}
   - {fileID: 21300000, guid: 3655c17706093b84db6265e797aec934, type: 3}
+  - {fileID: 21300000, guid: 6454db49a6d999c4bbde5fdf864cdd0f, type: 3}
+  - {fileID: 21300000, guid: 367ec4a9a9c46a642b63ffebc4cc990d, type: 3}
   - {fileID: 21300000, guid: e38cd5da9f6f88845b333b02db429fc3, type: 3}
   - {fileID: 21300000, guid: 9f2c2d0b4c3272d468120d20d359beb2, type: 3}
   - {fileID: 21300000, guid: 612db7bb36256524ba7095a100cba61d, type: 3}
+  - {fileID: 21300000, guid: 1f52f88cb92f31f4d930036c08406052, type: 3}
   - {fileID: 21300000, guid: 659ef10d6ca0d3a4eb4bb43cba10660e, type: 3}
   - {fileID: 21300000, guid: f453e94eb589ce14dafcbf86b96acf78, type: 3}
   - {fileID: 21300000, guid: 598fac4e6044978499b47c4cce4e3160, type: 3}
@@ -64,14 +132,82 @@ SpriteAtlas:
   - Puzzle_Drop_Blue
   - Puzzle_PowerUp_Propeller
   - Puzzle_PowerUp_Bomb
+  - 5
   - Puzzle_Drop_Red
+  - MainBg
+  - UI_Window
+  - GUI_2
+  - GUI_61
+  - GUI_60
+  - GUI_63
+  - GUI_62
+  - GUI_14
+  - GUI_65
+  - GUI_15
+  - GUI_64
+  - GUI_16
+  - GUI_67
+  - GUI_17
+  - GUI_66
+  - GUI_10
+  - GUI_11
+  - GUI_68
+  - GUI_12
+  - GUI_13
+  - GUI_18
+  - GUI_19
+  - GUI_58
+  - GUI_59
+  - GUI_48
+  - GUI_51
+  - GUI_29
+  - GUI_52
+  - GUI_32
+  - GUI_28
+  - GUI_53
+  - GUI_43
+  - GUI_33
+  - GUI_54
+  - GUI_42
+  - GUI_30
+  - GUI_55
+  - GUI_31
+  - GUI_25
+  - GUI_56
+  - GUI_36
+  - GUI_24
+  - GUI_57
+  - GUI_47
+  - GUI_27
+  - GUI_46
+  - GUI_34
+  - GUI_26
+  - GUI_45
+  - GUI_35
+  - GUI_21
+  - GUI_44
+  - GUI_20
+  - GUI_23
+  - GUI_22
+  - GUI_9
+  - GUI_8
+  - GUI_5
+  - GUI_4
+  - GUI_7
+  - GUI_6
+  - GUI_1
+  - GUI_0
+  - GUI_3
   - Puzzle_Drop_Yellow
   - Puzzle_PowerUp_Rocket_Full
-  - flame
+  - UI_Particle_Flame
   - Puzzle_Obstacle_Sugar
+  - White
+  - PopupBg
   - Puzzle_Obstacle_Crisp
   - Puzzle_Obstacle_Cake
   - Puzzle_PowerUp_Rocket_Half
+  - UI_Bg
   - Puzzle_Drop_Green
   - UI_Board_Square
   - Puzzle_Obstacle_Box
