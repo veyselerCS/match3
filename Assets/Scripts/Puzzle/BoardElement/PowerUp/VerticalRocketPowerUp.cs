@@ -68,7 +68,7 @@ public class VerticalRocketPowerUp : PowerUp
                 _boardManager.Board.At(SquarePosition).BoardElement = null;
                 BackToPool();
                 ResetComponents();
-                _signalBus.Fire<MatchEndSignal>();
+                _signalBus.Fire<CheckFallSignal>();
             });
     }
 

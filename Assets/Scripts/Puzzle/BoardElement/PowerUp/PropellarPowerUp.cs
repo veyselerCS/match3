@@ -9,6 +9,8 @@ public class PropellarPowerUp : PowerUp
 {
     [SerializeField] private RectTransform _rectTransform;
     [SerializeField] private List<GameObject> Particles;
+
+    private Tween _moveTween;
     
     public override void Activate()
     {
@@ -36,16 +38,39 @@ public class PropellarPowerUp : PowerUp
                 square.Unlock();
             }
 
-            ResetComponent();
-            BackToPool();
             _boardManager.Board.At(SquarePosition).BoardElement = null;
-            _signalBus.Fire<MatchEndSignal>();
+            GoToTarget();
+            _signalBus.Fire<CheckFallSignal>();
         });
     }
 
+    private void GoToTarget()
+    {
+        _moveTween.Kill();
+        
+        var targetSquare = _targetManager.GetRandomTarget();
+        if(targetSquare == null) BackToPool();
+
+        _moveTween = _rectTransform.DOMove(targetSquare.CenterPosition, 1f).SetEase(Ease.Linear)
+            .OnUpdate(() =>
+            {
+                if (targetSquare.Locked)
+                {
+                    GoToTarget();
+                }
+            })
+            .OnComplete(() =>
+            {
+                _signalBus.Fire(new TriggerSignal(new List<Square>(){targetSquare}, TriggerType.Special));
+                ResetComponent();
+                BackToPool();
+            });
+    }
+    
     public void ResetComponent()
     {
         _playRotation = false;
+        transform.rotation = Quaternion.Euler(Vector3.zero);
         foreach (var particle in Particles)
         {
             particle.SetActive(false);

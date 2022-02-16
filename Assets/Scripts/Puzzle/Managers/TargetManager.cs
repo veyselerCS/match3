@@ -73,6 +73,8 @@ public class TargetManager : Manager
     {
         if (square.TryGetByType(out Obstacle obstacle, null))
         {
+            if(!ObstacleTypeToTargetDict.ContainsKey(obstacle.ObstacleType)) return;//for cheat
+            
             var targetComponent = ObstacleTypeToTargetDict[obstacle.ObstacleType];
             TweenToTarget(square.BoardElement, targetComponent);
             square.BoardElement = null;
@@ -83,8 +85,8 @@ public class TargetManager : Manager
     {
         var boardElementRT = (RectTransform)boardElement.transform;
         var cachedSize = boardElementRT.sizeDelta;
-        
-        boardElementRT.SetParent(_sceneComponentService.TargetParent);//to render above the target canvas
+
+        boardElementRT.SetParent(_sceneComponentService.TargetParent); //to render above the target canvas
         var targetImageRT = targetComponent.TargetImage.rectTransform;
         var sequence = DOTween.Sequence();
         sequence
@@ -96,5 +98,38 @@ public class TargetManager : Manager
                 targetComponent.DecRemainingAmount();
                 boardElement.BackToPool();
             });
+    }
+
+    public Square GetRandomTarget()
+    {
+        var board = _boardManager.Board;
+        List<Square> possibleSquares = new List<Square>();
+        int currentMaxScore = 0;
+        for (int i = 0; i < _boardManager.BoardHeight; i++)
+        {
+            for (int k = 0; k < _boardManager.BoardWidth; k++)
+            {
+                var square = board[i][k];
+                var boardElement = square.BoardElement;
+                if (!square.Locked && boardElement != null)
+                {
+                    if (boardElement.PropellerTargetScore > currentMaxScore)
+                    {
+                        currentMaxScore = boardElement.PropellerTargetScore;
+                        possibleSquares.Add(square);
+                        possibleSquares.Clear();
+                    }
+
+                    if (boardElement.PropellerTargetScore == currentMaxScore)
+                    {
+                        possibleSquares.Add(square);
+                    }
+                }
+            }
+        }
+
+        if (possibleSquares.Count == 0) return null;
+        
+        return possibleSquares.GetRandomElement();
     }
 }

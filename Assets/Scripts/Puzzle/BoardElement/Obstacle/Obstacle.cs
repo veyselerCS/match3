@@ -1,9 +1,9 @@
 public class Obstacle : BoardElement
 {
+    private ObstacleFactory _obstacleFactory;
+    
     public ObstacleType ObstacleType;
     
-    private ObstacleFactory _obstacleFactory;
-
     private void Start()
     {
         _obstacleFactory = ManagerProvider.Instance.Get<ObstacleFactory>();

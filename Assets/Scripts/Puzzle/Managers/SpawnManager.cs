@@ -23,7 +23,7 @@ public class SpawnManager : Manager
 
     public override void Begin()
     {
-        _signalBus.Subscribe<MatchEndSignal>(OnMatchEnd);
+        _signalBus.Subscribe<CheckFallSignal>(OnMatchEnd);
         SetReady();
     }
 

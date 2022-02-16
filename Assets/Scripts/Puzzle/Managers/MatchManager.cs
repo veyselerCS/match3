@@ -86,7 +86,7 @@ public class MatchManager : Manager
         _matchSequence.OnComplete(() =>
         {
             if(match)
-                _signalBus.Fire<MatchEndSignal>();
+                _signalBus.Fire<CheckFallSignal>();
         });
         return match;
     }

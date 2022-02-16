@@ -72,12 +72,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fa0d35305344668b73400b88c9ae1cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SquarePosition: {x: 0, y: 0}
   IsStable: 1
   IsSwappable: 0
-  IsTappable: 0
+  SquarePosition: {x: 0, y: 0}
   Triggers: 0000000001000000
   ObstacleType: 0
+  PropellerTargetScore: 1000
 --- !u!114 &7135053268215292576
 MonoBehaviour:
   m_ObjectHideFlags: 0

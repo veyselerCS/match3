@@ -38,7 +38,7 @@ public class TNTPowerUp : PowerUp
             _boardManager.Board.At(SquarePosition).BoardElement = null;
             BackToPool();
             ResetComponent();
-            _signalBus.Fire<MatchEndSignal>();
+            _signalBus.Fire<CheckFallSignal>();
         });
     }
 

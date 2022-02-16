@@ -9,7 +9,7 @@ public class PuzzleInstaller : MonoInstaller
         Container.DeclareSignal<SwipeEndSignal>();
         Container.DeclareSignal<SwipeFailSignal>();
         Container.DeclareSignal<SpawnEndSignal>();
-        Container.DeclareSignal<MatchEndSignal>();
+        Container.DeclareSignal<CheckFallSignal>();
         Container.DeclareSignal<FallEndSignal>();
         Container.DeclareSignal<TapSignal>();
         Container.DeclareSignal<TriggerSignal>();

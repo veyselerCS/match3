@@ -12,12 +12,14 @@ public abstract class PowerUp : BoardElement
     protected BoardManager _boardManager;
     protected PowerUpFactory _powerUpFactory;
     protected PowerUpManager _powerUpManager;
+    protected TargetManager _targetManager;
 
     public virtual void Start()
     {
         _boardManager = ManagerProvider.Instance.Get<BoardManager>();
         _powerUpFactory = ManagerProvider.Instance.Get<PowerUpFactory>();
         _powerUpManager = ManagerProvider.Instance.Get<PowerUpManager>();
+        _targetManager = ManagerProvider.Instance.Get<TargetManager>();
     }
 
     public override void BackToPool()

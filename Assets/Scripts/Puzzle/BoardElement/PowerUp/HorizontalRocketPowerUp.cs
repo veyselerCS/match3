@@ -64,7 +64,7 @@ public class HorizontalRocketPowerUp : PowerUp
                 ResetComponents();
                 
                 _boardManager.Board.At(SquarePosition).BoardElement = null;
-                _signalBus.Fire<MatchEndSignal>();
+                _signalBus.Fire<CheckFallSignal>();
             });
     }
     
