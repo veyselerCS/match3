@@ -5,11 +5,14 @@ public class TriggerManager : Manager
 {
     [Inject] private SignalBus _signalBus;
     private BoardManager _boardManager;
+    private TargetManager _targetManager;
     public override void Init()
     {
         _boardManager = _managerProvider.Get<BoardManager>();
+        _targetManager = _managerProvider.Get<TargetManager>();
 
         _dependencies.Add(_boardManager);
+        _dependencies.Add(_targetManager);
     }
 
     public override void Begin()
@@ -22,21 +25,23 @@ public class TriggerManager : Manager
     {
         foreach (var square in data.TriggeredSquares)
         {
-            if (square.BoardElement != null)
+            var boardElement = square.BoardElement;
+            if (boardElement != null && boardElement.Triggers.Contains(data.TriggerType))
             {
-                if (square.BoardElement is PowerUp powerUp)
+                if (boardElement is PowerUp powerUp)
                 {
                     if(powerUp.Activated) continue;
                     
                     powerUp.Activate();
                 }
+                else if(boardElement is Obstacle obstacle)
+                {
+                    _targetManager.CheckTarget(square);
+                }
                 else
                 {
-                    if (square.BoardElement.Triggers.Contains(data.TriggerType))
-                    {
-                        square.BoardElement.BackToPool();
-                        square.BoardElement = null;  
-                    }
+                    square.BoardElement.BackToPool();
+                    square.BoardElement = null;  
                 }
             }
         }

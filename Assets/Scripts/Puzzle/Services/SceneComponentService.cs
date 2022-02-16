@@ -5,6 +5,7 @@ public class SceneComponentService : Manager
 {
     public RectTransform BoardParent;
     public RectTransform BoardElementParent;
+    public RectTransform TargetParent;
     public Square BoardSquarePrefab;
     
     public override void Init()
