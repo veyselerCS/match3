@@ -106,7 +106,8 @@ public class InputManager : Manager
             if(board.At(_firstTouchedBoardPos).BoardElement == null || board.At(currentTouchPos).BoardElement == null) return;
             if(!board.At(_firstTouchedBoardPos).BoardElement.IsSwappable || !board.At(currentTouchPos).BoardElement.IsSwappable) return;
             
-            if (currentTouchPos != _firstTouchedBoardPos)
+            if (currentTouchPos != _firstTouchedBoardPos && 
+                (_firstTouchedBoardPos.x == currentTouchPos.x || _firstTouchedBoardPos.y == currentTouchPos.y))//block the diagonal swipes
             {
                 _swipeSent = true;
                 _signalBus.Fire(new SwipeStartSignal(_firstTouchedBoardPos, currentTouchPos));
