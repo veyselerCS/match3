@@ -9952,11 +9952,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bce59f2cf6a24588a195ba0f81754999, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SquarePosition: {x: 0, y: 0}
   IsStable: 0
   IsSwappable: 1
-  IsTappable: 1
-  Triggers: 0000000001000000
+  PropellerTargetScore: 0
+  SquarePosition: {x: 0, y: 0}
+  Triggers: 01000000
   Activated: 0
   Type: 0
   Top: {fileID: 2569754164063075632}
