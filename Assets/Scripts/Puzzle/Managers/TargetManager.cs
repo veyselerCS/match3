@@ -51,6 +51,7 @@ public class TargetManager : Manager
     public void Refresh()
     {
         ObstacleTypeToTargetDict.Clear();
+        _targetCount = 0;
         var board = _boardManager.Board;
 
         for (int i = 0; i < Targets.Count; i++)

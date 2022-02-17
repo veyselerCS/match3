@@ -10,6 +10,7 @@ public class PopupManager : Manager
     private AddressableManager _addressableManager;
 
     private List<BasePopup> _activePopups = new List<BasePopup>();
+    private List<string> _queuedPopups = new List<string>();
 
     public override void Init()
     {
@@ -27,18 +28,24 @@ public class PopupManager : Manager
     {
         if(IsOpen(data.Name)) return;
         
+        _queuedPopups.Add(data.Name);
         var handle = _addressableManager.LoadAsset<GameObject>(data.Name);
         await handle.Task;
+        
         var popupGO = handle.Result;
         BasePopup<TPopupData> popup = Instantiate(popupGO, PopupCanvas.transform).GetComponent<BasePopup<TPopupData>>();
         popup.PopupData = data;
         popup.Init();
         popup.Show();
+        
         _activePopups.Add(popup);
+        _queuedPopups.Remove(data.Name);
     }
 
     public bool IsOpen(string name)
     {
+        if (_queuedPopups.Contains(name)) return true;
+        
         for (int i = 0; i < _activePopups.Count; i++)
         {
             var popup = _activePopups[i];
@@ -59,7 +66,7 @@ public class PopupManager : Manager
             if (popup.GetPopupData().Name == name)
             {
                 _activePopups.RemoveAt(i);
-                Destroy(popup.gameObject);
+                DestroyImmediate(popup.gameObject);
             }
         }
     }
