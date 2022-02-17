@@ -26,7 +26,8 @@ public class TargetManager : Manager
     private int _targetCount = 0;
     private string AtlasBaseKey = "Puzzle_Obstacle_";
     private int _moveCount;
-    
+    private Sequence _sequence = null;
+    private int _tweenCount = 0;
     public override void Init()
     {
         _boardManager = _managerProvider.Get<BoardManager>();
@@ -101,6 +102,12 @@ public class TargetManager : Manager
         {
             _inputManager.enabled = false;
         }
+
+        if (!HasActiveTween())
+        {
+            CheckSuccess();
+            
+        }
     }
 
     public bool IsOutOfMoves()
@@ -122,6 +129,7 @@ public class TargetManager : Manager
 
     private void TweenToTarget(BoardElement boardElement, TargetComponent targetComponent)
     {
+        _tweenCount++;
         var boardElementRT = (RectTransform)boardElement.transform;
         var cachedSize = boardElementRT.sizeDelta;
 
@@ -135,19 +143,44 @@ public class TargetManager : Manager
             {
                 boardElementRT.sizeDelta = cachedSize;
                 targetComponent.DecRemainingAmount();
+                CheckSuccess();
+                CheckFail();
                 boardElement.BackToPool();
+                _tweenCount--;
             });
     }
 
-    public void CheckSuccess()
+    public bool CheckSuccess()
     {
         foreach (var targetComponent in ObstacleTypeToTargetDict.Values)
         {
-            if(targetComponent.RemainingAmount != 0) return;
+            if(targetComponent.RemainingAmount != 0) return false;
         }
 
         _inputManager.enabled = false;
         _popupManager.Show(new LevelSuccessPopup.Data());
+        return true;
+    }    
+    
+    public bool CheckFail()
+    {
+        if (!IsOutOfMoves()) return false;
+        
+        foreach (var targetComponent in ObstacleTypeToTargetDict.Values)
+        {
+            if (targetComponent.RemainingAmount != 0)
+            {
+                _inputManager.enabled = false;
+                _popupManager.Show(new LevelFailPopup.Data());
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public bool HasActiveTween()
+    {
+        return _tweenCount != 0;
     }
     
     public Square GetRandomTarget()

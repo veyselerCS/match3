@@ -24,7 +24,6 @@ public class LevelEnterPopupItem : MonoBehaviour
     {
         _puzzleLoadManager = ManagerProvider.Instance.Get<PuzzleLoadManager>();
         _popupManager = ManagerProvider.Instance.Get<PopupManager>();
-        _signalBus.Subscribe<HideLoadFinishSignal>(OnHideFinish);
     }
 
     public void Init(int levelNo, int moveCount, bool shouldAnimate, bool alreadyActive)
@@ -43,19 +42,14 @@ public class LevelEnterPopupItem : MonoBehaviour
         });
     }
 
-    private void OnHideFinish(HideLoadFinishSignal data)
+    private void OnEnable()
     {
-        if (_shouldAnimate && gameObject.activeInHierarchy)
+        if (_shouldAnimate)
         {
             GrayButtonRectTransform
                 .DOSizeDelta(new Vector2(0, GrayButtonRectTransform.sizeDelta.y), 0.5f)
                 .OnComplete(() => GrayButtonRectTransform.gameObject.SetActive(false))
                 .SetLink(GrayButtonRectTransform.gameObject);
         }
-    }
-
-    private void OnDestroy()
-    {
-        _signalBus.Unsubscribe<HideLoadFinishSignal>(OnHideFinish);
     }
 }

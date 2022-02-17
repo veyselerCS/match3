@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: UserData
   m_EditorClassIdentifier: 
   MaxLevel: 1
-  _maxLevelShown: 0
+  MaxLevelShown: 0

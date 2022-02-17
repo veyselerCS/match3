@@ -25,7 +25,6 @@ public class TNTPowerUp : PowerUp
             square.Lock();
         }
         
-        Debug.LogWarning("tnt");
         _signalBus.Fire(new TriggerSignal(triggerZone, TriggerType.Special));
         Particle.gameObject.SetActive(true);
         TNTImage.gameObject.SetActive(false);

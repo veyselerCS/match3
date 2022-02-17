@@ -8,11 +8,12 @@ public class LevelSuccessPopup : BasePopup<LevelSuccessPopup.Data>
     [SerializeField] private Button FullScreenButton;
 
     private DataManager _dataManager;
-    private InputManager _inputManager;
+    private PopupManager _popupManager;
+    
     public override void Init()
     {
         _dataManager = ManagerProvider.Instance.Get<DataManager>();
-        _inputManager = ManagerProvider.Instance.Get<InputManager>();
+        _popupManager = ManagerProvider.Instance.Get<PopupManager>();
     }
     
     public override void Show()
@@ -23,6 +24,7 @@ public class LevelSuccessPopup : BasePopup<LevelSuccessPopup.Data>
         
         FullScreenButton.onClick.AddListener(() =>
         {
+            _popupManager.Hide(PopupData.Name);
             LoadingManager.Instance.ShowLoadingImage();
             SceneManager.UnloadSceneAsync("PuzzleScene").completed += (a) =>
             {

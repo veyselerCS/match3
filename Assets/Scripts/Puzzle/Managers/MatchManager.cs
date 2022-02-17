@@ -89,7 +89,7 @@ public class MatchManager : Manager
     {
         if (!CheckFullBoard())
         {
-            if (!CheckNoPossibleMove() || _targetManager.IsOutOfMoves())
+            if (!CheckNoPossibleMove() && !_targetManager.HasActiveTween())
             {
                 _inputManager.enabled = false;
                 _popupManager.Show(new LevelFailPopup.Data());

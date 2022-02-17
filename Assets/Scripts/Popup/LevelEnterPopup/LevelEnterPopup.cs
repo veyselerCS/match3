@@ -22,9 +22,13 @@ public class LevelEnterPopup : BasePopup<LevelEnterPopup.Data>
         foreach (var level in PopupData.Levels)
         {
             LevelEnterPopupItem item = Instantiate(LevelEnterPopupTemplate, LevelsParent.transform);
-            item.Init(level.LevelNo, level.MoveCount, level.LevelNo == maxLevel && !_dataManager.UserData.IsMaxLevelShown, level.LevelNo <= maxLevel);
+            item.Init(level.LevelNo, level.MoveCount, level.LevelNo == maxLevel && !_dataManager.UserData.IsMaxLevelShown,
+                (level.LevelNo < maxLevel) ||  level.LevelNo == maxLevel  && _dataManager.UserData.IsMaxLevelShown);
             item.gameObject.SetActive(true);
         }
+        
+        _dataManager.UserData.MaxLevelShown = 1;
+        _dataManager.UserData.SetDataDirty();
     }
 
     public class Data : BasePopupData
