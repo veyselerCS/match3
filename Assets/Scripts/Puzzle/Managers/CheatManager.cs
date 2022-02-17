@@ -47,7 +47,7 @@ public class CheatManager : Manager
 
     private void Update()
     {
-        if(Input.GetKeyUp(KeyCode.C))
+        if(Input.touchCount == 4 || Input.GetKeyUp(KeyCode.C))
         {
             CheatMode = !CheatMode;
         }       
