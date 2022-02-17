@@ -1,34 +1,56 @@
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityEngine.U2D;
+using Zenject;
 
 public class TargetManager : Manager
 {
+    [Inject] private SignalBus _signalBus;
+
     [SerializeField] private List<TargetComponent> Targets;
     [SerializeField] private SpriteAtlas SpriteAtlas;
+    [SerializeField] private TextMeshProUGUI RemainingMoveText;
 
     private BoardManager _boardManager;
     private SceneComponentService _sceneComponentService;
+    private PopupManager _popupManager;
+    private PuzzleLoadManager _puzzleLoadManager;
+    private InputManager _inputManager;
 
     private Dictionary<ObstacleType, TargetComponent> ObstacleTypeToTargetDict =
         new Dictionary<ObstacleType, TargetComponent>();
 
     private int _targetCount = 0;
     private string AtlasBaseKey = "Puzzle_Obstacle_";
-
+    private int _moveCount;
+    
     public override void Init()
     {
         _boardManager = _managerProvider.Get<BoardManager>();
         _sceneComponentService = _managerProvider.Get<SceneComponentService>();
+        _popupManager = _managerProvider.Get<PopupManager>();
+        _puzzleLoadManager = _managerProvider.Get<PuzzleLoadManager>();
+        _inputManager = _managerProvider.Get<InputManager>();
 
         _dependencies.Add(_boardManager);
         _dependencies.Add(_sceneComponentService);
+        _dependencies.Add(_popupManager);
+        _dependencies.Add(_puzzleLoadManager);
     }
 
     public override void Begin()
     {
+        Refresh();
+        _signalBus.Subscribe<SuccessfulMoveSignal>(OnSuccessfulMoveSignal);
+        SetReady();
+    }
+
+    public void Refresh()
+    {
+        ObstacleTypeToTargetDict.Clear();
         var board = _boardManager.Board;
 
         for (int i = 0; i < Targets.Count; i++)
@@ -66,9 +88,26 @@ public class TargetManager : Manager
             Targets[i].Init();
         }
 
-        SetReady();
+        _moveCount = _puzzleLoadManager.LevelToLoad.MoveCount;
+        RemainingMoveText.text = _moveCount.ToString();
+    }
+    
+    public void OnSuccessfulMoveSignal()
+    {
+        _moveCount--;
+        RemainingMoveText.text = _moveCount.ToString();
+
+        if (_moveCount == 0)
+        {
+            _inputManager.enabled = false;
+        }
     }
 
+    public bool IsOutOfMoves()
+    {
+        return _moveCount == 0;
+    }
+    
     public void CheckTarget(Square square)
     {
         if (square.TryGetByType(out Obstacle obstacle, null))
@@ -100,6 +139,17 @@ public class TargetManager : Manager
             });
     }
 
+    public void CheckSuccess()
+    {
+        foreach (var targetComponent in ObstacleTypeToTargetDict.Values)
+        {
+            if(targetComponent.RemainingAmount != 0) return;
+        }
+
+        _inputManager.enabled = false;
+        _popupManager.Show(new LevelSuccessPopup.Data());
+    }
+    
     public Square GetRandomTarget()
     {
         var board = _boardManager.Board;

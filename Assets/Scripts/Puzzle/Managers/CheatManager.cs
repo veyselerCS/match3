@@ -22,10 +22,6 @@ public class CheatManager : Manager
         _boardManager = _managerProvider.Get<BoardManager>();
         _matchManager = _managerProvider.Get<MatchManager>();
         _powerUpManager = _managerProvider.Get<PowerUpManager>();
-        
-        _dependencies.Add(_boardManager);
-        _dependencies.Add(_matchManager);
-        _dependencies.Add(_powerUpManager);
     }
 
     public override void Begin()

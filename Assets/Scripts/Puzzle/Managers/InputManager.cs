@@ -17,7 +17,6 @@ public class InputManager : Manager
     private Vector2Int _firstTouchedBoardPos = new Vector2Int(-1, -1);
 
     private bool _swipeSent;
-    
     public override void Init()
     {
         _boardManager = _managerProvider.Get<BoardManager>();

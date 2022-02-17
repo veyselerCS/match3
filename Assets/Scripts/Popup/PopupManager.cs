@@ -43,7 +43,7 @@ public class PopupManager : Manager
             if (popup.GetPopupData().Name == name)
             {
                 _activePopups.RemoveAt(i);
-                DestroyImmediate(popup.gameObject);
+                Destroy(popup.gameObject);
             }
         }
     }

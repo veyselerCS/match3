@@ -8,9 +8,11 @@ public class LevelSuccessPopup : BasePopup<LevelSuccessPopup.Data>
     [SerializeField] private Button FullScreenButton;
 
     private DataManager _dataManager;
+    private InputManager _inputManager;
     public override void Init()
     {
         _dataManager = ManagerProvider.Instance.Get<DataManager>();
+        _inputManager = ManagerProvider.Instance.Get<InputManager>();
     }
     
     public override void Show()
@@ -21,9 +23,8 @@ public class LevelSuccessPopup : BasePopup<LevelSuccessPopup.Data>
         
         FullScreenButton.onClick.AddListener(() =>
         {
-            
             LoadingManager.Instance.ShowLoadingImage();
-            SceneManager.LoadSceneAsync("MainScene").completed += (a) =>
+            SceneManager.UnloadSceneAsync("PuzzleScene").completed += (a) =>
             {
                 DOVirtual.DelayedCall(2f, () =>
                 {

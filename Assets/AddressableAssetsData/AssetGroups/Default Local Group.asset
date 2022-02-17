@@ -55,6 +55,30 @@ MonoBehaviour:
       type: 3}
     m_TargetAsset: {fileID: 8331090048775767695, guid: 7bcabb44894960640abe6603e2f83be2,
       type: 3}
+  - m_GUID: 6ae4dfb7f91bf78458face55449d35a5
+    m_Address: LevelEnterPopupItem
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 6266216580002222479, guid: 6ae4dfb7f91bf78458face55449d35a5,
+      type: 3}
+    m_TargetAsset: {fileID: 6266216580002222479, guid: 6ae4dfb7f91bf78458face55449d35a5,
+      type: 3}
+  - m_GUID: b366d30fe5afea743a6f43e6d48965e2
+    m_Address: LevelSuccessPopup
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 5503723349935274387, guid: b366d30fe5afea743a6f43e6d48965e2,
+      type: 3}
+    m_TargetAsset: {fileID: 5503723349935274387, guid: b366d30fe5afea743a6f43e6d48965e2,
+      type: 3}
+  - m_GUID: 6f300991e67e5dc448f6b9ae00a5c50d
+    m_Address: LevelFailPopup
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 1819437059603104504, guid: 6f300991e67e5dc448f6b9ae00a5c50d,
+      type: 3}
+    m_TargetAsset: {fileID: 1819437059603104504, guid: 6f300991e67e5dc448f6b9ae00a5c50d,
+      type: 3}
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 0935e3c26df4f974fa27736879823766, type: 2}
   m_SchemaSet:

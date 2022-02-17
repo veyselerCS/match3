@@ -39,7 +39,16 @@ public class ManagerProvider : MonoBehaviour
         }
 
         Managers[name] = manager;
+    }   
+    
+    public void UnRegister<T>(T manager) where T : Manager
+    {
+        var name = manager.GetType().Name;
+
+        Managers.Remove(name);
+        _resolved.Remove(manager);
     }
+    
 
     public bool IsResolved(Manager manager)
     {

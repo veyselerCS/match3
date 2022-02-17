@@ -95,6 +95,7 @@ public class PowerUpManager : Manager
         if (boardElement != null && !square.Locked && boardElement is PowerUp powerUp)
         {
             powerUp.Activate();
+            _signalBus.Fire<SuccessfulMoveSignal>();
         }
     }
 }

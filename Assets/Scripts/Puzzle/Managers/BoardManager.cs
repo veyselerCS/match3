@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class BoardManager : Manager
 {
+    [SerializeField] private GameObject RaycastBlocker;
+    
     private DropFactory _dropFactory;
     private ObstacleFactory _obstacleFactory;
     private SceneComponentService _sceneComponentService;
@@ -212,7 +214,7 @@ public class BoardManager : Manager
             }
         }
     }
-
+    
     public Vector2Int GetBoardPosition(Vector3 pos)
     {
         var offSet = pos - _sceneComponentService.BoardElementParent.GetBottomLeft();

@@ -16,6 +16,10 @@ public class MatchManager : Manager
     private MatchResultManager _matchResultManager;
     private PatternService _patternService;
     private PowerUpManager _powerUpManager;
+    private TargetManager _targetManager;
+    private PopupManager _popupManager;
+    private InputManager _inputManager;
+    
     private Sequence _matchSequence = null;
     private Vector2Int _matchSourcePosition;
     private HashSet<Vector2Int> _previouslyMatched = new HashSet<Vector2Int>();
@@ -28,11 +32,17 @@ public class MatchManager : Manager
         _matchResultManager = _managerProvider.Get<MatchResultManager>();
         _powerUpManager = _managerProvider.Get<PowerUpManager>();
         _patternService = _managerProvider.Get<PatternService>();
+        _targetManager = _managerProvider.Get<TargetManager>();
+        _popupManager = _managerProvider.Get<PopupManager>();
+        _inputManager = _managerProvider.Get<InputManager>();
         
         _dependencies.Add(_boardManager);
         _dependencies.Add(_matchResultManager);
         _dependencies.Add(_patternService);
         _dependencies.Add(_powerUpManager);
+        _dependencies.Add(_targetManager);
+        _dependencies.Add(_popupManager);
+        _dependencies.Add(_inputManager);
     }
 
     public override void Begin()
@@ -69,13 +79,21 @@ public class MatchManager : Manager
         {
             _signalBus.Fire(new SwipeFailSignal(data.To, data.From));
         }
+        else
+        {
+            _signalBus.Fire<SuccessfulMoveSignal>();
+        }
     }
 
     private void OnFallEndSignal()
     {
-        if (!CheckFullBoard() && !CheckNoPossibleMove())
+        if (!CheckFullBoard())
         {
-            Debug.LogWarning("Game over");
+            if (!CheckNoPossibleMove() || _targetManager.IsOutOfMoves())
+            {
+                _inputManager.enabled = false;
+                _popupManager.Show(new LevelFailPopup.Data());
+            }
         }
     }
 
@@ -295,6 +313,7 @@ public class MatchManager : Manager
             }
         }
     }
+
 }
 
 public enum MatchResultType

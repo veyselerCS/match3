@@ -57,7 +57,7 @@ public abstract class Manager : MonoBehaviour
     {
         _managerProvider.AddResolved(this);
         _signalBus.Fire(new ManagerReadySignal(this));
-    }
+    }   
 
     public virtual void OnManagerReady(ManagerReadySignal data)
     {
@@ -67,5 +67,10 @@ public abstract class Manager : MonoBehaviour
         }
 
         if (_dependencies.Count == 0) Resolve();
+    }
+
+    private void OnDestroy()
+    {
+        _managerProvider.UnRegister(this);
     }
 }
