@@ -25,6 +25,8 @@ public class PopupManager : Manager
 
     public async void Show<TPopupData>(TPopupData data) where TPopupData : BasePopupData
     {
+        if(IsOpen(data.Name)) return;
+        
         var handle = _addressableManager.LoadAsset<GameObject>(data.Name);
         await handle.Task;
         var popupGO = handle.Result;
@@ -35,6 +37,20 @@ public class PopupManager : Manager
         _activePopups.Add(popup);
     }
 
+    public bool IsOpen(string name)
+    {
+        for (int i = 0; i < _activePopups.Count; i++)
+        {
+            var popup = _activePopups[i];
+            if (popup.GetPopupData().Name == name)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+    
     public void Hide(string name)
     {
         for (int i = 0; i < _activePopups.Count; i++)
