@@ -43,7 +43,6 @@ public class VerticalRocketPowerUp : PowerUp
                 if (_boardManager.IsInBoardLimits(topCurrent) && topCurrent != topStartPos &&
                     triggerZone.Contains(_boardManager.Board.At(topCurrent)))
                 {
-                    Debug.LogWarning("Changed top");
                     _signalBus.Fire(new TriggerSignal(new List<Square> { _boardManager.Board.At(topCurrent) },
                         TriggerType.Special));
                     topStartPos = topCurrent;
@@ -52,7 +51,6 @@ public class VerticalRocketPowerUp : PowerUp
                 if (_boardManager.IsInBoardLimits(botCurrent) && botCurrent != botStartPos &&
                     triggerZone.Contains(_boardManager.Board.At(botCurrent)))
                 {
-                    Debug.LogWarning("Changed bottom");
                     _signalBus.Fire(new TriggerSignal(new List<Square> { _boardManager.Board.At(botCurrent) },
                         TriggerType.Special));
                     botStartPos = botCurrent;

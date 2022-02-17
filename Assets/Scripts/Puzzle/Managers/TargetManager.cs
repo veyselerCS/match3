@@ -26,7 +26,6 @@ public class TargetManager : Manager
     private int _targetCount = 0;
     private string AtlasBaseKey = "Puzzle_Obstacle_";
     private int _moveCount;
-    private Sequence _sequence = null;
     private int _tweenCount = 0;
     public override void Init()
     {

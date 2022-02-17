@@ -49,9 +49,11 @@ public class SwipeManager : Manager
     private void Swap(Square swipeStartElement, Square swipeEndElement, Action onSwipeEnd = null)
     {
         var board = _boardManager.Board;
-
+        
+        swipeStartElement.Lock();
+        swipeEndElement.Lock();
+        
         var sequence = DOTween.Sequence();
-
         sequence
             .Join(swipeStartElement.BoardElement.transform.DOMove(swipeEndElement.CenterPosition, 0.2f))
             .Join(swipeEndElement.BoardElement.transform.DOMove(swipeStartElement.CenterPosition, 0.2f))
@@ -64,6 +66,9 @@ public class SwipeManager : Manager
                 //swap board element data
                 (board[swipeStartElement.Coordinates.x][swipeStartElement.Coordinates.y].BoardElement, board[swipeEndElement.Coordinates.x][swipeEndElement.Coordinates.y].BoardElement) =
                     (board[swipeEndElement.Coordinates.x][swipeEndElement.Coordinates.y].BoardElement, board[swipeStartElement.Coordinates.x][swipeStartElement.Coordinates.y].BoardElement);
+                
+                swipeStartElement.Unlock();
+                swipeEndElement.Unlock();
                 
                 onSwipeEnd?.Invoke();
             });

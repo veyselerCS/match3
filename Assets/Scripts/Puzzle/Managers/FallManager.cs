@@ -96,7 +96,6 @@ public class FallManager : Manager
         else
         {
             fallLock = false;
-            Debug.LogWarning("Fall");
             _signalBus.Fire<FallEndSignal>();
         }
     }
