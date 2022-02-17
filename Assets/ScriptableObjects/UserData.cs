@@ -15,7 +15,7 @@ public class UserData : ScriptableObject
         ReadData();
     }
 
-    public void SetDataDirty()
+    public void Save()
     {
         PlayerPrefs.SetInt("MaxLevel", MaxLevel);
         PlayerPrefs.SetInt("MaxLevelShown", MaxLevelShown);

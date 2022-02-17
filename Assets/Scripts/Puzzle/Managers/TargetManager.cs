@@ -106,7 +106,7 @@ public class TargetManager : Manager
         if (!HasActiveTween())
         {
             CheckSuccess();
-            
+            CheckFail();
         }
     }
 

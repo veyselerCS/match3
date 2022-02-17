@@ -27,7 +27,10 @@ public class PuzzleLoadManager : Manager
     public void LoadLevel(int levelId)
     {
         LevelToLoad = _dataManager.LevelData[levelId - 1];
-
+        
+        _dataManager.UserData.MaxLevelShown = 1;
+        _dataManager.UserData.Save();
+        
         LoadingManager.Instance.ShowLoadingImage();
 
         SceneManager.LoadSceneAsync("PuzzleScene", LoadSceneMode.Additive).completed += (asyncOperation) =>

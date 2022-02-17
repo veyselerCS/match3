@@ -91,8 +91,11 @@ public class MatchManager : Manager
         {
             if (!CheckNoPossibleMove() && !_targetManager.HasActiveTween())
             {
-                _inputManager.enabled = false;
-                _popupManager.Show(new LevelFailPopup.Data());
+                if (_inputManager.enabled)
+                {
+                    _inputManager.enabled = false;
+                    _popupManager.Show(new LevelFailPopup.Data());
+                }
             }
         }
     }

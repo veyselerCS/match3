@@ -28,7 +28,7 @@ public class LevelEnterPopup : BasePopup<LevelEnterPopup.Data>
         }
         
         _dataManager.UserData.MaxLevelShown = 1;
-        _dataManager.UserData.SetDataDirty();
+        _dataManager.UserData.Save();
     }
 
     public class Data : BasePopupData

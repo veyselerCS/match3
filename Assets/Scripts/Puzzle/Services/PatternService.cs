@@ -109,7 +109,7 @@ public class PatternService : Manager
         nonZeros.Add(new Vector2Int(1, 0));
         nonZeros.Add(new Vector2Int(2, 0));
         nonZeros.Add(new Vector2Int(3, 0));
-        return new PatternShape(nonZeros, MatchResultType.VerticalRocket);
+        return new PatternShape(nonZeros, MatchResultType.HorizontalRocket);
     }
 
     private PatternShape Vertical3()
@@ -128,7 +128,7 @@ public class PatternService : Manager
         nonZeros.Add(new Vector2Int(0, 1));
         nonZeros.Add(new Vector2Int(0, 2));
         nonZeros.Add(new Vector2Int(0, 3));
-        return new PatternShape(nonZeros, MatchResultType.HorizontalRocket);
+        return new PatternShape(nonZeros, MatchResultType.VerticalRocket);
     }
 
     private PatternShape Horizontal3()

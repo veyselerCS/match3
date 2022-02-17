@@ -9,18 +9,23 @@ public class LevelSuccessPopup : BasePopup<LevelSuccessPopup.Data>
 
     private DataManager _dataManager;
     private PopupManager _popupManager;
+    private PuzzleLoadManager _puzzleLoadManager;
     
     public override void Init()
     {
         _dataManager = ManagerProvider.Instance.Get<DataManager>();
         _popupManager = ManagerProvider.Instance.Get<PopupManager>();
+        _puzzleLoadManager = ManagerProvider.Instance.Get<PuzzleLoadManager>();
     }
     
     public override void Show()
     {
-        _dataManager.UserData.MaxLevel++;
-        _dataManager.UserData.MaxLevelShown = 0;
-        _dataManager.UserData.SetDataDirty();
+        if (_dataManager.UserData.MaxLevel == _puzzleLoadManager.LevelToLoad.LevelNo)
+        {
+            _dataManager.UserData.MaxLevel++;
+            _dataManager.UserData.MaxLevelShown = 0;
+            _dataManager.UserData.Save();
+        }
         
         FullScreenButton.onClick.AddListener(() =>
         {
