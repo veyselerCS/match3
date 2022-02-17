@@ -301,6 +301,7 @@ public class MatchManager : Manager
 
     private void OnDrawGizmosSelected()
     {
+#if UNITY_EDITOR
         if (_possibleSwipeSquare != null)
         {
             Rect rect = new Rect(_possibleSwipeSquare.CenterPosition.IncX(-50).IncY(-50), new Vector2(100,100));
@@ -312,6 +313,7 @@ public class MatchManager : Manager
                 Handles.DrawSolidRectangleWithOutline(rect2, Color.yellow, Color.white);
             }
         }
+#endif
     }
 
 }

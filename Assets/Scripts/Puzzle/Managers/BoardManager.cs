@@ -187,6 +187,7 @@ public class BoardManager : Manager
     
     private void OnDrawGizmos()
     {
+#if UNITY_EDITOR
         Color locked = new Color(0, 0, 0, 0.2f);
         Color nulled = new Color(0, 0, 255, 0.2f);
         Color fulled = new Color(255, 0, 0, 0.2f);
@@ -213,6 +214,7 @@ public class BoardManager : Manager
                 }
             }
         }
+#endif
     }
     
     public Vector2Int GetBoardPosition(Vector3 pos)

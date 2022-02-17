@@ -80,11 +80,13 @@ public class PowerUpManager : Manager
 
     private void OnDrawGizmosSelected()
     {
+#if UNITY_EDITOR
         foreach (var square in powerUpTriggers)
         {      
             Rect rect = new Rect(square.CenterPosition - new Vector3(50,50),new Vector2(100,100));
             UnityEditor.Handles.DrawSolidRectangleWithOutline(rect, Color.black, Color.white);
-        }
+        } 
+#endif
     }
 
     private void OnTapSignal(TapSignal data)

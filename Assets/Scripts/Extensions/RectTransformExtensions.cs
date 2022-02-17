@@ -6,6 +6,6 @@ public static class RectTransformExtensions
     {
         var size = rectTransform.sizeDelta;
         var pivot = rectTransform.pivot;
-        return rectTransform.position - new Vector3(pivot.x * size.x, pivot.y * size.y);
+        return rectTransform.position - new Vector3(pivot.x * size.x * rectTransform.lossyScale.x, pivot.y * size.y * rectTransform.lossyScale.y);
     }
 }

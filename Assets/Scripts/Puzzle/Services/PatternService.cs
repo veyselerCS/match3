@@ -33,6 +33,7 @@ public class PatternService : Manager
 
     void OnDrawGizmosSelected()
     {
+#if UNITY_EDITOR
         if(PatternShapes.Count == 0) return;
         
         foreach (var nonZero in PatternShapes[SelectedIndex].NonZeros)
@@ -43,6 +44,7 @@ public class PatternService : Manager
             Rect rect = new Rect(centerPoint.SetX(centerPoint.x + 100*nonZero.y).SetY(centerPoint.y + 100*nonZero.x), new Vector2(100,100));
             UnityEditor.Handles.DrawSolidRectangleWithOutline(rect, Color.black, Color.white);
         }
+#endif
     }
 
 
