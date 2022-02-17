@@ -25,6 +25,9 @@ public class BoardManager : Manager
     private Vector2 _squareSize;
     private LevelData _levelData;
 
+    public bool IsFullyUnlocked => _lockedCount == 0;
+    private int _lockedCount;
+
     public override void Init()
     {
         _dropFactory = _managerProvider.Get<DropFactory>();
@@ -183,6 +186,16 @@ public class BoardManager : Manager
     public bool IsInBoardLimits(int x, int y)
     {
         return x >= 0 && y >= 0 && x < BoardHeight && y < BoardWidth;
+    }
+
+    public void IncrementLocked()
+    {
+        _lockedCount++;
+    }  
+    
+    public void DecrementLocked()
+    {
+        _lockedCount--;
     }
     
     private void OnDrawGizmos()

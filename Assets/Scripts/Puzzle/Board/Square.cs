@@ -70,7 +70,7 @@ public class Square : MonoBehaviour
         }
     } 
     
-    private void Start()
+    private void Awake()
     {
         _boardManager = ManagerProvider.Instance.Get<BoardManager>();
     }
@@ -97,11 +97,14 @@ public class Square : MonoBehaviour
     public void Lock()
     {
         _lockCount++;
+        
+        if(_lockCount == 1) _boardManager.IncrementLocked();
     }   
     
     public void Unlock()
     {
         _lockCount--;
+        if(_lockCount == 0) _boardManager.DecrementLocked();
     }
 }
 

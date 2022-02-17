@@ -186,6 +186,8 @@ public class MatchManager : Manager
     //Looks ugly but optimized to return as early as possible to make minimum comparisons
     private bool CheckNoPossibleMove()
     {
+        if (!_boardManager.IsFullyUnlocked) return true;
+        
         _possibleswipesquares.Clear();
         var board = _boardManager.Board;
         _possibleSwipeSquare = board[0][0];

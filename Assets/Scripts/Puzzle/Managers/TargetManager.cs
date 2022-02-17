@@ -104,8 +104,8 @@ public class TargetManager : Manager
 
         if (!HasActiveTween())
         {
-            CheckSuccess();
-            CheckFail();
+            if(!CheckSuccess())
+                CheckFail();
         }
     }
 
@@ -142,8 +142,8 @@ public class TargetManager : Manager
             {
                 boardElementRT.sizeDelta = cachedSize;
                 targetComponent.DecRemainingAmount();
-                CheckSuccess();
-                CheckFail();
+                if(!CheckSuccess())
+                    CheckFail();
                 boardElement.BackToPool();
                 _tweenCount--;
             });
@@ -163,11 +163,11 @@ public class TargetManager : Manager
     
     public bool CheckFail()
     {
-        if (!IsOutOfMoves()) return false;
+        if (!IsOutOfMoves() || !_boardManager.IsFullyUnlocked) return false;
         
         foreach (var targetComponent in ObstacleTypeToTargetDict.Values)
         {
-            if (targetComponent.RemainingAmount != 0)
+            if (targetComponent.RemainingAmount > 0)
             {
                 _inputManager.enabled = false;
                 _popupManager.Show(new LevelFailPopup.Data());
